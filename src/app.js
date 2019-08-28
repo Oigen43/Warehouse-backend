@@ -14,3 +14,7 @@ app.get('/', function(req, res) {
 app.listen(3000, () => {
   logger.info('Server is listening on port 3000');
 });
+
+process.on('unhandledRejection', function(err, promise) {
+  logger.error('Unhandled rejection (promise: ', promise, ', reason: ', err, ').');
+});
