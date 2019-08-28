@@ -23,7 +23,7 @@
     "no-unused-vars": 1,
     "no-invalid-regexp": 2,
     "valid-typeof": 2,
-    "no-console": 0,
+    "no-console": 1,
     "no-debugger": 1,
     "padded-blocks": 1,
     "no-multiple-empty-lines": 1,
