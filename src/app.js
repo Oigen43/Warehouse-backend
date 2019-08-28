@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const logger = require('./utils/logger');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,5 +12,5 @@ app.get('/', function(req, res) {
 });
 
 app.listen(3000, () => {
-  console.info('Server is listening on port 3000');
+  logger.info('Server is listening on port 3000');
 });
