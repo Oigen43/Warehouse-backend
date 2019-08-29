@@ -13,7 +13,7 @@ app.disable('x-powered-by');
 const DEFAULT_PORT = 3000;
 const port = parseInt(process.env.PORT, 10) || DEFAULT_PORT;
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.send({message: 'Hello world!'});
 });
 
@@ -21,6 +21,6 @@ app.listen(port, () => {
   logger.info(`Server is listening on port ${port}`);
 });
 
-process.on('unhandledRejection', function(err, promise) {
+process.on('unhandledRejection', (err, promise) => {
   logger.error('Unhandled rejection (promise: ', promise, ', reason: ', err, ').');
 });
