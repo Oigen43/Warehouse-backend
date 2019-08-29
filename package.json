@@ -1,0 +1,49 @@
+{
+  "name": "warehouse-backend",
+  "version": "1.0.0",
+  "description": "The backend part of Warehouse project",
+  "main": "src/app.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.8.0"
+  },
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js",
+    "lint": "./node_modules/.bin/eslint src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Oigen43/warehouse-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.2.2",
+    "eslint-config-standard": "^14.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.5",
+    "nodemon": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint --max-warnings=0"
+    ]
+  }
+}
