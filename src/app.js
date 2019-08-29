@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
+app.disable('x-powered-by');
 
 const DEFAULT_PORT = 3000;
 const port = parseInt(process.env.PORT, 10) || DEFAULT_PORT;
