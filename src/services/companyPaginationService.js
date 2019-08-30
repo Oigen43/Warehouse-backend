@@ -15,7 +15,12 @@ class CompanyPaginationService {
 
         const pagedCompanies = companies.slice(start, end);
 
-        return pagedCompanies;
+        const limit = companies.length;
+
+        return {
+            companies: pagedCompanies,
+            limit: limit
+        };
     }
 }
 
