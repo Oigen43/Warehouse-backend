@@ -4,8 +4,8 @@ const routeUtils = require('../utils/routeUtils');
 const companyPaginationService = require('../services/companyPaginationService');
 
 function get(req) {
-    const page = req.params.page;
-    const perPage = req.params.per_page;
+    const page = parseInt(req.params.page, 10);
+    const perPage = parseInt(req.params.per_page, 10);
     return companyPaginationService.get(page, perPage);
 }
 

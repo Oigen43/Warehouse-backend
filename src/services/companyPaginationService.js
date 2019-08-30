@@ -10,8 +10,8 @@ class CompanyPaginationService {
     async get(page, perPage) {
         const companies = await this.companyRepository.get();
 
-        const start = (page - 1) * Number(perPage);
-        const end = start + Number(perPage);
+        const start = (page - 1) * perPage;
+        const end = start + perPage;
 
         const pagedCompanies = companies.slice(start, end);
 
