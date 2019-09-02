@@ -7,14 +7,17 @@ class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    async get() {
-        const companies = await this.companyRepository.get();
+    async get(page, perPage) {
+        const {companies, pageLimit} = await this.companyRepository.get(page, perPage);
 
         if (!companies) {
             return [];
         }
 
-        return companies;
+        return {
+            companies,
+            pageLimit
+        };
     }
 }
 
