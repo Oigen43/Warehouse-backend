@@ -8,7 +8,7 @@ class WarehouseService {
     }
 
     async get(page, perPage) {
-        const {warehouses, pageLimit} = await this.warehouseRepository.get(page, perPage);
+        const {warehouses, warehousesTotal} = await this.warehouseRepository.get(page, perPage);
 
         if (!warehouses) {
             return [];
@@ -16,7 +16,7 @@ class WarehouseService {
 
         return {
             warehouses,
-            pageLimit
+            warehousesTotal
         };
     }
 }

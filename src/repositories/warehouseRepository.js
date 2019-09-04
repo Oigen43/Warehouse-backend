@@ -11,11 +11,9 @@ class WarehouseRepository {
 
         const pagedWarehouses = warehouses.slice(start, end);
 
-        const limit = warehouses.length / perPage;
-
         return {
             warehouses: pagedWarehouses,
-            pageLimit: limit
+            warehousesTotal: warehouses.length
         };
     }
 }
