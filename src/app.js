@@ -10,8 +10,9 @@ const router = require('./routing');
 
 const app = express();
 
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use('/', router);
 app.disable('x-powered-by');

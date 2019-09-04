@@ -1,9 +1,9 @@
 'use strict';
 
-const data = require('../db/data');
+const data = require('../db/companies');
 
 class CompanyRepository {
-    async get(page = 1, perPage = 10) {
+    async read(page = 1, perPage = 10) {
         const companies = data;
 
         const start = (page - 1) * perPage;

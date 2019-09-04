@@ -7,8 +7,8 @@ class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    async get(page, perPage) {
-        const {companies, companiesTotal} = await this.companyRepository.get(page, perPage);
+    async read(page, perPage) {
+        const {companies, companiesTotal} = await this.companyRepository.read(page, perPage);
 
         if (!companies) {
             return [];

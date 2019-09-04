@@ -3,12 +3,11 @@
 const routeUtils = require('../utils/routeUtils');
 const companyService = require('../services/companyService');
 
-function get(req) {
-    const page = req.query.page;
-    const perPage = req.query.per_page;
-    return companyService.get(page, perPage);
+function read(req) {
+    const { page, perPage } = req.query;
+    return companyService.read(page, perPage);
 }
 
 module.exports = {
-    get: routeUtils.handleResponse(get)
+    read: routeUtils.handleResponse(read)
 };

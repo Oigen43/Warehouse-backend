@@ -3,12 +3,17 @@
 const routeUtils = require('../utils/routeUtils');
 const warehouseService = require('../services/warehouseService');
 
-function get(req) {
-    const page = req.query.page;
-    const perPage = req.query.per_page;
-    return warehouseService.get(page, perPage);
+function read(req) {
+    const { page, perPage } = req.query;
+    return warehouseService.read(page, perPage);
+}
+
+function create(req) {
+    const warehouse = req.body;
+    return warehouseService.create(warehouse);
 }
 
 module.exports = {
-    get: routeUtils.handleResponse(get)
+    read: routeUtils.handleResponse(read),
+    create: routeUtils.handleResponse(create)
 };
