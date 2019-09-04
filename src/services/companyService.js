@@ -19,6 +19,10 @@ class CompanyService {
             companiesTotal
         };
     }
+
+    async create(companyName, address, description) {
+        this.companyRepository.create(companyName, address, description);
+    }
 }
 
 module.exports = new CompanyService({companyRepository});

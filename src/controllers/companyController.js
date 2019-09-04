@@ -9,6 +9,12 @@ function get(req) {
     return companyService.get(page, perPage);
 }
 
+function create(req) {
+    const { companyName, address, description} = req.body;
+    return companyService.create(companyName, address, description);
+}
+
 module.exports = {
-    get: routeUtils.handleResponse(get)
+    get: routeUtils.handleResponse(get),
+    create: routeUtils.handleResponse(create)
 };

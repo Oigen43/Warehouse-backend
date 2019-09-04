@@ -1,6 +1,6 @@
 'use strict';
 
-const data = require('../db/data');
+const data = require('../db/companiesData');
 
 class CompanyRepository {
     async get(page = 1, perPage = 10) {
@@ -15,6 +15,16 @@ class CompanyRepository {
             companies: pagedCompanies,
             companiesTotal: companies.length
         };
+    }
+
+    async create(companyName, address, description) {
+        const newCompany = JSON.stringify({
+            company_name: companyName,
+            address: address,
+            description: description,
+            date: new Date()
+        });
+        data.push(newCompany);
     }
 }
 
