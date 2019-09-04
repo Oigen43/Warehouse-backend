@@ -11,11 +11,9 @@ class CompanyRepository {
 
         const pagedCompanies = companies.slice(start, end);
 
-        const limit = companies.length / perPage;
-
         return {
             companies: pagedCompanies,
-            pageLimit: limit
+            companiesTotal: companies.length
         };
     }
 }

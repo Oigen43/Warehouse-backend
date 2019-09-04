@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const logger = require('./utils/logger');
 const cors = require('cors');
 
-const router = require('./routing/companyRoutes');
+const router = require('./routing');
 
 const app = express();
 

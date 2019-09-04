@@ -1,12 +1,12 @@
 'use strict';
 
 const routeUtils = require('../utils/routeUtils');
-const companyService = require('../services/companyService');
+const warehouseService = require('../services/warehouseService');
 
 function get(req) {
     const page = req.query.page;
     const perPage = req.query.per_page;
-    return companyService.get(page, perPage);
+    return warehouseService.get(page, perPage);
 }
 
 module.exports = {
