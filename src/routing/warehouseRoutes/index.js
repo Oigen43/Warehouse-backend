@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.route('/warehouses')
     .get(expressJoi(warehouseQuerySchema), warehouseController.get)
-    .post(warehouseController.create);
-
+    .post(warehouseController.create)
+    .put(warehouseController.update)
+    .delete(warehouseController.remove);
 module.exports = router;

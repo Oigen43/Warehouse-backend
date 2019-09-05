@@ -30,6 +30,24 @@ class WarehouseRepository {
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return { message: 'Warehouse created' };
     }
+
+    async update(warehouse) {
+        const warehouses = data;
+        const index = warehouses.findIndex(item => item.name === warehouse.name);
+
+        warehouses[index] = warehouse;
+        await fs.writeFile(fullPath, JSON.stringify(warehouses));
+        return { message: 'Warehouse updated' };
+    }
+
+    async remove(warehouseName) {
+        const warehouses = data;
+        const index = warehouses.findIndex(item => item.name === warehouseName);
+
+        warehouses.splice(index, 1);
+        await fs.writeFile(fullPath, JSON.stringify(warehouses));
+        return { message: 'Warehose deleted '};
+    }
 }
 
 module.exports = new WarehouseRepository();

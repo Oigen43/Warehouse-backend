@@ -22,7 +22,17 @@ class WarehouseService {
 
     async create(warehouse) {
         const message = await this.warehouseRepository.create(warehouse);
-        if (message) { return message; }
+        return message;
+    }
+
+    async update(warehouse) {
+        const message = await this.warehouseRepository.update(warehouse);
+        return message;
+    }
+
+    async remove(warehouseName) {
+        const message = await this.warehouseRepository.remove(warehouseName);
+        return message;
     }
 }
 
