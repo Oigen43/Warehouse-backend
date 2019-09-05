@@ -10,8 +10,8 @@ function get(req) {
 }
 
 function create(req) {
-    const { companyName, address, description} = req.body;
-    return companyService.create(companyName, address, description);
+    const newCompany = req.body;
+    return companyService.create(newCompany);
 }
 
 module.exports = {

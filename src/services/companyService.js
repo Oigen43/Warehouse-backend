@@ -20,8 +20,8 @@ class CompanyService {
         };
     }
 
-    async create(companyName, address, description) {
-        this.companyRepository.create(companyName, address, description);
+    async create(newCompany) {
+        this.companyRepository.create(newCompany);
     }
 }
 

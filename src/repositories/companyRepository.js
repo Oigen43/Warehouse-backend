@@ -1,6 +1,9 @@
 'use strict';
 
 const data = require('../db/companiesData');
+const fs = require('fs');
+const path = require('path');
+const fullPath = path.join(__dirname, '../db/companiesData.json');
 
 class CompanyRepository {
     async get(page = 1, perPage = 10) {
@@ -17,14 +20,20 @@ class CompanyRepository {
         };
     }
 
-    async create(companyName, address, description) {
-        const newCompany = JSON.stringify({
-            company_name: companyName,
-            address: address,
-            description: description,
+    async create(newCompany) {
+        const company = {
+            companyName: newCompany.companyName,
+            address: newCompany.address,
+            description: newCompany.description,
+            active: newCompany.active,
             date: new Date()
+        };
+        data.push(company);
+        fs.writeFile(fullPath, JSON.stringify(data), function (err) {
+            if (err) {
+                return { error: `Error: ${err}`};
+            }
         });
-        data.push(newCompany);
     }
 }
 
