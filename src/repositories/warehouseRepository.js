@@ -23,8 +23,11 @@ class WarehouseRepository {
 
     async create(warehouse) {
         const warehouses = data;
-        warehouses.push(warehouse);
+        if (warehouses.some(item => { return item.name === warehouse.name; })) {
+            return { message: 'This warehouse already exists' };
+        }
 
+        warehouses.push(warehouse);
         fs.writeFile(fullPath, JSON.stringify(warehouses), (err) => {
             if (err) {
                 logger.error('Unhandled rejection (reason: ', err);

@@ -21,7 +21,8 @@ class WarehouseService {
     }
 
     async create(warehouse) {
-        await this.warehouseRepository.create(warehouse);
+        const message = await this.warehouseRepository.create(warehouse);
+        if (message) { return message; }
     }
 }
 
