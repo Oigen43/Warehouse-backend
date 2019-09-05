@@ -1,12 +1,12 @@
 'use strict';
 
-const data = require('../db/companiesData');
+const data = require('../db/companies');
 const fs = require('fs');
 const path = require('path');
-const fullPath = path.join(__dirname, '../db/companiesData.json');
+const fullPath = path.join(__dirname, '../db/companies');
 
 class CompanyRepository {
-    async get(page = 1, perPage = 10) {
+    async read(page = 1, perPage = 10) {
         const companies = data;
 
         const start = (page - 1) * perPage;
@@ -31,7 +31,7 @@ class CompanyRepository {
         data.push(company);
         fs.writeFile(fullPath, JSON.stringify(data), function (err) {
             if (err) {
-                return { error: `Error: ${err}`};
+                throw new Error();
             }
         });
     }
