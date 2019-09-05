@@ -9,7 +9,7 @@ function get(req) {
 }
 
 function create(req) {
-    const warehouse = req.body;
+    const { body: warehouse } = req;
     return warehouseService.create(warehouse);
 }
 
