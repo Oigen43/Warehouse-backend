@@ -1,10 +1,9 @@
 'use strict';
 
 const data = require('../db/warehouses');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/warehouses.json');
-const logger = require('../utils/logger');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10) {
@@ -28,11 +27,8 @@ class WarehouseRepository {
         }
 
         warehouses.push(warehouse);
-        fs.writeFile(fullPath, JSON.stringify(warehouses), (err) => {
-            if (err) {
-                logger.error('Unhandled rejection (reason: ', err);
-            };
-        });
+        await fs.writeFile(fullPath, JSON.stringify(warehouses));
+        return { message: 'Warehouse created' };
     }
 }
 
