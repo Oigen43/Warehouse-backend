@@ -7,7 +7,7 @@ const fullPath = path.join(__dirname, '../db/warehouses.json');
 const logger = require('../utils/logger');
 
 class WarehouseRepository {
-    async read(page = 1, perPage = 10) {
+    async get(page = 1, perPage = 10) {
         const warehouses = data;
 
         const start = (page - 1) * perPage;

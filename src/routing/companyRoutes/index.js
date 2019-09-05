@@ -7,6 +7,6 @@ const companyController = require('../../controllers/companyController');
 
 const router = express.Router();
 
-router.get('/companies', expressJoi(companyQuerySchema), companyController.read);
+router.get('/companies', expressJoi(companyQuerySchema), companyController.get);
 
 module.exports = router;

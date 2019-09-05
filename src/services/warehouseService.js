@@ -7,8 +7,8 @@ class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    async read(page, perPage) {
-        const {warehouses, warehousesTotal} = await this.warehouseRepository.read(page, perPage);
+    async get(page, perPage) {
+        const {warehouses, warehousesTotal} = await this.warehouseRepository.get(page, perPage);
 
         if (!warehouses) {
             return [];
