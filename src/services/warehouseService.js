@@ -20,8 +20,8 @@ class WarehouseService {
         };
     }
 
-    async create(warehouse) {
-        const message = await this.warehouseRepository.create(warehouse);
+    async create(warehouse, res) {
+        const message = await this.warehouseRepository.create(warehouse, res);
         return message;
     }
 

@@ -4,6 +4,7 @@ const data = require('../db/warehouses');
 const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/warehouses.json');
+const statusCode = require('../const/statusCode');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10) {
@@ -20,10 +21,10 @@ class WarehouseRepository {
         };
     }
 
-    async create(warehouse) {
+    async create(warehouse, res) {
         const warehouses = data;
         if (warehouses.some(item => { return item.name === warehouse.name; })) {
-            return { message: 'This warehouse already exists' };
+            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse already exists' });
         }
 
         warehouses.push(warehouse);
