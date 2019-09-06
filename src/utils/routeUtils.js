@@ -1,21 +1,22 @@
 'use strict';
 
 const logger = require('../utils/logger');
+const statusCode = require('../const/statusCode');
 
 function handleErrorResponse(err, req, res) {
     logger.error(err);
-    res.status(err.statusCode || 500).send({message: err.message});
+    res.status(err.statusCode || statusCode.SERVER_ERROR).send({message: err.message});
 }
 
-function handleResponse(handler) {
+function handleResponse(handler, resStatusCode) {
     return async (req, res) => {
         try {
             const data = await handler(req, res);
 
             if (data) {
-                return res.json(data);
+                return res.status(resStatusCode).json(data);
             } else {
-                return res.status(204).send();
+                return res.status(statusCode.NO_CONTENT).send();
             }
         } catch (err) {
             return handleErrorResponse(err, req, res);

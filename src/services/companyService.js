@@ -21,7 +21,8 @@ class CompanyService {
     }
 
     async create(newCompany, res) {
-        this.companyRepository.create(newCompany, res);
+        const message = await this.companyRepository.create(newCompany, res);
+        return message;
     }
 }
 

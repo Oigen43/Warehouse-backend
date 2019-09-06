@@ -2,6 +2,7 @@
 
 const routeUtils = require('../utils/routeUtils');
 const companyService = require('../services/companyService');
+const statusCode = require('../const/statusCode');
 
 function get(req) {
     const {page, perPage} = req.query;
@@ -14,6 +15,6 @@ function create(req, res) {
 }
 
 module.exports = {
-    get: routeUtils.handleResponse(get),
-    create: routeUtils.handleResponse(create)
+    get: routeUtils.handleResponse(get, statusCode.OK),
+    create: routeUtils.handleResponse(create, statusCode.CREATED)
 };
