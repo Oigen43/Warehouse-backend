@@ -8,7 +8,7 @@ const statusCode = require('../const/statusCode');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10) {
-        const warehouses = data;
+        const warehouses = data.filter(item => item.deleted === false);
         const start = (page - 1) * perPage;
         const end = start + perPage;
         const pagedWarehouses = warehouses.slice(start, end);
@@ -49,7 +49,7 @@ class WarehouseRepository {
             return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
         }
 
-        warehouses.splice(index, 1);
+        warehouses[index].deleted = true;
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return { message: 'Warehose deleted '};
     }
