@@ -1,12 +1,12 @@
 'use strict';
 
-const data = require('../db/companies');
+const data = require('../db/companies.json');
 const fs = require('fs');
 const path = require('path');
-const fullPath = path.join(__dirname, '../db/companies');
+const fullPath = path.join(__dirname, '../db/companies.json');
 
 class CompanyRepository {
-    async read(page = 1, perPage = 10) {
+    async get(page = 1, perPage = 10) {
         const companies = data;
 
         const start = (page - 1) * perPage;
@@ -20,18 +20,21 @@ class CompanyRepository {
         };
     }
 
-    async create(newCompany) {
+    async create(newCompany, res) {
         const company = {
             companyName: newCompany.companyName,
             address: newCompany.address,
             description: newCompany.description,
-            active: newCompany.active,
-            date: new Date()
+            active: true,
+            date: new Date(),
+            deleted: false,
         };
         data.push(company);
         fs.writeFile(fullPath, JSON.stringify(data), function (err) {
             if (err) {
                 throw new Error();
+            } else {
+                return res.status(201).send();
             }
         });
     }

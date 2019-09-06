@@ -3,17 +3,17 @@
 const routeUtils = require('../utils/routeUtils');
 const companyService = require('../services/companyService');
 
-function read(req) {
+function get(req) {
     const {page, perPage} = req.query;
-    return companyService.read(page, perPage);
+    return companyService.get(page, perPage);
 }
 
-function create(req) {
+function create(req, res) {
     const newCompany = req.body;
-    return companyService.create(newCompany);
+    return companyService.create(newCompany, res);
 }
 
 module.exports = {
-    read: routeUtils.handleResponse(read),
+    get: routeUtils.handleResponse(get),
     create: routeUtils.handleResponse(create)
 };
