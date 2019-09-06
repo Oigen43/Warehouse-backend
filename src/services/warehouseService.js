@@ -25,13 +25,13 @@ class WarehouseService {
         return message;
     }
 
-    async update(warehouse) {
-        const message = await this.warehouseRepository.update(warehouse);
+    async update(warehouse, res) {
+        const message = await this.warehouseRepository.update(warehouse, res);
         return message;
     }
 
-    async remove(warehouseName) {
-        const message = await this.warehouseRepository.remove(warehouseName);
+    async remove(warehouseName, res) {
+        const message = await this.warehouseRepository.remove(warehouseName, res);
         return message;
     }
 }

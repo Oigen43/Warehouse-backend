@@ -14,14 +14,14 @@ function create(req, res) {
     return warehouseService.create(warehouse, res);
 }
 
-function update(req) {
+function update(req, res) {
     const { body: warehouse } = req;
-    return warehouseService.update(warehouse);
+    return warehouseService.update(warehouse, res);
 }
 
-function remove(req) {
+function remove(req, res) {
     const { name } = req.body;
-    return warehouseService.remove(name);
+    return warehouseService.remove(name, res);
 }
 
 module.exports = {

@@ -9,10 +9,8 @@ const statusCode = require('../const/statusCode');
 class WarehouseRepository {
     async get(page = 1, perPage = 10) {
         const warehouses = data;
-
         const start = (page - 1) * perPage;
         const end = start + perPage;
-
         const pagedWarehouses = warehouses.slice(start, end);
 
         return {
@@ -32,18 +30,24 @@ class WarehouseRepository {
         return { message: 'Warehouse created' };
     }
 
-    async update(warehouse) {
+    async update(warehouse, res) {
         const warehouses = data;
         const index = warehouses.findIndex(item => item.name === warehouse.name);
+        if (index === -1) {
+            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
+        }
 
         warehouses[index] = warehouse;
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return { message: 'Warehouse updated' };
     }
 
-    async remove(warehouseName) {
+    async remove(warehouseName, res) {
         const warehouses = data;
         const index = warehouses.findIndex(item => item.name === warehouseName);
+        if (index === -1) {
+            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
+        }
 
         warehouses.splice(index, 1);
         await fs.writeFile(fullPath, JSON.stringify(warehouses));

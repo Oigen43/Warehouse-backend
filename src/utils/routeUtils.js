@@ -14,7 +14,7 @@ function handleResponse(handler, resStatusCode) {
             const data = await handler(req, res);
 
             if (data) {
-                return res.status(resStatusCode).send(data);
+                return res.status(resStatusCode).json(data);
             } else {
                 return res.status(statusCode.NO_CONTENT).send();
             }

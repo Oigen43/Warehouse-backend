@@ -12,4 +12,5 @@ router.route('/warehouses')
     .post(warehouseController.create)
     .put(warehouseController.update)
     .delete(warehouseController.remove);
+
 module.exports = router;
