@@ -7,8 +7,8 @@ const fullPath = path.join(__dirname, '../db/warehouses.json');
 const statusCode = require('../const/statusCode');
 
 class WarehouseRepository {
-    async get(page = 1, perPage = 10) {
-        const warehouses = data.filter(item => item.deleted === false);
+    async get(page = 1, perPage = 10, companyName) {
+        const warehouses = data.filter(item => item.deleted === false && item.companyName === companyName);
         const start = (page - 1) * perPage;
         const end = start + perPage;
         const pagedWarehouses = warehouses.slice(start, end);
