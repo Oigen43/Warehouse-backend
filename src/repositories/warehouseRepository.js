@@ -1,6 +1,5 @@
 'use strict';
 
-const data = require('../db/warehouses');
 const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/warehouses.json');
@@ -8,7 +7,10 @@ const statusCode = require('../const/statusCode');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10, companyName) {
-        const warehouses = data.filter(item => item.deleted === false && item.companyName === companyName);
+        const data = await fs.readFile(fullPath);
+        const warehouses = JSON.parse(data);
+
+        warehouses.filter(item => item.deleted === false && item.companyName === companyName);
         const start = (page - 1) * perPage;
         const end = start + perPage;
         const pagedWarehouses = warehouses.slice(start, end);
@@ -20,7 +22,9 @@ class WarehouseRepository {
     }
 
     async create(warehouse, res) {
-        const warehouses = data;
+        const data = await fs.readFile(fullPath);
+        const warehouses = JSON.parse(data);
+
         if (warehouses.some(item => { return item.name === warehouse.name; })) {
             return res.status(statusCode.CONFLICT).send({ message: 'This warehouse already exists' });
         }
@@ -31,7 +35,9 @@ class WarehouseRepository {
     }
 
     async update(warehouse, res) {
-        const warehouses = data;
+        const data = await fs.readFile(fullPath);
+        const warehouses = JSON.parse(data);
+
         const index = warehouses.findIndex(item => item.name === warehouse.name);
         if (index === -1) {
             return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
@@ -43,7 +49,9 @@ class WarehouseRepository {
     }
 
     async remove(warehouseName, res) {
-        const warehouses = data;
+        const data = await fs.readFile(fullPath);
+        const warehouses = JSON.parse(data);
+
         const index = warehouses.findIndex(item => item.name === warehouseName);
         if (index === -1) {
             return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
