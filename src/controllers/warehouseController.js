@@ -2,31 +2,30 @@
 
 const routeUtils = require('../utils/routeUtils');
 const warehouseService = require('../services/warehouseService');
-const statusCode = require('../const/statusCode');
 
 function get(req) {
     const { page, perPage, companyName } = req.query;
     return warehouseService.get(page, perPage, companyName);
 }
 
-function create(req, res) {
+function create(req) {
     const { body: warehouse } = req;
-    return warehouseService.create(warehouse, res);
+    return warehouseService.create(warehouse);
 }
 
-function update(req, res) {
+function update(req) {
     const { body: warehouse } = req;
-    return warehouseService.update(warehouse, res);
+    return warehouseService.update(warehouse);
 }
 
-function remove(req, res) {
+function remove(req) {
     const { name } = req.body;
-    return warehouseService.remove(name, res);
+    return warehouseService.remove(name);
 }
 
 module.exports = {
-    get: routeUtils.handleResponse(get, statusCode.OK),
-    create: routeUtils.handleResponse(create, statusCode.CREATED),
-    update: routeUtils.handleResponse(update, statusCode.OK),
-    remove: routeUtils.handleResponse(remove, statusCode.OK)
+    get: routeUtils.handleResponse(get),
+    create: routeUtils.handleResponse(create),
+    update: routeUtils.handleResponse(update),
+    remove: routeUtils.handleResponse(remove)
 };

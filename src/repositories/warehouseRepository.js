@@ -16,50 +16,82 @@ class WarehouseRepository {
         const pagedWarehouses = warehouses.slice(start, end);
 
         return {
-            warehouses: pagedWarehouses,
-            warehousesTotal: warehouses.length
+            data: {
+                warehouses: pagedWarehouses,
+                warehousesTotal: warehouses.length
+            },
+            statusCode: statusCode.OK
         };
     }
 
-    async create(warehouse, res) {
+    async create(warehouse) {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
         if (warehouses.some(item => { return item.name === warehouse.name; })) {
-            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse already exists' });
+            return {
+                data: {
+                    message: 'This warehouse already exists'
+                },
+                statusCode: statusCode.CONFLICT
+            };
         }
-
         warehouses.push(warehouse);
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
-        return { message: 'Warehouse created' };
+        return {
+            data: {
+                message: 'Warehouse created'
+            },
+            statusCode: statusCode.CREATED
+        };
     }
 
-    async update(warehouse, res) {
+    async update(warehouse) {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
         const index = warehouses.findIndex(item => item.name === warehouse.name);
         if (index === -1) {
-            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
+            return {
+                data: {
+                    message: 'This warehouse does not exist'
+                },
+                statusCode: statusCode.CONFLICT
+            };
         }
 
         warehouses[index] = warehouse;
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
-        return { message: 'Warehouse updated' };
+        return {
+            data: {
+                message: 'Warehouse updated'
+            },
+            statusCode: statusCode.OK
+        };
     }
 
-    async remove(warehouseName, res) {
+    async remove(warehouseName) {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
         const index = warehouses.findIndex(item => item.name === warehouseName);
         if (index === -1) {
-            return res.status(statusCode.CONFLICT).send({ message: 'This warehouse does not exist' });
+            return {
+                data: {
+                    message: 'This warehouse does not exist'
+                },
+                statusCode: statusCode.CONFLICT
+            };
         }
 
         warehouses[index].deleted = true;
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
-        return { message: 'Warehose deleted '};
+        return {
+            data: {
+                message: 'Warehose deleted'
+            },
+            statusCode: statusCode.OK
+        };
     }
 }
 
