@@ -1,6 +1,6 @@
 'use strict';
 
-const data = require('../db/data');
+const data = require('../db/companies');
 
 class CompanyRepository {
     async get(page = 1, perPage = 10) {
