@@ -3,7 +3,6 @@
 const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/warehouses.json');
-const statusCode = require('../const/statusCode');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10, companyName) {
@@ -20,7 +19,7 @@ class WarehouseRepository {
                 warehouses: pagedWarehouses,
                 warehousesTotal: warehouses.length
             },
-            statusCode: statusCode.OK
+            done: true
         };
     }
 
@@ -33,16 +32,17 @@ class WarehouseRepository {
                 data: {
                     message: 'This warehouse already exists'
                 },
-                statusCode: statusCode.CONFLICT
+                done: false
             };
         }
+
         warehouses.push(warehouse);
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return {
             data: {
                 message: 'Warehouse created'
             },
-            statusCode: statusCode.CREATED
+            done: true
         };
     }
 
@@ -56,7 +56,7 @@ class WarehouseRepository {
                 data: {
                     message: 'This warehouse does not exist'
                 },
-                statusCode: statusCode.CONFLICT
+                done: false
             };
         }
 
@@ -66,7 +66,7 @@ class WarehouseRepository {
             data: {
                 message: 'Warehouse updated'
             },
-            statusCode: statusCode.OK
+            done: true
         };
     }
 
@@ -80,7 +80,7 @@ class WarehouseRepository {
                 data: {
                     message: 'This warehouse does not exist'
                 },
-                statusCode: statusCode.CONFLICT
+                done: false
             };
         }
 
@@ -90,7 +90,7 @@ class WarehouseRepository {
             data: {
                 message: 'Warehose deleted'
             },
-            statusCode: statusCode.OK
+            done: true
         };
     }
 }

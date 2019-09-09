@@ -8,28 +8,28 @@ class WarehouseService {
     }
 
     async get(page, perPage, companyName) {
-        const { data, statusCode } = await this.warehouseRepository.get(page, perPage, companyName);
+        const data = await this.warehouseRepository.get(page, perPage, companyName);
 
         if (!data) {
             return [];
         }
 
-        return { data, statusCode };
+        return data;
     }
 
     async create(warehouse) {
-        const { data, statusCode } = await this.warehouseRepository.create(warehouse);
-        return { data, statusCode };
+        const data = await this.warehouseRepository.create(warehouse);
+        return data;
     }
 
     async update(warehouse) {
-        const { data, statusCode } = await this.warehouseRepository.update(warehouse);
-        return { data, statusCode };
+        const data = await this.warehouseRepository.update(warehouse);
+        return data;
     }
 
     async remove(warehouseName) {
-        const { data, statusCode } = await this.warehouseRepository.remove(warehouseName);
-        return { data, statusCode };
+        const data = await this.warehouseRepository.remove(warehouseName);
+        return data;
     }
 }
 

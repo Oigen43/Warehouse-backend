@@ -2,6 +2,7 @@
 
 const routeUtils = require('../utils/routeUtils');
 const warehouseService = require('../services/warehouseService');
+const statusCode = require('../const/statusCode');
 
 function get(req) {
     const { page, perPage, companyName } = req.query;
@@ -24,8 +25,8 @@ function remove(req) {
 }
 
 module.exports = {
-    get: routeUtils.handleResponse(get),
-    create: routeUtils.handleResponse(create),
-    update: routeUtils.handleResponse(update),
-    remove: routeUtils.handleResponse(remove)
+    get: routeUtils.handleResponse(get, statusCode.OK, statusCode.CONFLICT),
+    create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.CONFLICT)
 };
