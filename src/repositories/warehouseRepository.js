@@ -9,15 +9,15 @@ class WarehouseRepository {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
-        warehouses.filter(item => item.deleted === false && item.companyName === companyName);
+        const warehousesFiltered = warehouses.filter(item => item.deleted === false && item.companyName === companyName);
         const start = (page - 1) * perPage;
         const end = start + perPage;
-        const pagedWarehouses = warehouses.slice(start, end);
+        const pagedWarehouses = warehousesFiltered.slice(start, end);
 
         return {
             data: {
                 warehouses: pagedWarehouses,
-                warehousesTotal: warehouses.length
+                warehousesTotal: warehousesFiltered.length
             },
             done: true
         };
@@ -27,7 +27,7 @@ class WarehouseRepository {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
-        if (warehouses.some(item => { return item.name === warehouse.name; })) {
+        if (warehouses.some(item => item.name === warehouse.name)) {
             return {
                 data: {
                     message: 'This warehouse already exists'
