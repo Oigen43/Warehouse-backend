@@ -1,1 +1,18 @@
-[{"companyName":"EYERIS","address":"168 Linden Street, Detroit, Vermont, 7868","description":"The coolest company ever","active":true,"date":"2019-09-06T12:12:12.540Z","deleted":false}]
+[
+  {
+    "companyName": "FooodMarket",
+    "address": "France av. 78 342",
+    "description": "The coolest company ever",
+    "active": true,
+    "date": "2019-09-06T14:27:02.365Z",
+    "deleted": false
+  },
+  {
+    "companyName": "Foood",
+    "address": "France av. 78 342",
+    "description": "The coolest company ever",
+    "active": true,
+    "date": "2019-09-10T06:41:26.995Z",
+    "deleted": true
+  }
+]

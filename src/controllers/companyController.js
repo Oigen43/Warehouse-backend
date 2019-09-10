@@ -14,7 +14,19 @@ function create(req, res) {
     return companyService.create(newCompany, res);
 }
 
+function update(req, res) {
+    const company = req.body;
+    return companyService.update(company, res);
+}
+
+function remove(req, res) {
+    const company = req.body;
+    return companyService.remove(company, res);
+}
+
 module.exports = {
-    get: routeUtils.handleResponse(get, statusCode.OK),
-    create: routeUtils.handleResponse(create, statusCode.CREATED)
+    get: routeUtils.handleResponse(get, statusCode.OK, statusCode.CONFLICT),
+    create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.CONFLICT)
 };

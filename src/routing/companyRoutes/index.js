@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.route('/companies')
     .get(expressJoi(companyQuerySchema), companyController.get)
-    .post(companyController.create);
+    .post(companyController.create)
+    .put(companyController.update)
+    .delete(companyController.remove);
 
 module.exports = router;
