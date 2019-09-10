@@ -83,7 +83,6 @@ class CompanyRepository {
     async remove(company) {
         const data = await fs.readFile(fullPath);
         const companies = JSON.parse(data);
-
         const index = companies.findIndex(item => item.companyName === company.companyName);
         if (index === -1) {
             return {
