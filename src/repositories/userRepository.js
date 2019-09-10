@@ -8,10 +8,11 @@ class UserRepository {
     async get(page = 1, perPage = 10) {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
+        const filteredUsers = users.filter(item => item.deleted === false);
 
         const start = (page - 1) * perPage;
         const end = start + perPage;
-        const pagedUsers = users.slice(start, end);
+        const pagedUsers = filteredUsers.slice(start, end);
 
         return {
             data: {
@@ -26,7 +27,7 @@ class UserRepository {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        if (users.some(item => item.first_name === user.first_name)) {
+        if (users.some(item => item.firstName === user.firstName)) {
             return {
                 data: {
                     message: 'This user already exists'
@@ -49,7 +50,7 @@ class UserRepository {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        const index = users.findIndex(item => item.first_name === user.first_name);
+        const index = users.findIndex(item => item.firstName === user.firstName);
         if (index === -1) {
             return {
               data: {
@@ -73,7 +74,7 @@ class UserRepository {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        const index = users.findIndex(item => item.first_name === user.first_name);
+        const index = users.findIndex(item => item.firstName === user.firstName);
         if (index === -1) {
             return {
                 data: {
