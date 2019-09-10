@@ -27,6 +27,6 @@ function remove(req) {
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.CONFLICT),
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.CONFLICT)
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
 };
