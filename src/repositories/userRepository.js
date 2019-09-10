@@ -17,7 +17,7 @@ class UserRepository {
         return {
             data: {
                 users: pagedUsers,
-                usersTotal: users.length
+                usersTotal: filteredUsers.length
             },
             done: true
         };
@@ -36,6 +36,7 @@ class UserRepository {
             };
         }
 
+        user.deleted = false;
         users.push(user);
         await fs.writeFile(fullPath, JSON.stringify(users));
         return {
@@ -60,6 +61,7 @@ class UserRepository {
             };
         }
 
+        user.deleted = false;
         users[index] = user;
         await fs.writeFile(fullPath, JSON.stringify(users));
         return {
