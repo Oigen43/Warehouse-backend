@@ -8,16 +8,28 @@ class CompanyService {
     }
 
     async get(page, perPage) {
-        const {companies, companiesTotal} = await this.companyRepository.get(page, perPage);
+        const data = await this.companyRepository.get(page, perPage);
 
-        if (!companies) {
+        if (!data) {
             return [];
         }
 
-        return {
-            companies,
-            companiesTotal
-        };
+        return data;
+    }
+
+    async create(newCompany) {
+        const data = await this.companyRepository.create(newCompany);
+        return data;
+    }
+
+    async update(company) {
+        const data = await this.companyRepository.update(company);
+        return data;
+    }
+
+    async remove(company) {
+        const data = await this.companyRepository.remove(company);
+        return data;
     }
 }
 
