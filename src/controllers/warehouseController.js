@@ -20,13 +20,13 @@ function update(req) {
 }
 
 function remove(req) {
-    const { name } = req.body;
-    return warehouseService.remove(name);
+    const { body: warehouse } = req;
+    return warehouseService.remove(warehouse);
 }
 
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.CONFLICT),
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.CONFLICT)
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
 };

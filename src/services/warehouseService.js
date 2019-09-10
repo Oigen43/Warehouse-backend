@@ -27,8 +27,8 @@ class WarehouseService {
         return data;
     }
 
-    async remove(warehouseName) {
-        const data = await this.warehouseRepository.remove(warehouseName);
+    async remove(warehouse) {
+        const data = await this.warehouseRepository.remove(warehouse);
         return data;
     }
 }

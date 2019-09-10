@@ -23,11 +23,19 @@ class WarehouseRepository {
         };
     }
 
-    async create(warehouse) {
+    async create(newWarehouse) {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
+        const warehouse = {
+            warehouseName: newWarehouse.warehouseName,
+            companyName: newWarehouse.companyName,
+            address: newWarehouse.address,
+            type: newWarehouse.type,
+            active: true,
+            deleted: false,
+        };
 
-        if (warehouses.some(item => item.name === warehouse.name)) {
+        if (warehouses.some(item => item.warehouseName === warehouse.warehouseName)) {
             return {
                 data: {
                     message: 'This warehouse already exists'
@@ -50,7 +58,7 @@ class WarehouseRepository {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
 
-        const index = warehouses.findIndex(item => item.name === warehouse.name);
+        const index = warehouses.findIndex(item => item.warehouseName === warehouse.warehouseName);
         if (index === -1) {
             return {
                 data: {
@@ -60,7 +68,9 @@ class WarehouseRepository {
             };
         }
 
-        warehouses[index] = warehouse;
+        warehouses[index].warehouseName = warehouse.warehouseName;
+        warehouses[index].address = warehouse.address;
+        warehouses[index].type = warehouse.type;
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return {
             data: {
@@ -70,11 +80,10 @@ class WarehouseRepository {
         };
     }
 
-    async remove(warehouseName) {
+    async remove(warehouse) {
         const data = await fs.readFile(fullPath);
         const warehouses = JSON.parse(data);
-
-        const index = warehouses.findIndex(item => item.name === warehouseName);
+        const index = warehouses.findIndex(item => item.warehouseName === warehouse.warehouseName);
         if (index === -1) {
             return {
                 data: {

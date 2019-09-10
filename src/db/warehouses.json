@@ -1,1 +1,58 @@
-[{"name":"1447","companyName":"EYERIS","address":"1","active":true,"type":"Unheated room","deleted":true},{"name":"555","companyName":"EYERIS","address":"2","active":true,"type":"2","deleted":false},{"name":"ssss","companyName":"EYERIS","address":"168 Linden Street, Detroit, Vermont, 7868","active":true,"type":"Unheated room","deleted":false},{"name":"TechWarehouse","companyName":"1","address":"1","active":true,"type":"Unheated room","deleted":true},{"name":"333","companyName":"ttttt","address":3,"active":true,"type":"ttttt"}]
+[
+    {
+        "warehouseName": "1447",
+        "companyName": "EYERIS",
+        "address": "1",
+        "active": true,
+        "type": "Unheated room",
+        "deleted": true
+    },
+    {
+        "warehouseName": "555",
+        "companyName": "EYERIS",
+        "address": "21",
+        "active": true,
+        "type": "21",
+        "deleted": false
+    },
+    {
+        "warehouseName": "ssss",
+        "companyName": "EYERIS",
+        "address": "168 Linden Street, Detroit, Vermont, 7868",
+        "active": true,
+        "type": "Unheated room",
+        "deleted": false
+    },
+    {
+        "warehouseName": "test",
+        "companyName": "EYERIS",
+        "address": "test",
+        "type": "test",
+        "active": true,
+        "deleted": false
+    },
+    {
+        "warehouseName": "test2",
+        "companyName": "EYERIS",
+        "address": "test2",
+        "type": "test2",
+        "active": true,
+        "deleted": false
+    },
+    {
+        "warehouseName": "test3",
+        "companyName": "EYERIS",
+        "address": "test3",
+        "type": "test3",
+        "active": true,
+        "deleted": false
+    },
+    {
+        "warehouseName": "шшшш",
+        "companyName": "EYERIS",
+        "address": "ш",
+        "type": "л",
+        "active": true,
+        "deleted": false
+    }
+]
