@@ -78,8 +78,7 @@ class UserRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This user does not exists',
-                    user: user.firstName
+                    message: 'This user does not exists'
                 },
                 done: false
             };
