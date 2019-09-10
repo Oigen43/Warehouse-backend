@@ -98,7 +98,7 @@ class CompanyRepository {
         await fs.writeFile(fullPath, JSON.stringify(companies));
         return {
             data: {
-                message: 'Company deleted '
+                message: 'Company deleted'
             },
             done: true
         };

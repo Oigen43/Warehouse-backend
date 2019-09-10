@@ -11,17 +11,17 @@ function get(req) {
 
 function create(req, res) {
     const newCompany = req.body;
-    return companyService.create(newCompany, res);
+    return companyService.create(newCompany);
 }
 
 function update(req, res) {
     const company = req.body;
-    return companyService.update(company, res);
+    return companyService.update(company);
 }
 
 function remove(req, res) {
     const company = req.body;
-    return companyService.remove(company, res);
+    return companyService.remove(company);
 }
 
 module.exports = {
