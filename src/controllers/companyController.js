@@ -9,17 +9,17 @@ function get(req) {
     return companyService.get(page, perPage);
 }
 
-function create(req, res) {
+function create(req) {
     const newCompany = req.body;
     return companyService.create(newCompany);
 }
 
-function update(req, res) {
+function update(req) {
     const company = req.body;
     return companyService.update(company);
 }
 
-function remove(req, res) {
+function remove(req) {
     const company = req.body;
     return companyService.remove(company);
 }
@@ -27,6 +27,6 @@ function remove(req, res) {
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.CONFLICT),
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.CONFLICT)
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
 };
