@@ -5,7 +5,7 @@ const companyService = require('../services/companyService');
 const statusCode = require('../const/statusCode');
 
 function get(req) {
-    const {page, perPage} = req.query;
+    const { page, perPage } = req.query;
     return companyService.get(page, perPage);
 }
 

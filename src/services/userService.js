@@ -3,7 +3,7 @@
 const userRepository = require('../repositories/userRepository');
 
 class UserService {
-    constructor({userRepository}) {
+    constructor({ userRepository }) {
         this.userRepository = userRepository;
     }
 
@@ -13,7 +13,6 @@ class UserService {
         if (!data) {
             return [];
         }
-
         return data;
     }
 

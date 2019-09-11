@@ -7,7 +7,7 @@ const warehouseController = require('../../controllers/warehouseController');
 
 const router = express.Router();
 
-router.route('/warehouses')
+router.route('/')
     .get(expressJoi(warehouseQuerySchema), warehouseController.get)
     .post(warehouseController.create)
     .put(warehouseController.update)
