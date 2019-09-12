@@ -3,7 +3,7 @@
 const warehouseRepository = require('../repositories/warehouseRepository');
 
 class WarehouseService {
-    constructor({warehouseRepository}) {
+    constructor({ warehouseRepository }) {
         this.warehouseRepository = warehouseRepository;
     }
 
@@ -13,7 +13,6 @@ class WarehouseService {
         if (!data) {
             return [];
         }
-
         return data;
     }
 

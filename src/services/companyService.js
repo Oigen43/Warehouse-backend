@@ -3,7 +3,7 @@
 const companyRepository = require('../repositories/companyRepository');
 
 class CompanyService {
-    constructor({companyRepository}) {
+    constructor({ companyRepository }) {
         this.companyRepository = companyRepository;
     }
 
@@ -13,7 +13,6 @@ class CompanyService {
         if (!data) {
             return [];
         }
-
         return data;
     }
 

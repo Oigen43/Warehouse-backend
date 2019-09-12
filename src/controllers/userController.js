@@ -1,27 +1,27 @@
 'use strict';
 
 const routeUtils = require('../utils/routeUtils');
-const companyService = require('../services/companyService');
+const userService = require('../services/userService');
 const statusCode = require('../const/statusCode');
 
 function get(req) {
     const { page, perPage } = req.query;
-    return companyService.get(page, perPage);
+    return userService.get(page, perPage);
 }
 
 function create(req) {
-    const newCompany = req.body;
-    return companyService.create(newCompany);
+    const { body: user } = req;
+    return userService.create(user);
 }
 
 function update(req) {
-    const company = req.body;
-    return companyService.update(company);
+    const { body: user } = req;
+    return userService.update(user);
 }
 
 function remove(req) {
-    const company = req.body;
-    return companyService.remove(company);
+    const { body: user } = req;
+    return userService.remove(user);
 }
 
 module.exports = {
