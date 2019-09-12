@@ -32,7 +32,7 @@ class UserRepository {
                 data: {
                     message: 'This user already exists'
                 },
-                done: true
+                done: false
             };
         }
 
