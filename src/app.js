@@ -3,9 +3,11 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const logger = require('./utils/logger');
 const cors = require('cors');
 const helmet = require('helmet');
+const passport = require('passport');
+require('./config/passport.js');
+const logger = require('./utils/logger');
 
 const router = require('./routing');
 
@@ -15,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(helmet());
+app.use(passport.initialize());
 
 app.use('/', router);
 

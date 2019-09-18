@@ -2,6 +2,7 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const bcrypt = require('bcrypt');
 const fullPath = path.join(__dirname, '../db/users.json');
 
 class UserRepository {
@@ -24,10 +25,11 @@ class UserRepository {
     }
 
     async create(user) {
+        const hashedPassword = await bcrypt.hash(user.password, 8);
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        if (users.some(item => item.firstName === user.firstName)) {
+        if (users.some(item => item.email === user.email)) {
             return {
                 data: {
                     message: 'This user already exists'
@@ -36,6 +38,7 @@ class UserRepository {
             };
         }
 
+        user.password = hashedPassword;
         user.deleted = false;
         users.push(user);
         await fs.writeFile(fullPath, JSON.stringify(users));
@@ -51,13 +54,13 @@ class UserRepository {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        const index = users.findIndex(item => item.firstName === user.firstName);
+        const index = users.findIndex(item => item.email === user.email);
         if (index === -1) {
             return {
-              data: {
-                  message: 'This user does not exists'
-              },
-              done: false
+                data: {
+                    message: 'This user does not exists'
+                },
+                done: false
             };
         }
 
@@ -76,7 +79,7 @@ class UserRepository {
         const data = await fs.readFile(fullPath);
         const users = JSON.parse(data);
 
-        const index = users.findIndex(item => item.firstName === user.firstName);
+        const index = users.findIndex(item => item.email === user.email);
         if (index === -1) {
             return {
                 data: {
@@ -91,6 +94,29 @@ class UserRepository {
         return {
             data: {
                 message: 'User deleted'
+            },
+            done: true
+        };
+    }
+
+    async findByEmail(email) {
+        const data = await fs.readFile(fullPath);
+        const users = JSON.parse(data);
+
+        const index = users.findIndex(item => item.email === email);
+        if (index === -1) {
+            return {
+                data: {
+                    message: 'User not found',
+                    user: null
+                },
+                done: false
+            };
+        }
+        return {
+            data: {
+                message: 'User found',
+                user: users[index]
             },
             done: true
         };
