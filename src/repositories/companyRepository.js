@@ -1,32 +1,38 @@
 'use strict';
 
-const fs = require('fs').promises;
-const path = require('path');
-const fullPath = path.join(__dirname, '../db/companies.json');
+const Company = require('../server/models').Company;
+const messageCode = require('../const/messageCode');
 
 class CompanyRepository {
-    async get(page = 1, perPage = 10) {
-        const data = await fs.readFile(fullPath);
-        const companiesData = JSON.parse(data);
-
-        const companies = companiesData.filter(item => !item.deleted);
+    async get(data, transaction) {
+        const { page = 1, perPage = 10 } = data;
         const start = (page - 1) * perPage;
-        const end = start + perPage;
-        const pagedCompanies = companies.slice(start, end);
-
+        const [companiesData, companiesLength] = await Promise.all([
+            Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+            Company.count({ where: { deleted: false }, raw: true, transaction })
+        ]);
         return {
             data: {
-                companies: pagedCompanies,
-                companiesTotal: companies.length
+                companies: companiesData,
+                companiesTotal: companiesLength
             },
             done: true
         };
     }
 
-    async create(newCompany) {
-        const data = await fs.readFile(fullPath);
-        const companies = JSON.parse(data);
-        const company = {
+    async create(newCompany, transaction) {
+        const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });
+
+        if (company) {
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_EXISTS
+                },
+                done: false
+            };
+        }
+
+        const companyTemplate = {
             companyName: newCompany.companyName,
             address: newCompany.address,
             description: newCompany.description,
@@ -35,69 +41,61 @@ class CompanyRepository {
             deleted: false,
         };
 
-        if (companies.some(item => item.companyName === company.companyName)) {
-            return {
-                data: {
-                    message: 'This company already exists'
-                },
-                done: false
-            };
-        }
+        await Company.create(companyTemplate, { transaction });
 
-        companies.push(company);
-        await fs.writeFile(fullPath, JSON.stringify(companies));
         return {
             data: {
-                message: 'Company created'
+                statusCode: messageCode.COMPANY_CREATED
             },
             done: true
         };
     }
 
-    async update(company) {
-        const data = await fs.readFile(fullPath);
-        const companies = JSON.parse(data);
+    async update(company, transaction) {
+        const existingCompany = await Company.findOne({ where: { companyName: company.companyName }, raw: true, transaction });
 
-        const index = companies.findIndex(item => item.companyName === company.companyName);
-        if (index === -1) {
+        if (!existingCompany) {
             return {
                 data: {
-                    message: 'This company does not exist'
+                    statusCode: messageCode.COMPANY_NOT_EXIST
                 },
                 done: false
             };
         }
 
-        companies[index].companyName = company.companyName;
-        companies[index].address = company.address;
-        companies[index].description = company.description;
-        await fs.writeFile(fullPath, JSON.stringify(companies));
+        await Company.update(
+            { address: company.address, description: company.description },
+            { where: { companyName: company.companyName }, transaction }
+        );
+
         return {
             data: {
-                message: 'Company updated'
+                statusCode: messageCode.COMPANY_UPDATED
             },
             done: true
         };
     }
 
-    async remove(company) {
-        const data = await fs.readFile(fullPath);
-        const companies = JSON.parse(data);
-        const index = companies.findIndex(item => item.companyName === company.companyName);
-        if (index === -1) {
+    async remove(company, transaction) {
+        const existingCompany = await Company.findOne({ where: { companyName: company.companyName }, raw: true, transaction });
+
+        if (!existingCompany) {
             return {
                 data: {
-                    message: 'This company does not exist'
+                    statusCode: messageCode.COMPANY_NOT_EXIST
                 },
                 done: false
             };
         }
 
-        companies[index].deleted = true;
-        await fs.writeFile(fullPath, JSON.stringify(companies));
+        await Company.update(
+            { deleted: true },
+            { where: { companyName: company.companyName }, transaction }
+        );
+
         return {
             data: {
-                message: 'Company deleted'
+                statusCode: messageCode.COMPANY_DELETED
             },
             done: true
         };

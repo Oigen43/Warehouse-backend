@@ -12,7 +12,6 @@ function handleResponse(handler, statusRes, statusErr) {
     return async (req, res) => {
         try {
             const data = await handler(req, res);
-
             if (data.done) {
                 return res.status(statusRes).json(data);
             } else {

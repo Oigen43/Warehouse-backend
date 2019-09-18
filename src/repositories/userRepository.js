@@ -1,96 +1,135 @@
 'use strict';
 
-const fs = require('fs').promises;
-const path = require('path');
-const fullPath = path.join(__dirname, '../db/users.json');
+const User = require('../server/models').User;
+const bcrypt = require('bcrypt');
+const messageCode = require('../const/messageCode');
 
 class UserRepository {
-    async get(page = 1, perPage = 10) {
-        const data = await fs.readFile(fullPath);
-        const users = JSON.parse(data);
-        const filteredUsers = users.filter(item => item.deleted === false);
-
+    async get(data, transaction) {
+        const { page = 1, perPage = 10 } = data;
         const start = (page - 1) * perPage;
-        const end = start + perPage;
-        const pagedUsers = filteredUsers.slice(start, end);
-
+        const [usersData, usersLength] = await Promise.all([
+            User.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+            User.count({ where: { deleted: false }, raw: true, transaction })
+        ]);
         return {
             data: {
-                users: pagedUsers,
-                usersTotal: filteredUsers.length
+                users: usersData,
+                usersTotal: usersLength
             },
             done: true
         };
     }
 
-    async create(user) {
-        const data = await fs.readFile(fullPath);
-        const users = JSON.parse(data);
+    async create(newUser, transaction) {
+        const hashedPassword = await bcrypt.hash(newUser.password, 8);
+        const user = await User.findOne({ where: { email: newUser.email }, raw: true, transaction });
 
-        if (users.some(item => item.firstName === user.firstName)) {
+        if (user) {
             return {
                 data: {
-                    message: 'This user already exists'
+                    statusCode: messageCode.USER_EXISTS
                 },
                 done: false
             };
         }
 
-        user.deleted = false;
-        users.push(user);
-        await fs.writeFile(fullPath, JSON.stringify(users));
+        const userTemplate = {
+            firstName: newUser.firstName,
+            surname: newUser.surname,
+            patronymic: newUser.patronymic,
+            email: newUser.email,
+            address: newUser.address,
+            birthDate: newUser.birthDate,
+            login: newUser.login,
+            password: hashedPassword,
+            deleted: false,
+        };
+
+        await User.create(userTemplate, { transaction });
+
         return {
             data: {
-                message: 'User created'
+                statusCode: messageCode.USER_CREATED
             },
             done: true
         };
     }
 
-    async update(user) {
-        const data = await fs.readFile(fullPath);
-        const users = JSON.parse(data);
+    async update(user, transaction) {
+        const existingUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
 
-        const index = users.findIndex(item => item.firstName === user.firstName);
-        if (index === -1) {
+        if (!existingUser) {
             return {
               data: {
-                  message: 'This user does not exists'
+                  statusCode: messageCode.USER_NOT_EXIST
               },
               done: false
             };
         }
 
-        user.deleted = false;
-        users[index] = user;
-        await fs.writeFile(fullPath, JSON.stringify(users));
+        await User.update(
+            {
+                firstName: user.firstName,
+                surname: user.surname,
+                patronymic: user.patronymic,
+                address: user.address,
+                birthDate: user.birthDate,
+                login: user.login,
+                password: user.password
+            },
+            { where: { email: user.email }, transaction }
+        );
+
         return {
             data: {
-                message: 'User updated'
+                statusCode: messageCode.USER_UPDATED
             },
             done: true
         };
     }
 
-    async remove(user) {
-        const data = await fs.readFile(fullPath);
-        const users = JSON.parse(data);
+    async remove(user, transaction) {
+        const existingUser = await User.findOne({ where: { firstName: user.firstName }, raw: true, transaction });
 
-        const index = users.findIndex(item => item.firstName === user.firstName);
-        if (index === -1) {
+        if (!existingUser) {
             return {
                 data: {
-                    message: 'This user does not exists'
+                    statusCode: messageCode.USER_NOT_EXIST
                 },
                 done: false
             };
         }
 
-        users[index].deleted = true;
-        await fs.writeFile(fullPath, JSON.stringify(users));
+        await User.update(
+            { deleted: true },
+            { where: { firstName: user.firstName }, transaction }
+        );
+
         return {
             data: {
-                message: 'User deleted'
+                statusCode: messageCode.USER_DELETED
+            },
+            done: true
+        };
+    }
+
+    async findByEmail(email) {
+        const user = await User.findOne({ where: { email: email }, raw: true });
+
+        if (!user) {
+            return {
+                data: {
+                    statusCode: messageCode.USER_NOT_EXIST,
+                    user: null
+                },
+                done: false
+            };
+        }
+        return {
+            data: {
+                statusCode: messageCode.USER_EXISTS,
+                user: user
             },
             done: true
         };
