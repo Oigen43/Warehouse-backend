@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 const userRepository = require('../repositories/userRepository');
+const messageCode = require('../const/messageCode');
 
 class LoginService {
     constructor({userRepository}) {
@@ -16,7 +17,7 @@ class LoginService {
         if (!data.done) {
             return {
                 data: {
-                    message: 'Incorrect username or password',
+                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
                     token: null
                 },
                 done: false
@@ -28,7 +29,7 @@ class LoginService {
         if (!passwordIsValid) {
             return {
                 data: {
-                    message: 'Incorrect username or password',
+                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
                     token: null
                 },
                 done: false
@@ -41,7 +42,7 @@ class LoginService {
 
         return {
             data: {
-                message: 'You are login',
+                statusCode: messageCode.USER_LOG_IN,
                 token
             },
             done: true

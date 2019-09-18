@@ -3,6 +3,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/warehouses.json');
+const messageCode = require('../const/messageCode');
 
 class WarehouseRepository {
     async get(page = 1, perPage = 10, companyName) {
@@ -38,7 +39,7 @@ class WarehouseRepository {
         if (warehouses.some(item => item.warehouseName === warehouse.warehouseName)) {
             return {
                 data: {
-                    message: 'This warehouse already exists'
+                    statusCode: messageCode.WAREHOUSE_EXISTS
                 },
                 done: false
             };
@@ -48,7 +49,7 @@ class WarehouseRepository {
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return {
             data: {
-                message: 'Warehouse created'
+                statusCode: messageCode.WAREHOUSE_CREATED
             },
             done: true
         };
@@ -62,7 +63,7 @@ class WarehouseRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This warehouse does not exist'
+                    statusCode: messageCode.WAREHOUSE_NOT_EXIST
                 },
                 done: false
             };
@@ -74,7 +75,7 @@ class WarehouseRepository {
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return {
             data: {
-                message: 'Warehouse updated'
+                statusCode: messageCode.WAREHOUSE_UPDATED
             },
             done: true
         };
@@ -87,7 +88,7 @@ class WarehouseRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This warehouse does not exist'
+                    statusCode: messageCode.WAREHOUSE_NOT_EXIST
                 },
                 done: false
             };
@@ -97,7 +98,7 @@ class WarehouseRepository {
         await fs.writeFile(fullPath, JSON.stringify(warehouses));
         return {
             data: {
-                message: 'Warehose deleted'
+                statusCode: messageCode.WAREHOUSE_DELETED
             },
             done: true
         };

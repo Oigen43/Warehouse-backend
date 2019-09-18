@@ -3,6 +3,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const fullPath = path.join(__dirname, '../db/companies.json');
+const messageCode = require('../const/messageCode');
 
 class CompanyRepository {
     async get(page = 1, perPage = 10) {
@@ -38,7 +39,7 @@ class CompanyRepository {
         if (companies.some(item => item.companyName === company.companyName)) {
             return {
                 data: {
-                    message: 'This company already exists'
+                    statusCode: messageCode.COMPANY_EXISTS
                 },
                 done: false
             };
@@ -48,7 +49,7 @@ class CompanyRepository {
         await fs.writeFile(fullPath, JSON.stringify(companies));
         return {
             data: {
-                message: 'Company created'
+                statusCode: messageCode.COMPANY_CREATED
             },
             done: true
         };
@@ -62,7 +63,7 @@ class CompanyRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This company does not exist'
+                    statusCode: messageCode.COMPANY_NOT_EXIST
                 },
                 done: false
             };
@@ -74,7 +75,7 @@ class CompanyRepository {
         await fs.writeFile(fullPath, JSON.stringify(companies));
         return {
             data: {
-                message: 'Company updated'
+                statusCode: messageCode.COMPANY_UPDATED
             },
             done: true
         };
@@ -87,7 +88,7 @@ class CompanyRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This company does not exist'
+                    statusCode: messageCode.COMPANY_NOT_EXIST
                 },
                 done: false
             };
@@ -97,7 +98,7 @@ class CompanyRepository {
         await fs.writeFile(fullPath, JSON.stringify(companies));
         return {
             data: {
-                message: 'Company deleted'
+                statusCode: messageCode.COMPANY_DELETED
             },
             done: true
         };
