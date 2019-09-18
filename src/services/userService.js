@@ -1,6 +1,7 @@
 'use strict';
 
 const userRepository = require('../repositories/userRepository');
+const sequelize = require('../server/models').sequelize;
 
 class UserService {
     constructor({ userRepository }) {
@@ -8,26 +9,74 @@ class UserService {
     }
 
     async get(page, perPage) {
-        const data = await this.userRepository.get(page, perPage);
+        let data = {
+            message: 'Transaction failed',
+            done: false
+        };
+        let transaction;
 
-        if (!data) {
-            return [];
+        try {
+            transaction = await sequelize.transaction();
+            data = await this.userRepository.get({ page: page, perPage: perPage }, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) { await transaction.rollback(); }
         }
+
         return data;
     }
 
     async create(user) {
-        const data = await this.userRepository.create(user);
+        let data = {
+            message: 'Transaction failed',
+            done: false
+        };
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            data = await this.userRepository.create(user, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) { await transaction.rollback(); }
+        }
+
         return data;
     }
 
     async update(user) {
-        const data = await this.userRepository.update(user);
+        let data = {
+            message: 'Transaction failed',
+            done: false
+        };
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            data = await this.userRepository.update(user, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) { await transaction.rollback(); }
+        }
+
         return data;
     }
 
     async remove(user) {
-        const data = await this.userRepository.remove(user);
+        let data = {
+            message: 'Transaction failed',
+            done: false
+        };
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            data = await this.userRepository.remove(user, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) { await transaction.rollback(); }
+        }
+
         return data;
     }
 }
