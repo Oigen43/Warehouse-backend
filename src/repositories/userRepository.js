@@ -4,6 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const bcrypt = require('bcrypt');
 const fullPath = path.join(__dirname, '../db/users.json');
+const messageCode = require('../const/messageCode');
 
 class UserRepository {
     async get(page = 1, perPage = 10) {
@@ -32,7 +33,7 @@ class UserRepository {
         if (users.some(item => item.email === user.email)) {
             return {
                 data: {
-                    message: 'This user already exists'
+                    statusCode: messageCode.USER_EXISTS
                 },
                 done: false
             };
@@ -44,7 +45,7 @@ class UserRepository {
         await fs.writeFile(fullPath, JSON.stringify(users));
         return {
             data: {
-                message: 'User created'
+                statusCode: messageCode.USER_CREATED
             },
             done: true
         };
@@ -57,10 +58,10 @@ class UserRepository {
         const index = users.findIndex(item => item.email === user.email);
         if (index === -1) {
             return {
-                data: {
-                    message: 'This user does not exists'
-                },
-                done: false
+              data: {
+                  statusCode: messageCode.USER_NOT_EXIST
+              },
+              done: false
             };
         }
 
@@ -69,7 +70,7 @@ class UserRepository {
         await fs.writeFile(fullPath, JSON.stringify(users));
         return {
             data: {
-                message: 'User updated'
+                statusCode: messageCode.USER_UPDATED
             },
             done: true
         };
@@ -83,7 +84,7 @@ class UserRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'This user does not exists'
+                    statusCode: messageCode.USER_NOT_EXIST
                 },
                 done: false
             };
@@ -93,7 +94,7 @@ class UserRepository {
         await fs.writeFile(fullPath, JSON.stringify(users));
         return {
             data: {
-                message: 'User deleted'
+                statusCode: messageCode.USER_DELETED
             },
             done: true
         };
@@ -107,7 +108,7 @@ class UserRepository {
         if (index === -1) {
             return {
                 data: {
-                    message: 'User not found',
+                    statusCode: messageCode.USER_NOT_EXIST,
                     user: null
                 },
                 done: false
@@ -115,7 +116,7 @@ class UserRepository {
         }
         return {
             data: {
-                message: 'User found',
+                statusCode: messageCode.USER_EXISTS,
                 user: users[index]
             },
             done: true
