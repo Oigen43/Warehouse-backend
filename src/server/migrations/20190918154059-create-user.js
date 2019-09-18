@@ -23,7 +23,7 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      birthDat: {
+      birthDate: {
         type: Sequelize.STRING
       },
       login: {
