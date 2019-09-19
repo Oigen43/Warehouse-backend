@@ -99,7 +99,7 @@ class UserRepository {
                 birthDate: user.birthDate,
                 login: user.login,
                 password: hashedPassword
-            }, { where: { id: user.id }, transaction }
+            }, {where: {id: user.id}, transaction}
         );
         return {
             data: {
@@ -136,6 +136,27 @@ class UserRepository {
 
     async findByEmail(email) {
         const user = await User.findOne({where: {email: email}, raw: true});
+
+        if (!user) {
+            return {
+                data: {
+                    statusCode: messageCode.USER_GET_UNKNOWN,
+                    user: null
+                },
+                done: false
+            };
+        }
+        return {
+            data: {
+                statusCode: messageCode.USER_GET_SUCCESS,
+                user: user
+            },
+            done: true
+        };
+    }
+
+    async findById(id) {
+        const user = await User.findOne({where: {id: id}, raw: true});
 
         if (!user) {
             return {
