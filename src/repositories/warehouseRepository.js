@@ -26,7 +26,7 @@ class WarehouseRepository {
         if (warehouse) {
             return {
                 data: {
-                    statusCode: messageCode.WAREHOUSE_EXISTS
+                    statusCode: messageCode.WAREHOUSE_NAME_CONFLICT
                 },
                 done: false
             };
@@ -45,7 +45,7 @@ class WarehouseRepository {
 
         return {
             data: {
-                statusCode: messageCode.WAREHOUSE_CREATED
+                statusCode: messageCode.WAREHOUSE_CREATE_SUCCESS
             },
             done: true
         };
@@ -57,7 +57,7 @@ class WarehouseRepository {
         if (!existingWarehouse) {
             return {
                 data: {
-                    statusCode: messageCode.WAREHOUSE_NOT_EXIST
+                    statusCode: messageCode.WAREHOUSE_GET_UNKNOWN
                 },
                 done: false
             };
@@ -70,7 +70,7 @@ class WarehouseRepository {
 
         return {
             data: {
-                statusCode: messageCode.WAREHOUSE_UPDATED
+                statusCode: messageCode.WAREHOUSE_UPDATE_SUCCESS
             },
             done: true
         };
@@ -82,7 +82,7 @@ class WarehouseRepository {
         if (!existingWarehouse) {
             return {
                 data: {
-                    statusCode: messageCode.WAREHOUSE_NOT_EXIST
+                    statusCode: messageCode.WAREHOUSE_GET_UNKNOWN
                 },
                 done: false
             };
@@ -95,7 +95,7 @@ class WarehouseRepository {
 
         return {
             data: {
-                statusCode: messageCode.WAREHOUSE_DELETED
+                statusCode: messageCode.WAREHOUSE_DELETE_SUCCESS
             },
             done: true
         };
