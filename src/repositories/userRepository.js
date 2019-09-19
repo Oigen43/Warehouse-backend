@@ -28,7 +28,7 @@ class UserRepository {
         if (user) {
             return {
                 data: {
-                    statusCode: messageCode.USER_EXISTS
+                    statusCode: messageCode.USER_CONFLICT
                 },
                 done: false
             };
@@ -50,7 +50,7 @@ class UserRepository {
 
         return {
             data: {
-                statusCode: messageCode.USER_CREATED
+                statusCode: messageCode.USER_CREATE_SUCCESS
             },
             done: true
         };
@@ -62,7 +62,7 @@ class UserRepository {
         if (!existingUser) {
             return {
               data: {
-                  statusCode: messageCode.USER_NOT_EXIST
+                  statusCode: messageCode.USER_GET_UNKNOWN
               },
               done: false
             };
@@ -83,7 +83,7 @@ class UserRepository {
 
         return {
             data: {
-                statusCode: messageCode.USER_UPDATED
+                statusCode: messageCode.USER_UPDATE_SUCCESS
             },
             done: true
         };
@@ -95,7 +95,7 @@ class UserRepository {
         if (!existingUser) {
             return {
                 data: {
-                    statusCode: messageCode.USER_NOT_EXIST
+                    statusCode: messageCode.USER_GET_UNKNOWN
                 },
                 done: false
             };
@@ -108,7 +108,7 @@ class UserRepository {
 
         return {
             data: {
-                statusCode: messageCode.USER_DELETED
+                statusCode: messageCode.USER_DELETE_SUCCESS
             },
             done: true
         };
@@ -120,7 +120,7 @@ class UserRepository {
         if (!user) {
             return {
                 data: {
-                    statusCode: messageCode.USER_NOT_EXIST,
+                    statusCode: messageCode.USER_GET_UNKNOWN,
                     user: null
                 },
                 done: false
@@ -128,7 +128,7 @@ class UserRepository {
         }
         return {
             data: {
-                statusCode: messageCode.USER_EXISTS,
+                statusCode: messageCode.USER_GET_SUCCESS,
                 user: user
             },
             done: true

@@ -26,7 +26,7 @@ class CompanyRepository {
         if (company) {
             return {
                 data: {
-                    statusCode: messageCode.COMPANY_EXISTS
+                    statusCode: messageCode.COMPANY_NAME_CONFLICT
                 },
                 done: false
             };
@@ -45,7 +45,7 @@ class CompanyRepository {
 
         return {
             data: {
-                statusCode: messageCode.COMPANY_CREATED
+                statusCode: messageCode.COMPANY_CREATE_SUCCESS
             },
             done: true
         };
@@ -57,7 +57,7 @@ class CompanyRepository {
         if (!existingCompany) {
             return {
                 data: {
-                    statusCode: messageCode.COMPANY_NOT_EXIST
+                    statusCode: messageCode.COMPANY_GET_UNKNOWN
                 },
                 done: false
             };
@@ -70,7 +70,7 @@ class CompanyRepository {
 
         return {
             data: {
-                statusCode: messageCode.COMPANY_UPDATED
+                statusCode: messageCode.COMPANY_UPDATE_SUCCESS
             },
             done: true
         };
@@ -82,7 +82,7 @@ class CompanyRepository {
         if (!existingCompany) {
             return {
                 data: {
-                    statusCode: messageCode.COMPANY_NOT_EXIST
+                    statusCode: messageCode.COMPANY_GET_UNKNOWN
                 },
                 done: false
             };
@@ -95,7 +95,7 @@ class CompanyRepository {
 
         return {
             data: {
-                statusCode: messageCode.COMPANY_DELETED
+                statusCode: messageCode.COMPANY_DELETE_SUCCESS
             },
             done: true
         };
