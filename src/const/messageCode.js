@@ -1,11 +1,13 @@
 const messageCode = {
     USER_GET_UNKNOWN: 'user.get.unknown',
+    USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
     USER_CREATE_ERROR: 'user.create.error',
     USER_CONFLICT: 'user.conflict',
     USER_CREATE_SUCCESS: 'user.create.success',
     USER_UPDATE_SUCCESS: 'user.update.success',
     USER_DELETE_SUCCESS: 'user.delete.success',
     USER_GET_SUCCESS: 'user.get.success',
+    USER_LOG_IN: 'user.log.in',
 
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',

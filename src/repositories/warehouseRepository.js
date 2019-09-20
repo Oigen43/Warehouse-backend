@@ -52,7 +52,7 @@ class WarehouseRepository {
     }
 
     async update(warehouse, transaction) {
-        const existingWarehouse = await Warehouse.findOne({ where: { warehouseName: warehouse.warehouseName }, raw: true, transaction });
+        const existingWarehouse = await Warehouse.findOne({ where: { id: warehouse.id }, raw: true, transaction });
 
         if (!existingWarehouse) {
             return {
@@ -65,7 +65,7 @@ class WarehouseRepository {
 
         await Warehouse.update(
             { address: warehouse.address, type: warehouse.type },
-            { where: { warehouseName: warehouse.warehouseName }, transaction }
+            { where: { id: warehouse.id }, transaction }
         );
 
         return {
@@ -77,7 +77,7 @@ class WarehouseRepository {
     }
 
     async remove(warehouse, transaction) {
-        const existingWarehouse = await Warehouse.findOne({ where: { warehouseName: warehouse.warehouseName }, raw: true, transaction });
+        const existingWarehouse = await Warehouse.findOne({ where: { id: warehouse.id }, raw: true, transaction });
 
         if (!existingWarehouse) {
             return {
@@ -90,7 +90,7 @@ class WarehouseRepository {
 
         await Warehouse.update(
             { deleted: true },
-            { where: { warehouseName: warehouse.warehouseName }, transaction }
+            { where: { id: warehouse.id }, transaction }
         );
 
         return {
