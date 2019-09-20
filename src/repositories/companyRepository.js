@@ -63,8 +63,18 @@ class CompanyRepository {
             };
         }
 
+        const isCompanyExists = await Company.findOne({where: {companyName: company.companyName}, raw: true, transaction});
+        if (isCompanyExists && isCompanyExists.id !== company.id) {
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_NAME_CONFLICT
+                },
+                done: false
+            };
+        }
+
         await Company.update(
-            { address: company.address, description: company.description },
+            { companyName: company.companyName, address: company.address, description: company.description },
             { where: { id: company.id }, transaction }
         );
 

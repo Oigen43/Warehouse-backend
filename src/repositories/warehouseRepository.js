@@ -63,8 +63,18 @@ class WarehouseRepository {
             };
         }
 
+        const isWarehouseExists = await Warehouse.findOne({where: {warehouseName: warehouse.warehouseName}, raw: true, transaction});
+        if (isWarehouseExists && isWarehouseExists.id !== warehouse.id) {
+            return {
+                data: {
+                    statusCode: messageCode.WAREHOUSE_NAME_CONFLICT
+                },
+                done: false
+            };
+        }
+
         await Warehouse.update(
-            { address: warehouse.address, type: warehouse.type },
+            { warehouseName: warehouse.warehouseName, address: warehouse.address, type: warehouse.type },
             { where: { id: warehouse.id }, transaction }
         );
 
