@@ -19,6 +19,7 @@ class UserRepository {
             }),
             User.count({where: {deleted: false}, raw: true, transaction})
         ]);
+
         return {
             data: {
                 users: usersData,
@@ -89,7 +90,6 @@ class UserRepository {
                 done: false
             };
         }
-
 
         await User.update(
             {
