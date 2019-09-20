@@ -52,7 +52,7 @@ class CompanyRepository {
     }
 
     async update(company, transaction) {
-        const existingCompany = await Company.findOne({ where: { companyName: company.companyName }, raw: true, transaction });
+        const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
 
         if (!existingCompany) {
             return {
@@ -65,7 +65,7 @@ class CompanyRepository {
 
         await Company.update(
             { address: company.address, description: company.description },
-            { where: { companyName: company.companyName }, transaction }
+            { where: { id: company.id }, transaction }
         );
 
         return {
@@ -77,7 +77,7 @@ class CompanyRepository {
     }
 
     async remove(company, transaction) {
-        const existingCompany = await Company.findOne({ where: { companyName: company.companyName }, raw: true, transaction });
+        const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
 
         if (!existingCompany) {
             return {
@@ -90,7 +90,7 @@ class CompanyRepository {
 
         await Company.update(
             { deleted: true },
-            { where: { companyName: company.companyName }, transaction }
+            { where: { id: company.id }, transaction }
         );
 
         return {

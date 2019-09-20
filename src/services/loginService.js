@@ -36,7 +36,7 @@ class LoginService {
             };
         }
 
-        const token = jwt.sign({ email: data.data.user.email }, config.JWT.secret, {
+        const token = jwt.sign({ id: data.data.user.id }, config.JWT.secret, {
             expiresIn: config.JWT.life
         });
 
