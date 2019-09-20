@@ -29,8 +29,10 @@ class UserRepository {
     }
 
     async create(newUser, transaction) {
-        const hashedPassword = await bcrypt.hash(newUser.password, 8);
-        const user = await User.findOne({where: {email: newUser.email}, raw: true, transaction});
+        const [hashedPassword, user] = await Promise.all([
+            bcrypt.hash(newUser.password, 8),
+            User.findOne({where: {email: newUser.email}, raw: true, transaction})
+        ]);
 
         if (user) {
             return {
@@ -64,8 +66,10 @@ class UserRepository {
     }
 
     async update(user, transaction) {
-        const hashedPassword = await bcrypt.hash(user.password, 8);
-        const existingUser = await User.findOne({where: {id: user.id}, raw: true, transaction});
+           const [hashedPassword, existingUser] = await Promise.all([
+            bcrypt.hash(user.password, 8),
+            User.findOne({where: {id: user.id}, raw: true, transaction})
+        ]);
 
         if (!existingUser) {
             return {
@@ -76,16 +80,14 @@ class UserRepository {
             };
         }
 
-        const ifUserExists = await User.findOne({where: {email: user.email}, raw: true, transaction});
-        if (ifUserExists) {
-            if (ifUserExists.id !== user.id) {
-                return {
-                    data: {
-                        statusCode: messageCode.USER_CONFLICT
-                    },
-                    done: false
-                };
-            }
+        const isUserExists = await User.findOne({where: {email: user.email}, raw: true, transaction});
+        if (isUserExists && isUserExists.id !== user.id) {
+            return {
+                data: {
+                    statusCode: messageCode.USER_CONFLICT
+                },
+                done: false
+            };
         }
 
 
