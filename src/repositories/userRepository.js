@@ -1,6 +1,7 @@
 'use strict';
 
 const User = require('../server/models').User;
+const Role = require('../server/models').Role;
 const bcrypt = require('bcrypt');
 const messageCode = require('../const/messageCode');
 
@@ -176,6 +177,22 @@ class UserRepository {
             },
             done: true
         };
+    }
+
+    async findRole() {
+        const data = await User
+        .findOne({
+          include: [{
+            model: Role,
+            as: 'roles',
+            required: false,
+            attributes: ['id', 'title'],
+            through: { attributes: [] }
+          }],
+          where: { id: ['1'] },
+          raw: true
+        });
+        return data;
     }
 }
 

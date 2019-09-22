@@ -1,8 +1,11 @@
 'use strict';
 
+const user = require('../repositories/userRepository');
+
 module.exports = function (options) {
-    return function (req, res, next) {
-        console.log(req.user);
+    return async function (req, res, next) {
+        const data = await user.findRole();
+        console.log(data);
         next();
     };
   };
