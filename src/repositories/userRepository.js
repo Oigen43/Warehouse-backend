@@ -1,6 +1,7 @@
 'use strict';
 
 const User = require('../server/models').User;
+const Role = require('../server/models').Role;
 const bcrypt = require('bcrypt');
 const messageCode = require('../const/messageCode');
 
@@ -19,6 +20,7 @@ class UserRepository {
             }),
             User.count({where: {deleted: false}, raw: true, transaction})
         ]);
+
         return {
             data: {
                 users: usersData,
@@ -89,7 +91,6 @@ class UserRepository {
                 done: false
             };
         }
-
 
         await User.update(
             {
@@ -176,6 +177,20 @@ class UserRepository {
             },
             done: true
         };
+    }
+
+    async findRole(id) {
+        const data = await User
+        .findOne({
+          where: { id },
+          include: [{
+            model: Role,
+            as: 'roles',
+            required: false,
+            attributes: ['title'],
+          }]
+        });
+        return data.roles.map(item => item.title);
     }
 }
 

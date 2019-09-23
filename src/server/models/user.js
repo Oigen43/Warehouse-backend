@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     deleted: DataTypes.BOOLEAN
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.belongsToMany(models.Role, {
+      through: 'RoleUsers',
+      as: 'roles',
+      foreignKey: 'userId'
+    });
   };
   return User;
 };
