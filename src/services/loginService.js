@@ -35,14 +35,15 @@ class LoginService {
                 done: false
             };
         }
-
-        const token = jwt.sign({ id: data.data.user.id }, config.JWT.secret, {
+        const dataRole = await this.userRepository.findRole(data.data.user.id);
+        const token = jwt.sign({ id: data.data.user.id, roles: dataRole }, config.JWT.secret, {
             expiresIn: config.JWT.life
         });
 
         return {
             data: {
                 statusCode: messageCode.USER_LOG_IN,
+                roles: dataRole,
                 token
             },
             done: true
