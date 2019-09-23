@@ -9,7 +9,7 @@ class WarehouseRepository {
         const start = (page - 1) * perPage;
         const [warehousesData, warehousesLength] = await Promise.all([
             Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-            Warehouse.count({ where: { deleted: false }, raw: true, transaction })
+            Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
         ]);
         return {
             data: {
@@ -34,7 +34,8 @@ class WarehouseRepository {
 
         const warehouseTemplate = {
             warehouseName: newWarehouse.warehouseName,
-            companyId: newWarehouse.companyId,
+            companyId: newWarehouse.companyInfo.id,
+            companyName: newWarehouse.companyInfo.companyName,
             address: newWarehouse.address,
             type: newWarehouse.type,
             active: true,
