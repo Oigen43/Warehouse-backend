@@ -1,11 +1,16 @@
 'use strict';
 
-const user = require('../repositories/userRepository');
-
-module.exports = function (options) {
+const statusCode = require('../const/statusCode');
+const messageCode = require('../const/messageCode');
+module.exports = function (routesPermissions) {
     return async function (req, res, next) {
-        const data = await user.findRole();
-        res.send(data);
-        // next();
+        if (req.authInfo.some(item => routesPermissions.includes(item))) { return next(); }
+
+        res.status(statusCode.FORBIDDEN).send({
+            data: {
+                messageCode: messageCode.USER_AUTHORIZATION_ERROR,
+            },
+            done: false
+        });
     };
-  };
+};

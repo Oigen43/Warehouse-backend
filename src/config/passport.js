@@ -14,7 +14,7 @@ const strategy = new Strategy(opts, async function(jwtPayload, next) {
         const data = await user.findById(jwtPayload.id);
 
         if (data.data.user) {
-            return next(null, data.data.user);
+            return next(null, data.data.user, jwtPayload.roles);
         } else {
             return next(null, false);
         }

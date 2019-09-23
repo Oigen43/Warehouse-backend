@@ -179,18 +179,18 @@ class UserRepository {
         };
     }
 
-    async findRole() {
+    async findRole(id) {
         const data = await User
         .findOne({
+          where: { id },
           include: [{
             model: Role,
             as: 'roles',
             required: false,
-            attributes: ['id', 'title'],
-            through: { attributes: [], where: { userId: ['1'] }, raw: true },
+            attributes: ['title'],
           }]
         });
-        return data;
+        return data.roles.map(item => item.title);
     }
 }
 
