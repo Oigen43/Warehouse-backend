@@ -8,7 +8,7 @@ class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    async get(page, perPage, companyName) {
+    async get(page, perPage, companyId) {
         let data = {
             message: 'Transaction failed',
             done: false
@@ -17,7 +17,7 @@ class WarehouseService {
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.warehouseRepository.get({ page: page, perPage: perPage, companyName: companyName }, transaction);
+            data = await this.warehouseRepository.get({ page: page, perPage: perPage, companyId: companyId }, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }

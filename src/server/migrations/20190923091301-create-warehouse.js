@@ -23,6 +23,15 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
+      companyId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Companies',
+          key: 'id',
+          as: 'companyId'
+        }
+      },
       deleted: {
         type: Sequelize.BOOLEAN
       },

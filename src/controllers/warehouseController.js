@@ -5,8 +5,8 @@ const warehouseService = require('../services/warehouseService');
 const statusCode = require('../const/statusCode');
 
 function get(req) {
-    const { page, perPage, companyName } = req.query;
-    return warehouseService.get(page, perPage, companyName);
+    const { page, perPage, companyId } = req.query;
+    return warehouseService.get(page, perPage, companyId);
 }
 
 function create(req) {

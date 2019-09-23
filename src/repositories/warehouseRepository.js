@@ -5,10 +5,10 @@ const messageCode = require('../const/messageCode');
 
 class WarehouseRepository {
     async get(data, transaction) {
-        const { page = 1, perPage = 10, companyName } = data;
+        const { page = 1, perPage = 10, companyId } = data;
         const start = (page - 1) * perPage;
         const [warehousesData, warehousesLength] = await Promise.all([
-            Warehouse.findAll({ where: { deleted: false, companyName: companyName }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+            Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
             Warehouse.count({ where: { deleted: false }, raw: true, transaction })
         ]);
         return {
@@ -34,7 +34,7 @@ class WarehouseRepository {
 
         const warehouseTemplate = {
             warehouseName: newWarehouse.warehouseName,
-            companyName: newWarehouse.companyName,
+            companyId: newWarehouse.companyId,
             address: newWarehouse.address,
             type: newWarehouse.type,
             active: true,
