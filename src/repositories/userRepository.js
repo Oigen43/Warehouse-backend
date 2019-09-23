@@ -187,10 +187,8 @@ class UserRepository {
             as: 'roles',
             required: false,
             attributes: ['id', 'title'],
-            through: { attributes: [] }
-          }],
-          where: { id: ['1'] },
-          raw: true
+            through: { attributes: [], where: { userId: ['1'] }, raw: true },
+          }]
         });
         return data;
     }
