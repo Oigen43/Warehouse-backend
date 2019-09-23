@@ -30,7 +30,7 @@ class UserRepository {
         };
     }
 
-    async create(newUser, transaction) {
+    async create(newUser, roles, transaction) {
         const [hashedPassword, user] = await Promise.all([
             bcrypt.hash(newUser.password, 8),
             User.findOne({where: {email: newUser.email}, raw: true, transaction})
@@ -57,8 +57,9 @@ class UserRepository {
             deleted: false,
         };
 
-        await User.create(userTemplate, {transaction});
+        const userId = await User.create(userTemplate, {transaction});
 
+        console.log(userId);
         return {
             data: {
                 statusCode: messageCode.USER_CREATE_SUCCESS
