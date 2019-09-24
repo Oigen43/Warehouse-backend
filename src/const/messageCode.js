@@ -11,6 +11,7 @@ const messageCode = {
     USER_GET_SUCCESS: 'user.get.success',
     USER_LOG_IN: 'user.log.in',
     USER_AUTHORIZATION_ERROR: 'user.authorization.error',
+    USER_BLOCKED: 'user.blocked',
 
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',

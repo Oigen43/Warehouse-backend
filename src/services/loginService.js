@@ -24,6 +24,16 @@ class LoginService {
             };
         }
 
+        if (data.data.user.deleted) {
+            return {
+                data: {
+                    statusCode: messageCode.USER_BLOCKED,
+                    token: null
+                },
+                done: false
+            };
+        }
+
         const passwordIsValid = await bcrypt.compare(password, data.data.user.password);
 
         if (!passwordIsValid) {
