@@ -79,7 +79,7 @@ class UserRepository {
         };
     }
 
-    async update(user, transaction) {
+    async update(user, userRoles, transaction) {
            const [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
             User.findOne({ where: { id: user.id }, raw: true, transaction })
@@ -116,6 +116,18 @@ class UserRepository {
                 password: hashedPassword
             }, { where: { id: user.id }, transaction }
         );
+
+        await RoleUser.destroy({ where: { userId: user.id }, transaction});
+
+        for (const item of userRoles) {
+            const role = roles[item];
+            const userRole = {
+                userId: user.id,
+                roleId: role
+            };
+
+            await RoleUser.create(userRole, {transaction});
+        }
 
         return {
             data: {
