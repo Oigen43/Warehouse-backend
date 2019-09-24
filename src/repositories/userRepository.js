@@ -2,8 +2,10 @@
 
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
+const RoleUser = require('../server/models').RoleUser;
 const bcrypt = require('bcrypt');
 const messageCode = require('../const/messageCode');
+const roles = require('../const/roles');
 
 class UserRepository {
     async get(data, transaction) {
@@ -30,7 +32,7 @@ class UserRepository {
         };
     }
 
-    async create(newUser, roles, transaction) {
+    async create(newUser, userRoles, transaction) {
         const [hashedPassword, user] = await Promise.all([
             bcrypt.hash(newUser.password, 8),
             User.findOne({where: {email: newUser.email}, raw: true, transaction})
@@ -57,9 +59,18 @@ class UserRepository {
             deleted: false,
         };
 
-        const userId = await User.create(userTemplate, {transaction});
+        const addedUser = await User.create(userTemplate, {transaction});
 
-        console.log(userId);
+        for (const item of userRoles) {
+            const role = roles[item];
+            const userRole = {
+                userId: addedUser.id,
+                roleId: role
+            };
+
+            await RoleUser.create(userRole, {transaction});
+        }
+
         return {
             data: {
                 statusCode: messageCode.USER_CREATE_SUCCESS
