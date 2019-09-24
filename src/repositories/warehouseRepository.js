@@ -87,8 +87,8 @@ class WarehouseRepository {
         };
     }
 
-    async remove(warehouse, transaction) {
-        const existingWarehouse = await Warehouse.findOne({ where: { id: warehouse.id }, raw: true, transaction });
+    async remove(warehouseId, transaction) {
+        const existingWarehouse = await Warehouse.findOne({ where: { id: warehouseId }, raw: true, transaction });
 
         if (!existingWarehouse) {
             return {
@@ -101,7 +101,7 @@ class WarehouseRepository {
 
         await Warehouse.update(
             { deleted: true },
-            { where: { id: warehouse.id }, transaction }
+            { where: { id: warehouseId }, transaction }
         );
 
         return {

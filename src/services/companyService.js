@@ -62,7 +62,7 @@ class CompanyService {
         return data;
     }
 
-    async remove(company) {
+    async remove(companyId) {
         let data = {
             message: 'Transaction failed',
             done: false
@@ -71,7 +71,7 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.remove(company, transaction);
+            data = await this.companyRepository.remove(companyId, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }

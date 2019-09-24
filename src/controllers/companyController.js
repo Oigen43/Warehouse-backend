@@ -20,8 +20,8 @@ function update(req) {
 }
 
 function remove(req) {
-    const company = req.body;
-    return companyService.remove(company);
+    const { companyId } = req.query;
+    return companyService.remove(companyId);
 }
 
 module.exports = {

@@ -20,8 +20,8 @@ function update(req) {
 }
 
 function remove(req) {
-    const { body: warehouse } = req;
-    return warehouseService.remove(warehouse);
+    const { warehouseId } = req.query;
+    return warehouseService.remove(warehouseId);
 }
 
 module.exports = {

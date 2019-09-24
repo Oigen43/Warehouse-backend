@@ -86,8 +86,8 @@ class CompanyRepository {
         };
     }
 
-    async remove(company, transaction) {
-        const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
+    async remove(companyId, transaction) {
+        const existingCompany = await Company.findOne({ where: { id: companyId }, raw: true, transaction });
 
         if (!existingCompany) {
             return {
@@ -100,7 +100,7 @@ class CompanyRepository {
 
         await Company.update(
             { deleted: true },
-            { where: { id: company.id }, transaction }
+            { where: { id: companyId }, transaction }
         );
 
         return {

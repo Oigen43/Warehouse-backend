@@ -62,7 +62,7 @@ class WarehouseService {
         return data;
     }
 
-    async remove(warehouse) {
+    async remove(warehouseId) {
         let data = {
             message: 'Transaction failed',
             done: false
@@ -71,7 +71,7 @@ class WarehouseService {
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.warehouseRepository.remove(warehouse, transaction);
+            data = await this.warehouseRepository.remove(warehouseId, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
