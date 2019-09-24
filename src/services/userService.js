@@ -26,7 +26,7 @@ class UserService {
         return data;
     }
 
-    async create(user) {
+    async create(user, selectedRoles) {
         let data = {
             message: 'Transaction failed',
             done: false
@@ -35,7 +35,7 @@ class UserService {
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.userRepository.create(user, transaction);
+            data = await this.userRepository.create(user, selectedRoles, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }

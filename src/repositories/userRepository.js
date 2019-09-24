@@ -1,11 +1,12 @@
 'use strict';
 
+const bcrypt = require('bcrypt');
+
+const messageCode = require('../const/messageCode');
+const roles = require('../const/roles');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
 const RoleUser = require('../server/models').RoleUser;
-const bcrypt = require('bcrypt');
-const messageCode = require('../const/messageCode');
-const roles = require('../const/roles');
 
 class UserRepository {
     async get(data, transaction) {
@@ -61,15 +62,10 @@ class UserRepository {
 
         const addedUser = await User.create(userTemplate, {transaction});
 
-        for (const item of userRoles) {
-            const role = roles[item];
-            const userRole = {
-                userId: addedUser.id,
-                roleId: role
-            };
-
-            await RoleUser.create(userRole, {transaction});
-        }
+        const promises = userRoles.map(item =>
+            RoleUser.create({ userId: addedUser.id, roleId: roles[item]})
+        );
+        await Promise.all(promises);
 
         return {
             data: {
@@ -104,7 +100,6 @@ class UserRepository {
             };
         }
 
-
         await User.update(
             {
                 firstName: user.firstName,
@@ -120,15 +115,10 @@ class UserRepository {
 
         await RoleUser.destroy({ where: { userId: user.id }, transaction});
 
-        for (const item of userRoles) {
-            const role = roles[item];
-            const userRole = {
-                userId: user.id,
-                roleId: role
-            };
-
-            await RoleUser.create(userRole, {transaction});
-        }
+        const promises = userRoles.map(item =>
+            RoleUser.create({ userId: user.id, roleId: roles[item]})
+        );
+        await Promise.all(promises);
 
         return {
             data: {

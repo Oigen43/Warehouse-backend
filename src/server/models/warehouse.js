@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Warehouse.belongsTo(models.Company, {
       foreignKey: 'companyId',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
   };
   return Warehouse;
