@@ -1,12 +1,15 @@
 'use strict';
 
 const User = require('../server/models').User;
+const Role = require('../server/models').Role;
+const RoleUser = require('../server/models').RoleUser;
 const bcrypt = require('bcrypt');
 const messageCode = require('../const/messageCode');
+const roles = require('../const/roles');
 
 class UserRepository {
     async get(data, transaction) {
-        const {page = 1, perPage = 10} = data;
+        const { page = 1, perPage = 10 } = data;
         const start = (page - 1) * perPage;
         const [usersData, usersLength] = await Promise.all([
             User.findAll({
@@ -19,6 +22,7 @@ class UserRepository {
             }),
             User.count({where: {deleted: false}, raw: true, transaction})
         ]);
+
         return {
             data: {
                 users: usersData,
@@ -28,7 +32,7 @@ class UserRepository {
         };
     }
 
-    async create(newUser, transaction) {
+    async create(newUser, userRoles, transaction) {
         const [hashedPassword, user] = await Promise.all([
             bcrypt.hash(newUser.password, 8),
             User.findOne({where: {email: newUser.email}, raw: true, transaction})
@@ -55,7 +59,17 @@ class UserRepository {
             deleted: false,
         };
 
-        await User.create(userTemplate, {transaction});
+        const addedUser = await User.create(userTemplate, {transaction});
+
+        for (const item of userRoles) {
+            const role = roles[item];
+            const userRole = {
+                userId: addedUser.id,
+                roleId: role
+            };
+
+            await RoleUser.create(userRole, {transaction});
+        }
 
         return {
             data: {
@@ -90,7 +104,6 @@ class UserRepository {
             };
         }
 
-
         await User.update(
             {
                 firstName: user.firstName,
@@ -103,6 +116,7 @@ class UserRepository {
                 password: hashedPassword
             }, {where: {id: user.id}, transaction}
         );
+
         return {
             data: {
                 statusCode: messageCode.USER_UPDATE_SUCCESS
@@ -125,7 +139,7 @@ class UserRepository {
 
         await User.update(
             {deleted: true},
-            {where: {firstName: user.firstName}, transaction}
+            {where: {id: user.id}, transaction}
         );
 
         return {
@@ -176,6 +190,20 @@ class UserRepository {
             },
             done: true
         };
+    }
+
+    async findRole(id) {
+        const data = await User
+        .findOne({
+          where: { id },
+          include: [{
+            model: Role,
+            as: 'roles',
+            required: false,
+            attributes: ['title'],
+          }]
+        });
+        return data.roles.map(item => item.title);
     }
 }
 

@@ -1,3 +1,5 @@
+'use strict';
+
 const messageCode = {
     USER_GET_UNKNOWN: 'user.get.unknown',
     USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
@@ -8,6 +10,7 @@ const messageCode = {
     USER_DELETE_SUCCESS: 'user.delete.success',
     USER_GET_SUCCESS: 'user.get.success',
     USER_LOG_IN: 'user.log.in',
+    USER_AUTHORIZATION_ERROR: 'user.authorization.error',
 
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',
