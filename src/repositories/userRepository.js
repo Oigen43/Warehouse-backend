@@ -9,7 +9,7 @@ const roles = require('../const/roles');
 
 class UserRepository {
     async get(data, transaction) {
-        const { page = 1, perPage = 10 } = data;
+        const {page = 1, perPage = 10} = data;
         const start = (page - 1) * perPage;
         const [usersData, usersLength] = await Promise.all([
             User.findAll({
@@ -103,6 +103,7 @@ class UserRepository {
                 done: false
             };
         }
+
 
         await User.update(
             {

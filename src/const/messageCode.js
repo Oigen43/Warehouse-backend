@@ -1,5 +1,3 @@
-'use strict';
-
 const messageCode = {
     USER_GET_UNKNOWN: 'user.get.unknown',
     USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
