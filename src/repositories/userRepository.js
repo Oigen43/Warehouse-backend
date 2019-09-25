@@ -3,10 +3,8 @@
 const bcrypt = require('bcrypt');
 
 const messageCode = require('../const/messageCode');
-const roles = require('../const/roles');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
-const RoleUser = require('../server/models').RoleUser;
 
 class UserRepository {
     async get(data, transaction) {
@@ -81,7 +79,6 @@ class UserRepository {
             User.findOne({ where: { id: user.id }, raw: true, transaction })
         ]);
 
-           console.log(user);
         if (!existingUser) {
             return {
                 data: {
