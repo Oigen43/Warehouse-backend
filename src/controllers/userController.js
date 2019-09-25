@@ -15,8 +15,8 @@ function create(req) {
 }
 
 function update(req) {
-    const { body: user } = req;
-    return userService.update(user);
+    const { user, selectedRoles } = req.body;
+    return userService.update(user, selectedRoles);
 }
 
 function remove(req) {

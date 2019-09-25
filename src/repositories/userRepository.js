@@ -19,12 +19,10 @@ class UserRepository {
                     model: Role,
                     through: 'UserRoles',
                     as: 'roles',
-                    raw: true
                 }],
                 limit: perPage,
                 offset: start,
                 order: ['id'],
-                raw: true,
                 transaction
             }),
             User.count({ where: { deleted: false }, raw: true, transaction })
@@ -39,7 +37,7 @@ class UserRepository {
         };
     }
 
-    async create(newUser, userRoles, transaction) {
+    async create(newUser, transaction) {
         const [hashedPassword, user] = await Promise.all([
             bcrypt.hash(newUser.password, 8),
             User.findOne({ where: { email: newUser.email }, raw: true, transaction })
@@ -67,10 +65,6 @@ class UserRepository {
         };
 
         const addedUser = await User.create(userTemplate, {transaction});
-        // const promises = userRoles.map(item =>
-        //     RoleUser.create({ userId: addedUser.id, roleId: roles[item]})
-        // );
-        // await Promise.all(promises);
 
         return {
             data: {
@@ -81,16 +75,13 @@ class UserRepository {
         };
     }
 
-    async createRolesForUser(roles, user, transaction) {
-
-    }
-
-    async update(user, userRoles, transaction) {
+    async update(user, transaction) {
            const [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
             User.findOne({ where: { id: user.id }, raw: true, transaction })
         ]);
 
+           console.log(user);
         if (!existingUser) {
             return {
                 data: {
@@ -123,15 +114,9 @@ class UserRepository {
             }, { where: { id: user.id }, transaction }
         );
 
-        await RoleUser.destroy({ where: { userId: user.id }, transaction});
-
-        const promises = userRoles.map(item =>
-            RoleUser.create({ userId: user.id, roleId: roles[item]})
-        );
-        await Promise.all(promises);
-
         return {
             data: {
+                updatedUser: user,
                 statusCode: messageCode.USER_UPDATE_SUCCESS
             },
             done: true

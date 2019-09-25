@@ -26,6 +26,8 @@ const messageCode = {
     COMPANY_UPDATE_SUCCESS: 'company.update.success',
     COMPANY_DELETE_SUCCESS: 'company.delete.success',
     COMPANY_GET_SUCCESS: 'company.get.success',
+
+    TRANSACTION_FAILED: 'transaction.failed'
 };
 
 module.exports = messageCode;

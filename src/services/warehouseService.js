@@ -1,7 +1,8 @@
 'use strict';
 
-const warehouseRepository = require('../repositories/warehouseRepository');
 const sequelize = require('../server/models').sequelize;
+const warehouseRepository = require('../repositories/warehouseRepository');
+const messageCode = require('../const/messageCode');
 
 class WarehouseService {
     constructor({ warehouseRepository }) {
@@ -10,7 +11,7 @@ class WarehouseService {
 
     async get(page, perPage, companyId) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -28,7 +29,7 @@ class WarehouseService {
 
     async create(warehouse) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -46,7 +47,7 @@ class WarehouseService {
 
     async update(warehouse) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -64,7 +65,7 @@ class WarehouseService {
 
     async remove(warehouseId) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
