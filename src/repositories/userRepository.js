@@ -15,6 +15,12 @@ class UserRepository {
         const [usersData, usersLength] = await Promise.all([
             User.findAll({
                 where: {deleted: false},
+                include: [{
+                    model: Role,
+                    through: 'UserRoles',
+                    as: 'roles',
+                    raw: true
+                }],
                 limit: perPage,
                 offset: start,
                 order: ['id'],
@@ -61,18 +67,22 @@ class UserRepository {
         };
 
         const addedUser = await User.create(userTemplate, {transaction});
-
-        const promises = userRoles.map(item =>
-            RoleUser.create({ userId: addedUser.id, roleId: roles[item]})
-        );
-        await Promise.all(promises);
+        // const promises = userRoles.map(item =>
+        //     RoleUser.create({ userId: addedUser.id, roleId: roles[item]})
+        // );
+        // await Promise.all(promises);
 
         return {
             data: {
+                createdUser: addedUser.dataValues,
                 statusCode: messageCode.USER_CREATE_SUCCESS
             },
             done: true
         };
+    }
+
+    async createRolesForUser(roles, user, transaction) {
+
     }
 
     async update(user, userRoles, transaction) {

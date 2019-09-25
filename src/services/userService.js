@@ -1,11 +1,13 @@
 'use strict';
 
 const userRepository = require('../repositories/userRepository');
+const userRolesRepository = require('../repositories/userRolesRepository');
 const sequelize = require('../server/models').sequelize;
 
 class UserService {
-    constructor({ userRepository }) {
+    constructor({ userRepository }, { userRolesRepository }) {
         this.userRepository = userRepository;
+        this.userRolesRepository = userRolesRepository;
     }
 
     async get(page, perPage) {
@@ -36,6 +38,7 @@ class UserService {
         try {
             transaction = await sequelize.transaction();
             data = await this.userRepository.create(user, selectedRoles, transaction);
+            await this.userRolesRepository.create(selectedRoles, data.createdUser, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
