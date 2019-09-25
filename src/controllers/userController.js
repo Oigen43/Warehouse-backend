@@ -10,18 +10,18 @@ function get(req) {
 }
 
 function create(req) {
-    const { body: user } = req;
-    return userService.create(user);
+    const { user, selectedRoles } = req.body;
+    return userService.create(user, selectedRoles);
 }
 
 function update(req) {
-    const { body: user } = req;
-    return userService.update(user);
+    const { user, selectedRoles } = req.body;
+    return userService.update(user, selectedRoles);
 }
 
 function remove(req) {
-    const { body: user } = req;
-    return userService.remove(user);
+    const { userId } = req.query;
+    return userService.remove(userId);
 }
 
 module.exports = {

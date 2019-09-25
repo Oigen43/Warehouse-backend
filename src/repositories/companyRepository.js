@@ -63,8 +63,18 @@ class CompanyRepository {
             };
         }
 
+        const isCompanyExists = await Company.findOne({where: {companyName: company.companyName}, raw: true, transaction});
+        if (isCompanyExists && isCompanyExists.id !== company.id) {
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_NAME_CONFLICT
+                },
+                done: false
+            };
+        }
+
         await Company.update(
-            { address: company.address, description: company.description },
+            { companyName: company.companyName, address: company.address, description: company.description },
             { where: { id: company.id }, transaction }
         );
 
@@ -76,8 +86,8 @@ class CompanyRepository {
         };
     }
 
-    async remove(company, transaction) {
-        const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
+    async remove(companyId, transaction) {
+        const existingCompany = await Company.findOne({ where: { id: companyId }, raw: true, transaction });
 
         if (!existingCompany) {
             return {
@@ -90,7 +100,7 @@ class CompanyRepository {
 
         await Company.update(
             { deleted: true },
-            { where: { id: company.id }, transaction }
+            { where: { id: companyId }, transaction }
         );
 
         return {

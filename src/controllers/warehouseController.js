@@ -5,8 +5,8 @@ const warehouseService = require('../services/warehouseService');
 const statusCode = require('../const/statusCode');
 
 function get(req) {
-    const { page, perPage, companyName } = req.query;
-    return warehouseService.get(page, perPage, companyName);
+    const { page, perPage, companyId } = req.query;
+    return warehouseService.get(page, perPage, companyId);
 }
 
 function create(req) {
@@ -20,8 +20,8 @@ function update(req) {
 }
 
 function remove(req) {
-    const { body: warehouse } = req;
-    return warehouseService.remove(warehouse);
+    const { warehouseId } = req.query;
+    return warehouseService.remove(warehouseId);
 }
 
 module.exports = {

@@ -1,7 +1,8 @@
 'use strict';
 
-const companyRepository = require('../repositories/companyRepository');
 const sequelize = require('../server/models').sequelize;
+const companyRepository = require('../repositories/companyRepository');
+const messageCode = require('../const/messageCode');
 
 class CompanyService {
     constructor({ companyRepository }) {
@@ -10,7 +11,7 @@ class CompanyService {
 
     async get(page, perPage) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -28,7 +29,7 @@ class CompanyService {
 
     async create(company) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -46,7 +47,7 @@ class CompanyService {
 
     async update(company) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
@@ -62,16 +63,16 @@ class CompanyService {
         return data;
     }
 
-    async remove(company) {
+    async remove(companyId) {
         let data = {
-            message: 'Transaction failed',
+            statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.remove(company, transaction);
+            data = await this.companyRepository.remove(companyId, transaction);
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }

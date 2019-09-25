@@ -1,9 +1,12 @@
 'use strict';
 
+const bcrypt = require('bcrypt');
+
+const messageCode = require('../const/messageCode');
+const roles = require('../const/roles');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
-const bcrypt = require('bcrypt');
-const messageCode = require('../const/messageCode');
+const RoleUser = require('../server/models').RoleUser;
 
 class UserRepository {
     async get(data, transaction) {
@@ -12,13 +15,17 @@ class UserRepository {
         const [usersData, usersLength] = await Promise.all([
             User.findAll({
                 where: {deleted: false},
+                include: [{
+                    model: Role,
+                    through: 'UserRoles',
+                    as: 'roles',
+                }],
                 limit: perPage,
                 offset: start,
                 order: ['id'],
-                raw: true,
                 transaction
             }),
-            User.count({where: {deleted: false}, raw: true, transaction})
+            User.count({ where: { deleted: false }, raw: true, transaction })
         ]);
 
         return {
@@ -33,7 +40,7 @@ class UserRepository {
     async create(newUser, transaction) {
         const [hashedPassword, user] = await Promise.all([
             bcrypt.hash(newUser.password, 8),
-            User.findOne({where: {email: newUser.email}, raw: true, transaction})
+            User.findOne({ where: { email: newUser.email }, raw: true, transaction })
         ]);
 
         if (user) {
@@ -57,10 +64,11 @@ class UserRepository {
             deleted: false,
         };
 
-        await User.create(userTemplate, {transaction});
+        const addedUser = await User.create(userTemplate, {transaction});
 
         return {
             data: {
+                createdUser: addedUser.dataValues,
                 statusCode: messageCode.USER_CREATE_SUCCESS
             },
             done: true
@@ -70,9 +78,10 @@ class UserRepository {
     async update(user, transaction) {
            const [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
-            User.findOne({where: {id: user.id}, raw: true, transaction})
+            User.findOne({ where: { id: user.id }, raw: true, transaction })
         ]);
 
+           console.log(user);
         if (!existingUser) {
             return {
                 data: {
@@ -82,7 +91,7 @@ class UserRepository {
             };
         }
 
-        const isUserExists = await User.findOne({where: {email: user.email}, raw: true, transaction});
+        const isUserExists = await User.findOne({ where: { email: user.email }, raw: true, transaction });
         if (isUserExists && isUserExists.id !== user.id) {
             return {
                 data: {
@@ -102,18 +111,20 @@ class UserRepository {
                 birthDate: user.birthDate,
                 login: user.login,
                 password: hashedPassword
-            }, {where: {id: user.id}, transaction}
+            }, { where: { id: user.id }, transaction }
         );
+
         return {
             data: {
+                updatedUser: user,
                 statusCode: messageCode.USER_UPDATE_SUCCESS
             },
             done: true
         };
     }
 
-    async remove(user, transaction) {
-        const existingUser = await User.findOne({where: {id: user.id}, raw: true, transaction});
+    async remove(userId, transaction) {
+        const existingUser = await User.findOne({ where: { id: userId }, raw: true, transaction });
 
         if (!existingUser) {
             return {
@@ -125,8 +136,8 @@ class UserRepository {
         }
 
         await User.update(
-            {deleted: true},
-            {where: {firstName: user.firstName}, transaction}
+            { deleted: true },
+            { where: { id: userId }, transaction }
         );
 
         return {
@@ -138,7 +149,7 @@ class UserRepository {
     }
 
     async findByEmail(email) {
-        const user = await User.findOne({where: {email: email}, raw: true});
+        const user = await User.findOne({ where: { email: email }, raw: true });
 
         if (!user) {
             return {
@@ -159,7 +170,7 @@ class UserRepository {
     }
 
     async findById(id) {
-        const user = await User.findOne({where: {id: id}, raw: true});
+        const user = await User.findOne({ where: { id: id }, raw: true });
 
         if (!user) {
             return {
