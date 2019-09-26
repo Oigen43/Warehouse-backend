@@ -2,11 +2,13 @@
 
 const sequelize = require('../server/models').sequelize;
 const companyRepository = require('../repositories/companyRepository');
+const userRepository = require('../repositories/userRepository');
 const messageCode = require('../const/messageCode');
 
 class CompanyService {
-    constructor({ companyRepository }) {
+    constructor({ companyRepository, userRepository }) {
         this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
     }
 
     async get(page, perPage) {
@@ -27,11 +29,23 @@ class CompanyService {
         return data;
     }
 
-    async create(company) {
+    async create(company, admin) {
         let data = {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
+
+        const res = await this.userRepository.findByEmail(admin.email);
+
+        if (res.done) {
+            return {
+                data: {
+                    statusCode: messageCode.USER_CONFLICT
+                },
+                done: false
+            };
+        }
+
         let transaction;
 
         try {
@@ -82,4 +96,4 @@ class CompanyService {
     }
 }
 
-module.exports = new CompanyService({companyRepository});
+module.exports = new CompanyService({companyRepository, userRepository});

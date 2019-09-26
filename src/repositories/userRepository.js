@@ -81,7 +81,6 @@ class UserRepository {
             User.findOne({ where: { id: user.id }, raw: true, transaction })
         ]);
 
-           console.log(user);
         if (!existingUser) {
             return {
                 data: {
