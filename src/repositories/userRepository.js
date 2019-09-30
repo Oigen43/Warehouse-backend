@@ -3,10 +3,8 @@
 const bcrypt = require('bcrypt');
 
 const messageCode = require('../const/messageCode');
-const roles = require('../const/roles');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
-const RoleUser = require('../server/models').RoleUser;
 
 class UserRepository {
     async get(data, transaction) {
@@ -64,6 +62,7 @@ class UserRepository {
             login: newUser.login || null,
             password: hashedPassword || null,
             deleted: false,
+            companyId: newUser.companyId || null
         };
 
         const addedUser = await User.create(userTemplate, {transaction});

@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     birthDate: DataTypes.STRING,
     login: DataTypes.STRING,
     password: DataTypes.STRING,
-    deleted: DataTypes.BOOLEAN
+    deleted: DataTypes.BOOLEAN,
+    companyId: DataTypes.INTEGER
   }, {});
   User.associate = function(models) {
     User.belongsToMany(models.Role, {

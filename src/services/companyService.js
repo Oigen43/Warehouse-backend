@@ -52,12 +52,19 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            const { done } = await this.companyRepository.create(company, transaction);
-            if (done) {
-                const { done, data: { createdUser } } = await this.userRepository.create(user.data);
-                if (done) {
-                    data = await this.userRolesRepository.create(user.roles, createdUser, transaction);
+            const companyData = await this.companyRepository.create(company, transaction);
+            if (companyData.done) {
+                user.data.companyId = companyData.data.createdCompany.id;
+                const userData = await this.userRepository.create(user.data);
+                if (userData.done) {
+                    data = await this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction);
+                } else {
+                    await transaction.rollback();
+                    data = userData;
                 }
+            } else {
+                data = companyData;
+                await transaction.rollback();
             }
 
             await transaction.commit();
