@@ -10,13 +10,13 @@ function get(req) {
 }
 
 function create(req) {
-    const { user, selectedRoles } = req.body;
-    return userService.create(user, selectedRoles);
+    const { user } = req.body;
+    return userService.create(user);
 }
 
 function update(req) {
-    const { user, selectedRoles } = req.body;
-    return userService.update(user, selectedRoles);
+    const { user } = req.body;
+    return userService.update(user);
 }
 
 function remove(req) {

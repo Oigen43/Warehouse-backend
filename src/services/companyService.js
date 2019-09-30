@@ -3,12 +3,14 @@
 const sequelize = require('../server/models').sequelize;
 const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
+const userRolesRepository = require('../repositories/userRolesRepository');
 const messageCode = require('../const/messageCode');
 
 class CompanyService {
-    constructor({ companyRepository, userRepository }) {
+    constructor({ companyRepository, userRepository, userRolesRepository }) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
+        this.userRolesRepository = userRolesRepository;
     }
 
     async get(page, perPage) {
@@ -29,13 +31,13 @@ class CompanyService {
         return data;
     }
 
-    async create(company, admin) {
+    async create(company, user) {
         let data = {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
 
-        const res = await this.userRepository.findByEmail(admin.email);
+        const res = await this.userRepository.findByEmail(user.data.email);
 
         if (res.done) {
             return {
@@ -50,7 +52,14 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.create(company, transaction);
+            const { done } = await this.companyRepository.create(company, transaction);
+            if (done) {
+                const { done, data: { createdUser } } = await this.userRepository.create(user.data);
+                if (done) {
+                    data = await this.userRolesRepository.create(user.roles, createdUser, transaction);
+                }
+            }
+
             await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
@@ -96,4 +105,4 @@ class CompanyService {
     }
 }
 
-module.exports = new CompanyService({companyRepository, userRepository});
+module.exports = new CompanyService({companyRepository, userRepository, userRolesRepository});

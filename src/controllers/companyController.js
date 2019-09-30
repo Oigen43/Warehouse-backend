@@ -10,8 +10,8 @@ function get(req) {
 }
 
 function create(req) {
-    const { company, admin } = req.body;
-    return companyService.create(company, admin);
+    const { company, user } = req.body;
+    return companyService.create(company, user);
 }
 
 function update(req) {
