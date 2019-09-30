@@ -5,6 +5,10 @@ const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');
 const messageCode = require('../const/messageCode');
+const sendGrid = require('../utils/sendGrid');
+const mailsGenerator = require('../utils/mailsGenerator');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 class CompanyService {
     constructor({ companyRepository, userRepository, userRolesRepository }) {
@@ -47,6 +51,11 @@ class CompanyService {
                 const userData = await this.userRepository.create(user.data, transaction);
                 if (userData.done) {
                     data = await this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction);
+                    const token = jwt.sign({ id: userData.data.createdUser.id }, config.JWT.secret, {
+                        expiresIn: config.JWT.life
+                    });
+                    const message = mailsGenerator.getRegistrationMail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
+                    sendGrid.sendMail(message);
                     await transaction.commit();
                 } else {
                     data = userData;
