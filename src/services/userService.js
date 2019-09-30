@@ -47,7 +47,6 @@ class UserService {
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
         }
-
         return data;
     }
 

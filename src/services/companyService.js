@@ -37,17 +37,6 @@ class CompanyService {
             done: false
         };
 
-        const res = await this.userRepository.findByEmail(user.data.email);
-
-        if (res.done) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_CONFLICT
-                },
-                done: false
-            };
-        }
-
         let transaction;
 
         try {
@@ -55,19 +44,18 @@ class CompanyService {
             const companyData = await this.companyRepository.create(company, transaction);
             if (companyData.done) {
                 user.data.companyId = companyData.data.createdCompany.id;
-                const userData = await this.userRepository.create(user.data);
+                const userData = await this.userRepository.create(user.data, transaction);
                 if (userData.done) {
                     data = await this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction);
+                    await transaction.commit();
                 } else {
-                    await transaction.rollback();
                     data = userData;
+                    await transaction.rollback();
                 }
             } else {
                 data = companyData;
                 await transaction.rollback();
             }
-
-            await transaction.commit();
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
         }
