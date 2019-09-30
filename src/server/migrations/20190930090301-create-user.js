@@ -35,6 +35,9 @@ module.exports = {
       deleted: {
         type: Sequelize.BOOLEAN
       },
+      companyId: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

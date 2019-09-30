@@ -22,7 +22,6 @@ class CompanyRepository {
 
     async create(newCompany, transaction) {
         const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });
-
         if (company) {
             return {
                 data: {
@@ -41,10 +40,11 @@ class CompanyRepository {
             deleted: false,
         };
 
-        await Company.create(companyTemplate, { transaction });
+        const addedCompany = await Company.create(companyTemplate, { transaction });
 
         return {
             data: {
+                createdCompany: addedCompany.dataValues,
                 statusCode: messageCode.COMPANY_CREATE_SUCCESS
             },
             done: true
