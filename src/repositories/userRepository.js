@@ -36,10 +36,12 @@ class UserRepository {
     }
 
     async create(newUser, transaction) {
-        const [hashedPassword, user] = await Promise.all([
-            bcrypt.hash(newUser.password, 8),
-            User.findOne({ where: { email: newUser.email }, raw: true, transaction })
-        ]);
+        let hashedPassword;
+        if (newUser.password) {
+            hashedPassword = await bcrypt.hash(newUser.password, 8);
+        }
+
+        const user = await User.findOne({ where: { email: newUser.email }, raw: true, transaction });
 
         if (user) {
             return {
@@ -51,15 +53,16 @@ class UserRepository {
         }
 
         const userTemplate = {
-            firstName: newUser.firstName,
-            surname: newUser.surname,
-            patronymic: newUser.patronymic,
+            firstName: newUser.firstName || null,
+            surname: newUser.surname || null,
+            patronymic: newUser.patronymic || null,
             email: newUser.email,
-            address: newUser.address,
-            birthDate: newUser.birthDate,
-            login: newUser.login,
-            password: hashedPassword,
+            address: newUser.address || null,
+            birthDate: newUser.birthDate || null,
+            login: newUser.login || null,
+            password: hashedPassword || null,
             deleted: false,
+            companyId: newUser.companyId || null
         };
 
         const addedUser = await User.create(userTemplate, {transaction});

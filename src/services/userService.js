@@ -29,7 +29,7 @@ class UserService {
         return data;
     }
 
-    async create(user, selectedRoles) {
+    async create(user) {
         let data = {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
@@ -38,9 +38,9 @@ class UserService {
 
         try {
             transaction = await sequelize.transaction();
-            const { done, data: { createdUser } } = await this.userRepository.create(user, transaction);
+            const { done, data: { createdUser } } = await this.userRepository.create(user.data, transaction);
             if (done) {
-                data = await this.userRolesRepository.create(selectedRoles, createdUser, transaction);
+                data = await this.userRolesRepository.create(user.roles, createdUser, transaction);
             }
 
             await transaction.commit();
@@ -51,7 +51,7 @@ class UserService {
         return data;
     }
 
-    async update(user, selectedRoles) {
+    async update(user) {
         let data = {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
@@ -60,10 +60,10 @@ class UserService {
 
         try {
             transaction = await sequelize.transaction();
-            const { done, data: { updatedUser } } = await this.userRepository.update(user, transaction);
+            const { done, data: { updatedUser } } = await this.userRepository.update(user.data, transaction);
             if (done) {
                 await this.userRolesRepository.destroy(updatedUser, transaction);
-                data = await this.userRolesRepository.create(selectedRoles, updatedUser, transaction);
+                data = await this.userRolesRepository.create(user.roles, updatedUser, transaction);
             }
             await transaction.commit();
         } catch (err) {

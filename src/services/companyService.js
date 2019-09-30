@@ -2,11 +2,15 @@
 
 const sequelize = require('../server/models').sequelize;
 const companyRepository = require('../repositories/companyRepository');
+const userRepository = require('../repositories/userRepository');
+const userRolesRepository = require('../repositories/userRolesRepository');
 const messageCode = require('../const/messageCode');
 
 class CompanyService {
-    constructor({ companyRepository }) {
+    constructor({ companyRepository, userRepository, userRolesRepository }) {
         this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
+        this.userRolesRepository = userRolesRepository;
     }
 
     async get(page, perPage) {
@@ -27,17 +31,31 @@ class CompanyService {
         return data;
     }
 
-    async create(company) {
+    async create(company, user) {
         let data = {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
+
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.create(company, transaction);
-            await transaction.commit();
+            const companyData = await this.companyRepository.create(company, transaction);
+            if (companyData.done) {
+                user.data.companyId = companyData.data.createdCompany.id;
+                const userData = await this.userRepository.create(user.data, transaction);
+                if (userData.done) {
+                    data = await this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction);
+                    await transaction.commit();
+                } else {
+                    data = userData;
+                    await transaction.rollback();
+                }
+            } else {
+                data = companyData;
+                await transaction.rollback();
+            }
         } catch (err) {
             if (transaction) { await transaction.rollback(); }
         }
@@ -82,4 +100,4 @@ class CompanyService {
     }
 }
 
-module.exports = new CompanyService({companyRepository});
+module.exports = new CompanyService({companyRepository, userRepository, userRolesRepository});

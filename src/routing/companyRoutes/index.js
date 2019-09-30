@@ -8,7 +8,6 @@ const companyController = require('../../controllers/companyController');
 const permissionsCheck = require('../../utils/permissionsValidator');
 const routesPermissions = require('../../const/routesPermissions');
 
-
 const router = express.Router();
 
 router.route('/')
