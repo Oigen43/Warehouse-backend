@@ -40,7 +40,6 @@ class CompanyService {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
-
         let transaction;
 
         try {
@@ -50,10 +49,15 @@ class CompanyService {
                 user.data.companyId = companyData.data.createdCompany.id;
                 const userData = await this.userRepository.create(user.data, transaction);
                 if (userData.done) {
-                    data = await this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction);
                     const token = jwt.sign({ id: userData.data.createdUser.id }, config.JWT.secret, {
-                        expiresIn: config.JWT.life
+                        expiresIn: config.JWT.confirmationLife
                     });
+                    userData.data.createdUser.confirmationToken = token;
+                    const promiseData = await Promise.all([
+                        this.userRepository.update(userData.data.createdUser, transaction),
+                        this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction)
+                    ]);
+                    data = promiseData[1];
                     const message = mailsGenerator.getRegistrationMail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
                     sendGrid.sendMail(message);
                     await transaction.commit();

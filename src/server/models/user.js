@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     login: DataTypes.STRING,
     password: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN,
-    companyId: DataTypes.INTEGER
+    companyId: DataTypes.INTEGER,
+    confirmationToken: DataTypes.STRING
   }, {});
   User.associate = function(models) {
     User.belongsToMany(models.Role, {

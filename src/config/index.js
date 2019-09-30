@@ -3,6 +3,7 @@
 module.exports = {
     JWT: {
         secret: process.env.SECRET_JWT,
-        life: process.env.JWT_LIVE
+        life: process.env.JWT_LIVE,
+        confirmationLife: process.env.CONFIRMATION_JWT_LIVE
     }
 };

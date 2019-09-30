@@ -62,7 +62,8 @@ class UserRepository {
             login: newUser.login || null,
             password: hashedPassword || null,
             deleted: false,
-            companyId: newUser.companyId || null
+            companyId: newUser.companyId || null,
+            confirmationToken: newUser.confirmationToken || null
         };
 
         const addedUser = await User.create(userTemplate, {transaction});
@@ -77,18 +78,22 @@ class UserRepository {
     }
 
     async update(user, transaction) {
-           const [hashedPassword, existingUser] = await Promise.all([
+        let hashedPassword;
+        let existingUser;
+        if (user.password) {
+            [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
             User.findOne({ where: { id: user.id }, raw: true, transaction })
-        ]);
+            ]);
 
-        if (!existingUser) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN
-                },
-                done: false
-            };
+            if (!existingUser) {
+                return {
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN
+                    },
+                    done: false
+                };
+            }
         }
 
         const isUserExists = await User.findOne({ where: { email: user.email }, raw: true, transaction });
@@ -103,14 +108,16 @@ class UserRepository {
 
         await User.update(
             {
-                firstName: user.firstName,
-                surname: user.surname,
-                patronymic: user.patronymic,
-                email: user.email,
-                address: user.address,
-                birthDate: user.birthDate,
-                login: user.login,
-                password: hashedPassword
+                firstName: user.firstName || null,
+                surname: user.surname || null,
+                patronymic: user.patronymic || null,
+                email: user.email || null,
+                address: user.address || null,
+                birthDate: user.birthDate || null,
+                login: user.login || null,
+                password: hashedPassword || null,
+                companyId: user.companyId || null,
+                confirmationToken: user.confirmationToken || null
             }, { where: { id: user.id }, transaction }
         );
 
