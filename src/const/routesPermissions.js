@@ -3,7 +3,8 @@
 const routesPermissions = {
     companies: ['Admin', 'User'],
     warehouses: ['Admin', 'User'],
-    users: ['Admin']
+    users: ['Admin'],
+    storages: ['Admin', 'User'],
 };
 
 module.exports = routesPermissions;
