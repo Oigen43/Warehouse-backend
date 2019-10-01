@@ -56,7 +56,7 @@ class UserRepository {
             firstName: newUser.firstName || null,
             surname: newUser.surname || null,
             patronymic: newUser.patronymic || null,
-            email: newUser.email,
+            email: newUser.email || null,
             address: newUser.address || null,
             birthDate: newUser.birthDate || null,
             login: newUser.login || null,
@@ -95,9 +95,8 @@ class UserRepository {
                 };
             }
         }
-
-        const isUserExists = await User.findOne({ where: { email: user.email }, raw: true, transaction });
-        if (isUserExists && isUserExists.id !== user.id) {
+        const existedUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
+        if (existedUser && existedUser.id !== user.id) {
             return {
                 data: {
                     statusCode: messageCode.USER_CONFLICT

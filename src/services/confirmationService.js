@@ -1,10 +1,11 @@
 'use strict';
 
+const sequelize = require('../server/models').sequelize;
 const userRepository = require('../repositories/userRepository');
 const messageCode = require('../const/messageCode');
 
 class ConfirmationService {
-    constructor({userRepository}) {
+    constructor({ userRepository }) {
         this.userRepository = userRepository;
     }
 
@@ -27,13 +28,25 @@ class ConfirmationService {
     }
 
     async confirm(user) {
-        return {
-            data: {
-                statusCode: messageCode.USER_REGISTRATION_SUCCESS,
-            },
-            done: true
+        let data = {
+            statusCode: messageCode.TRANSACTION_FAILED,
+            done: false
         };
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            await this.userRepository.update(user, transaction);
+            data = {
+                data: { statusCode: messageCode.USER_REGISTRATION_SUCCESS },
+                done: true
+            };
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) { await transaction.rollback(); }
+        }
+        return data;
     }
 }
 
-module.exports = new ConfirmationService({userRepository});
+module.exports = new ConfirmationService({ userRepository });

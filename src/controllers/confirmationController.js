@@ -11,6 +11,9 @@ function getForm(req) {
 
 function confirm(req) {
     const { user } = req.body;
+    user.id = req.user.id;
+    user.email = req.user.email;
+    user.firstName = req.user.firstName;
     return confirmationService.confirm(user);
 }
 
