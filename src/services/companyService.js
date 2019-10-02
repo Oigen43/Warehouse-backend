@@ -40,6 +40,7 @@ class CompanyService {
             statusCode: messageCode.TRANSACTION_FAILED,
             done: false
         };
+
         let transaction;
 
         try {
