@@ -1,5 +1,6 @@
 'use strict';
 
+const jwt = require('jsonwebtoken');
 const sequelize = require('../server/models').sequelize;
 const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
@@ -7,7 +8,6 @@ const userRolesRepository = require('../repositories/userRolesRepository');
 const messageCode = require('../const/messageCode');
 const sendGrid = require('../utils/sendGrid');
 const mailsGenerator = require('../utils/mailsGenerator');
-const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 class CompanyService {

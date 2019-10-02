@@ -1,5 +1,7 @@
 'use strict';
 
+const urls = require('../const/urls');
+
 function getRegistrationMail(name, email, token) {
     return {
         to: email,
@@ -10,7 +12,7 @@ function getRegistrationMail(name, email, token) {
             ✌️ Hi, ${name}!<br>
             You're on your way!<br>
             Let's complete your registration.<br>
-            <a href="http://localhost:8080/confirmation?token=${token}">Complete registration</a>
+            <a href="${urls.BASE_URL}/confirmation?token=${token}">Complete registration</a>
         </p>`
     };
 }

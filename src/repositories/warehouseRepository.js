@@ -37,7 +37,6 @@ class WarehouseRepository {
             companyId: newWarehouse.companyInfo.id,
             companyName: newWarehouse.companyInfo.companyName,
             address: newWarehouse.address,
-            type: newWarehouse.type,
             active: true,
             deleted: false,
         };
@@ -75,7 +74,7 @@ class WarehouseRepository {
         }
 
         await Warehouse.update(
-            { warehouseName: warehouse.warehouseName, address: warehouse.address, type: warehouse.type },
+            { warehouseName: warehouse.warehouseName, address: warehouse.address },
             { where: { id: warehouse.id }, transaction }
         );
 
