@@ -49,12 +49,19 @@ class LoginService {
         const token = jwt.sign({ id: data.data.user.id, roles: dataRole }, config.JWT.secret, {
             expiresIn: config.JWT.life
         });
+        const refreshToken = jwt.sign({ id: data.data.user.id, roles: dataRole }, config.JWT.secret, {
+            expiresIn: config.JWT.refreshTokenLife
+        });
+
+        const logged = new Date();
+        await this.userRepository.loggedAt(data.data.user.id, logged);
 
         return {
             data: {
                 statusCode: messageCode.USER_LOG_IN,
                 roles: dataRole,
-                token
+                token,
+                refreshToken,
             },
             done: true
         };

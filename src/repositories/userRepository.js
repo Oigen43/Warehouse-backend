@@ -41,7 +41,7 @@ class UserRepository {
             hashedPassword = await bcrypt.hash(newUser.password, 8);
         }
 
-        const user = await User.findOne({ where: { email: newUser.email }, raw: true, transaction });
+        const user = await User.findOne({where: {email: newUser.email}, raw: true, transaction});
 
         if (user) {
             return {
@@ -116,6 +116,14 @@ class UserRepository {
             },
             done: true
         };
+    }
+
+    async loggedAt(userId, logged) {
+        await User.update(
+            {
+                loggedAt: logged
+            }, { where: { id: userId } }
+        );
     }
 
     async remove(userId, transaction) {

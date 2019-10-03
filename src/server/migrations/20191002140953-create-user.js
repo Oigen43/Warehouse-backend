@@ -41,6 +41,9 @@ module.exports = {
       confirmationToken: {
         type: Sequelize.STRING
       },
+      loggedAt: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

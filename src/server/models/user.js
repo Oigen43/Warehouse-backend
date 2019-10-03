@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN,
     companyId: DataTypes.INTEGER,
-    confirmationToken: DataTypes.STRING
+    confirmationToken: DataTypes.STRING,
+    loggedAt: DataTypes.DATE
   }, {});
   User.associate = function(models) {
     User.belongsToMany(models.Role, {

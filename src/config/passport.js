@@ -12,6 +12,10 @@ opts.secretOrKey = config.JWT.secret;
 const strategy = new Strategy(opts, async function(jwtPayload, next) {
     try {
         const data = await user.findById(jwtPayload.id);
+
+        if (jwtPayload.iat < Math.floor(Date.parse(data.data.user.loggedAt) / 1000)) {
+            return next(null, false);
+        }
         if (data.data.user) {
             return next(null, data.data.user, jwtPayload.roles);
         } else {
