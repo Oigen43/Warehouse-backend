@@ -10,6 +10,9 @@ const messageCode = {
     USER_LOG_IN: 'user.log.in',
     USER_AUTHORIZATION_ERROR: 'user.authorization.error',
     USER_BLOCKED: 'user.blocked',
+    USER_GET_CONFIRMATION_FORM_SUCCESS: 'user.get.confirmation.form.success',
+    USER_GET_CONFIRMATION_FORM_FAILED: 'user.get.confirmation.form.failed',
+    USER_REGISTRATION_SUCCESS: 'user.registration.success',
 
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',
@@ -27,7 +30,9 @@ const messageCode = {
     COMPANY_DELETE_SUCCESS: 'company.delete.success',
     COMPANY_GET_SUCCESS: 'company.get.success',
 
-    TRANSACTION_FAILED: 'transaction.failed'
+    TRANSACTION_FAILED: 'transaction.failed',
+
+    EMAIL_SEND_FAILED: 'email.send.failed'
 };
 
 module.exports = messageCode;

@@ -56,13 +56,14 @@ class UserRepository {
             firstName: newUser.firstName || null,
             surname: newUser.surname || null,
             patronymic: newUser.patronymic || null,
-            email: newUser.email,
+            email: newUser.email || null,
             address: newUser.address || null,
             birthDate: newUser.birthDate || null,
             login: newUser.login || null,
             password: hashedPassword || null,
             deleted: false,
-            companyId: newUser.companyId || null
+            companyId: newUser.companyId || null,
+            confirmationToken: newUser.confirmationToken || null
         };
 
         const addedUser = await User.create(userTemplate, {transaction});
@@ -77,22 +78,26 @@ class UserRepository {
     }
 
     async update(user, transaction) {
-        const [hashedPassword, existingUser] = await Promise.all([
+        let hashedPassword;
+        let existingUser;
+        if (user.password) {
+            [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
             User.findOne({ where: { id: user.id }, raw: true, transaction })
-        ]);
+            ]);
 
-        if (!existingUser) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN
-                },
-                done: false
-            };
+            if (!existingUser) {
+                return {
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN
+                    },
+                    done: false
+                };
+            }
+            user.password = hashedPassword;
         }
-
-        const isUserExists = await User.findOne({ where: { email: user.email }, raw: true, transaction });
-        if (isUserExists && isUserExists.id !== user.id) {
+        const existedUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
+        if (existedUser && existedUser.id !== user.id) {
             return {
                 data: {
                     statusCode: messageCode.USER_CONFLICT
@@ -101,17 +106,7 @@ class UserRepository {
             };
         }
 
-        await User.update(
-            {
-                firstName: user.firstName,
-                surname: user.surname,
-                patronymic: user.patronymic,
-                email: user.email,
-                address: user.address,
-                birthDate: user.birthDate,
-                login: user.login,
-                password: hashedPassword
-            }, { where: { id: user.id }, transaction }
+        await User.update(user, { where: { id: user.id }, transaction }
         );
 
         return {

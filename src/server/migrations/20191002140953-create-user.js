@@ -38,6 +38,9 @@ module.exports = {
       companyId: {
         type: Sequelize.INTEGER
       },
+      confirmationToken: {
+        type: Sequelize.STRING
+      },
       loggedAt: {
         type: Sequelize.DATE
       },
