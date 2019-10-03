@@ -20,9 +20,6 @@ module.exports = {
       active: {
         type: Sequelize.BOOLEAN
       },
-      type: {
-        type: Sequelize.STRING
-      },
       companyId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
