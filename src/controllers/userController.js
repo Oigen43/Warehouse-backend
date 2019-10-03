@@ -3,6 +3,7 @@
 const routeUtils = require('../utils/routeUtils');
 const userService = require('../services/userService');
 const statusCode = require('../const/statusCode');
+const filter = require('../utils/filter');
 
 function get(req) {
     const { page, perPage } = req.query;
@@ -16,7 +17,8 @@ function create(req) {
 
 function update(req) {
     const { user } = req.body;
-    return userService.update(user);
+    const data = filter.removeEmptyFields(user);
+    return userService.update(data);
 }
 
 function remove(req) {

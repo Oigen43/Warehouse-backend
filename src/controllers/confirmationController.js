@@ -3,6 +3,7 @@
 const routeUtils = require('../utils/routeUtils');
 const confirmationService = require('../services/confirmationService');
 const statusCode = require('../const/statusCode');
+const filter = require('../utils/filter');
 
 function getForm(req) {
     const { id } = req.user;
@@ -11,10 +12,11 @@ function getForm(req) {
 
 function confirm(req) {
     const { user } = req.body;
-    user.id = req.user.id;
-    user.email = req.user.email;
-    user.firstName = req.user.firstName;
-    return confirmationService.confirm(user);
+    const data = filter.removeEmptyFields(user);
+    data.id = req.user.id;
+    data.email = req.user.email;
+    data.confirmationToken = null;
+    return confirmationService.confirm(data);
 }
 
 module.exports = {

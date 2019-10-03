@@ -78,6 +78,7 @@ class UserRepository {
     }
 
     async update(user, transaction) {
+        console.log(user);
         let hashedPassword;
         let existingUser;
         if (user.password) {
@@ -94,6 +95,7 @@ class UserRepository {
                     done: false
                 };
             }
+            user.password = hashedPassword;
         }
         const existedUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
         if (existedUser && existedUser.id !== user.id) {
@@ -105,19 +107,7 @@ class UserRepository {
             };
         }
 
-        await User.update(
-            {
-                firstName: user.firstName || null,
-                surname: user.surname || null,
-                patronymic: user.patronymic || null,
-                email: user.email || null,
-                address: user.address || null,
-                birthDate: user.birthDate || null,
-                login: user.login || null,
-                password: hashedPassword || null,
-                companyId: user.companyId || null,
-                confirmationToken: user.confirmationToken || null
-            }, { where: { id: user.id }, transaction }
+        await User.update(user, { where: { id: user.id }, transaction }
         );
 
         return {
