@@ -38,6 +38,9 @@ module.exports = {
       companyId: {
         type: Sequelize.INTEGER
       },
+      loggedAt: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
