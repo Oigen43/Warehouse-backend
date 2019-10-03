@@ -41,7 +41,7 @@ class UserRepository {
             hashedPassword = await bcrypt.hash(newUser.password, 8);
         }
 
-        const user = await User.findOne({ where: { email: newUser.email }, raw: true, transaction });
+        const user = await User.findOne({where: {email: newUser.email}, raw: true, transaction});
 
         if (user) {
             return {
@@ -77,7 +77,7 @@ class UserRepository {
     }
 
     async update(user, transaction) {
-           const [hashedPassword, existingUser] = await Promise.all([
+        const [hashedPassword, existingUser] = await Promise.all([
             bcrypt.hash(user.password, 8),
             User.findOne({ where: { id: user.id }, raw: true, transaction })
         ]);
@@ -121,6 +121,14 @@ class UserRepository {
             },
             done: true
         };
+    }
+
+    async loggedAt(userId, logged) {
+        await User.update(
+            {
+                loggedAt: logged
+            }, { where: { id: userId } }
+        );
     }
 
     async remove(userId, transaction) {
