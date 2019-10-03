@@ -78,7 +78,6 @@ class UserRepository {
     }
 
     async update(user, transaction) {
-        console.log(user);
         let hashedPassword;
         let existingUser;
         if (user.password) {

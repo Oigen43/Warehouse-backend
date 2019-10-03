@@ -5,16 +5,16 @@ const sequelize = require('../server/models').sequelize;
 const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');
+const emailService = require('../services/emailService');
 const messageCode = require('../const/messageCode');
-const sendGrid = require('../utils/sendGrid');
-const mailsGenerator = require('../utils/mailsGenerator');
 const config = require('../config');
 
 class CompanyService {
-    constructor({ companyRepository, userRepository, userRolesRepository }) {
+    constructor({ companyRepository, userRepository, userRolesRepository, emailService }) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.userRolesRepository = userRolesRepository;
+        this.emailService = emailService;
     }
 
     async get(page, perPage) {
@@ -59,9 +59,13 @@ class CompanyService {
                         this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction)
                     ]);
                     data = promiseData[1];
-                    const message = mailsGenerator.getRegistrationMail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
-                    sendGrid.sendMail(message);
-                    await transaction.commit();
+                    const emailData = await this.emailService.sendRegistrationEmail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
+                    if (emailData.done) {
+                        await transaction.commit();
+                    } else {
+                        data = emailData;
+                        await transaction.rollback();
+                    }
                 } else {
                     data = userData;
                     await transaction.rollback();
@@ -114,4 +118,4 @@ class CompanyService {
     }
 }
 
-module.exports = new CompanyService({companyRepository, userRepository, userRolesRepository});
+module.exports = new CompanyService({companyRepository, userRepository, userRolesRepository, emailService});

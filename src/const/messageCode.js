@@ -30,7 +30,9 @@ const messageCode = {
     COMPANY_DELETE_SUCCESS: 'company.delete.success',
     COMPANY_GET_SUCCESS: 'company.get.success',
 
-    TRANSACTION_FAILED: 'transaction.failed'
+    TRANSACTION_FAILED: 'transaction.failed',
+
+    EMAIL_SEND_FAILED: 'email.send.failed'
 };
 
 module.exports = messageCode;
