@@ -6,6 +6,7 @@ const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');
 const emailService = require('../services/emailService');
+const mailsGenerator = require('../utils/mailsGenerator');
 const messageCode = require('../const/messageCode');
 const config = require('../config');
 
@@ -59,7 +60,8 @@ class CompanyService {
                         this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction)
                     ]);
                     data = promiseData[1];
-                    const emailData = await this.emailService.sendRegistrationEmail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
+                    const message = mailsGenerator.getRegistrationMail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
+                    const emailData = await this.emailService.sendRegistrationEmail(message);
                     if (emailData.done) {
                         await transaction.commit();
                     } else {
