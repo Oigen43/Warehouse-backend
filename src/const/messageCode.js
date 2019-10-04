@@ -1,12 +1,16 @@
 const messageCode = {
-    USERS_LIST_GET_ERROR: 'users.list.get.failed',
+    USERS_LIST_GET_ERROR: 'users.list.get.error',
     USER_GET_UNKNOWN: 'user.get.unknown',
     USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
-    USER_CREATE_ERROR: 'user.create.error',
     USER_NAME_CONFLICT: 'user.name.conflict',
     USER_CREATE_SUCCESS: 'user.create.success',
+    USER_CREATE_ERROR: 'user.create.error',
+    USER_CREATE_ROLE_ERROR: 'user.create.role.error',
     USER_UPDATE_SUCCESS: 'user.update.success',
+    USER_UPDATE_ROLE_ERROR: 'user.update.role.error',
+    USER_UPDATE_ERROR: 'user.update.error',
     USER_DELETE_SUCCESS: 'user.delete.success',
+    USER_DELETE_ERROR: 'user.delete.error',
     USER_GET_SUCCESS: 'user.get.success',
     USER_LOG_IN: 'user.log.in',
     USER_AUTHORIZATION_ERROR: 'user.authorization.error',
@@ -15,16 +19,18 @@ const messageCode = {
     USER_GET_CONFIRMATION_FORM_FAILED: 'user.get.confirmation.form.failed',
     USER_REGISTRATION_SUCCESS: 'user.registration.success',
 
-    WAREHOUSES_LIST_GET_ERROR: 'warehouses.list.get.failed',
+    WAREHOUSES_LIST_GET_ERROR: 'warehouses.list.get.error',
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
+    WAREHOUSE_CREATE_SUCCESS: 'warehouse.create.success',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',
     WAREHOUSE_NAME_CONFLICT: 'warehouse.name.conflict',
-    WAREHOUSE_CREATE_SUCCESS: 'warehouse.create.success',
     WAREHOUSE_UPDATE_SUCCESS: 'warehouse.update.success',
+    WAREHOUSE_UPDATE_ERROR: 'warehouse.update.error',
     WAREHOUSE_DELETE_SUCCESS: 'warehouse.delete.success',
+    WAREHOUSE_DELETE_ERROR: 'warehouse.delete.error',
     WAREHOUSE_GET_SUCCESS: 'warehouse.get.success',
 
-    COMPANIES_LIST_GET_ERROR: 'companies.list.get.failed',
+    COMPANIES_LIST_GET_ERROR: 'companies.list.get.error',
     COMPANY_GET_UNKNOWN: 'company.get.unknown',
     COMPANY_CREATE_ERROR: 'company.create.error',
     COMPANY_NAME_CONFLICT: 'company.name.conflict',
@@ -35,7 +41,7 @@ const messageCode = {
 
     TRANSACTION_FAILED: 'transaction.failed',
 
-    EMAIL_SEND_FAILED: 'email.send.failed'
+    EMAIL_SEND_FAILED: 'email.send.failed',
 };
 
 module.exports = messageCode;

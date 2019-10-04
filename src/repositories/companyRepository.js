@@ -22,7 +22,7 @@ class CompanyRepository {
         } catch (err) {
             throw new CustomError({
                 data: {
-                    statusCode: messageCode.COMPANIES_LIST_GET_ERROR
+                    statusCode: messageCode.DB_CONNECTION_FAILED
                 }
             });
         }
@@ -60,57 +60,75 @@ class CompanyRepository {
     }
 
     async update(company, transaction) {
-        const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
-        if (!existingCompany) {
-            throw new CustomError({
-                data: {
-                    statusCode: messageCode.COMPANY_GET_UNKNOWN
-                },
-            });
-        }
+        try {
+            const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
 
-        const isCompanyExists = await Company.findOne({where: {companyName: company.companyName}, raw: true, transaction});
-        if (isCompanyExists && isCompanyExists.id !== company.id) {
-            throw new CustomError({
-                data: {
-                    statusCode: messageCode.COMPANY_NAME_CONFLICT
-                },
-            });
-        }
-
-        await Company.update(
-            { companyName: company.companyName, address: company.address, description: company.description },
-            { where: { id: company.id }, transaction }
-        );
-
-        return {
-            data: {
-                statusCode: messageCode.COMPANY_UPDATE_SUCCESS
+            if (!existingCompany) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
+                    },
+                });
             }
-        };
+
+            const isCompanyExists = await Company.findOne({where: {companyName: company.companyName}, raw: true, transaction});
+
+            if (isCompanyExists && isCompanyExists.id !== company.id) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_NAME_CONFLICT
+                    },
+                });
+            }
+
+            await Company.update(
+                { companyName: company.companyName, address: company.address, description: company.description },
+                { where: { id: company.id }, transaction }
+            );
+
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_UPDATE_SUCCESS
+                }
+            };
+        } catch (err) {
+            throw new CustomError({
+                data: {
+                    statusCode: messageCode.DB_CONNECTION_FAILED
+                }
+            });
+        }
     }
 
     async remove(companyId, transaction) {
-        const existingCompany = await Company.findOne({ where: { id: companyId }, raw: true, transaction });
+        try {
+            const existingCompany = await Company.findOne({ where: { id: companyId }, raw: true, transaction });
 
-        if (!existingCompany) {
+            if (!existingCompany) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
+                    },
+                });
+            }
+
+            await Company.update(
+                { deleted: true },
+                { where: { id: companyId }, transaction }
+            );
+
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_DELETE_SUCCESS
+                }
+            };
+        } catch (err) {
             throw new CustomError({
                 data: {
-                    statusCode: messageCode.COMPANY_GET_UNKNOWN
-                },
+                    statusCode: messageCode.DB_CONNECTION_FAILED
+                }
             });
         }
-
-        await Company.update(
-            { deleted: true },
-            { where: { id: companyId }, transaction }
-        );
-
-        return {
-            data: {
-                statusCode: messageCode.COMPANY_DELETE_SUCCESS
-            }
-        };
     }
 }
 
