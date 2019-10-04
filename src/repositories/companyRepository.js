@@ -2,22 +2,35 @@
 
 const Company = require('../server/models').Company;
 const messageCode = require('../const/messageCode');
+const CustomError = require('../const/customError');
 
 class CompanyRepository {
     async get(data, transaction) {
-        const { page = 1, perPage = 10 } = data;
-        const start = (page - 1) * perPage;
-        const [companiesData, companiesLength] = await Promise.all([
-            Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-            Company.count({ where: { deleted: false }, raw: true, transaction })
-        ]);
-        return {
+        throw new CustomError({
             data: {
-                companies: companiesData,
-                companiesTotal: companiesLength
-            },
-            done: true
-        };
+                statusCode: messageCode.TRANSACTION_FAILED
+            }
+        });
+        // try {
+        //     const { page = 1, perPage = 10 } = data;
+        //     const start = (page - 1) * perPage;
+        //     const [companiesData, companiesLength] = await Promise.all([
+        //         Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+        //         Company.count({ where: { deleted: false }, raw: true, transaction })
+        //     ]);
+        //     return {
+        //         data: {
+        //             companies: companiesData,
+        //             companiesTotal: companiesLength
+        //         },
+        //     };
+        // } catch (err) {
+        //     throw new CustomError({
+        //         data: {
+        //             statusCode: messageCode.TRANSACTION_FAILED
+        //         }
+        //     });
+        // }
     }
 
     async create(newCompany, transaction) {

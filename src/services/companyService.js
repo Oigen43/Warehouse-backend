@@ -19,21 +19,19 @@ class CompanyService {
     }
 
     async get(page, perPage) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
+            const data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 
     async create(company, user) {
