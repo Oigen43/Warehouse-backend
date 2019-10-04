@@ -46,7 +46,7 @@ class UserRepository {
         if (user) {
             return {
                 data: {
-                    statusCode: messageCode.USER_CONFLICT
+                    statusCode: messageCode.USER_NAME_CONFLICT
                 },
                 done: false
             };
@@ -100,7 +100,7 @@ class UserRepository {
         if (existedUser && existedUser.id !== user.id) {
             return {
                 data: {
-                    statusCode: messageCode.USER_CONFLICT
+                    statusCode: messageCode.USER_NAME_CONFLICT
                 },
                 done: false
             };

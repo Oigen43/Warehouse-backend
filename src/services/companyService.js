@@ -82,39 +82,35 @@ class CompanyService {
     }
 
     async update(company) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.update(company, transaction);
+            const data = await this.companyRepository.update(company, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 
     async remove(companyId) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.remove(companyId, transaction);
+            const data = await this.companyRepository.remove(companyId, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 }
 

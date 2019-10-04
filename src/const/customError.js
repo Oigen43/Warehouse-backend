@@ -1,7 +1,7 @@
-class CustomError extends Error {
+class CustomError {
     constructor(message) {
-      super(message);
       this.name = 'CustomError';
+      this.message = message;
     }
 }
 

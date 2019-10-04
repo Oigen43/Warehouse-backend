@@ -1,8 +1,9 @@
 const messageCode = {
+    USERS_LIST_GET_ERROR: 'users.list.get.failed',
     USER_GET_UNKNOWN: 'user.get.unknown',
     USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
     USER_CREATE_ERROR: 'user.create.error',
-    USER_CONFLICT: 'user.conflict',
+    USER_NAME_CONFLICT: 'user.name.conflict',
     USER_CREATE_SUCCESS: 'user.create.success',
     USER_UPDATE_SUCCESS: 'user.update.success',
     USER_DELETE_SUCCESS: 'user.delete.success',
@@ -14,6 +15,7 @@ const messageCode = {
     USER_GET_CONFIRMATION_FORM_FAILED: 'user.get.confirmation.form.failed',
     USER_REGISTRATION_SUCCESS: 'user.registration.success',
 
+    WAREHOUSES_LIST_GET_ERROR: 'warehouses.list.get.failed',
     WAREHOUSE_GET_UNKNOWN: 'warehouse.get.unknown',
     WAREHOUSE_CREATE_ERROR: 'warehouse.create.error',
     WAREHOUSE_NAME_CONFLICT: 'warehouse.name.conflict',
@@ -22,6 +24,7 @@ const messageCode = {
     WAREHOUSE_DELETE_SUCCESS: 'warehouse.delete.success',
     WAREHOUSE_GET_SUCCESS: 'warehouse.get.success',
 
+    COMPANIES_LIST_GET_ERROR: 'companies.list.get.failed',
     COMPANY_GET_UNKNOWN: 'company.get.unknown',
     COMPANY_CREATE_ERROR: 'company.create.error',
     COMPANY_NAME_CONFLICT: 'company.name.conflict',

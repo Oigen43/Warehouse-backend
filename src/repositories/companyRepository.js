@@ -6,31 +6,26 @@ const CustomError = require('../const/customError');
 
 class CompanyRepository {
     async get(data, transaction) {
-        throw new CustomError({
-            data: {
-                statusCode: messageCode.TRANSACTION_FAILED
-            }
-        });
-        // try {
-        //     const { page = 1, perPage = 10 } = data;
-        //     const start = (page - 1) * perPage;
-        //     const [companiesData, companiesLength] = await Promise.all([
-        //         Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-        //         Company.count({ where: { deleted: false }, raw: true, transaction })
-        //     ]);
-        //     return {
-        //         data: {
-        //             companies: companiesData,
-        //             companiesTotal: companiesLength
-        //         },
-        //     };
-        // } catch (err) {
-        //     throw new CustomError({
-        //         data: {
-        //             statusCode: messageCode.TRANSACTION_FAILED
-        //         }
-        //     });
-        // }
+        try {
+            const { page = 1, perPage = 10 } = data;
+            const start = (page - 1) * perPage;
+            const [companiesData, companiesLength] = await Promise.all([
+                Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Company.count({ where: { deleted: false }, raw: true, transaction })
+            ]);
+            return {
+                data: {
+                    companies: companiesData,
+                    companiesTotal: companiesLength
+                },
+            };
+        } catch (err) {
+            throw new CustomError({
+                data: {
+                    statusCode: messageCode.COMPANIES_LIST_GET_ERROR
+                }
+            });
+        }
     }
 
     async create(newCompany, transaction) {
@@ -66,24 +61,21 @@ class CompanyRepository {
 
     async update(company, transaction) {
         const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
-
         if (!existingCompany) {
-            return {
+            throw new CustomError({
                 data: {
                     statusCode: messageCode.COMPANY_GET_UNKNOWN
                 },
-                done: false
-            };
+            });
         }
 
         const isCompanyExists = await Company.findOne({where: {companyName: company.companyName}, raw: true, transaction});
         if (isCompanyExists && isCompanyExists.id !== company.id) {
-            return {
+            throw new CustomError({
                 data: {
                     statusCode: messageCode.COMPANY_NAME_CONFLICT
                 },
-                done: false
-            };
+            });
         }
 
         await Company.update(
@@ -94,8 +86,7 @@ class CompanyRepository {
         return {
             data: {
                 statusCode: messageCode.COMPANY_UPDATE_SUCCESS
-            },
-            done: true
+            }
         };
     }
 
@@ -103,12 +94,11 @@ class CompanyRepository {
         const existingCompany = await Company.findOne({ where: { id: companyId }, raw: true, transaction });
 
         if (!existingCompany) {
-            return {
+            throw new CustomError({
                 data: {
                     statusCode: messageCode.COMPANY_GET_UNKNOWN
                 },
-                done: false
-            };
+            });
         }
 
         await Company.update(
@@ -119,8 +109,7 @@ class CompanyRepository {
         return {
             data: {
                 statusCode: messageCode.COMPANY_DELETE_SUCCESS
-            },
-            done: true
+            }
         };
     }
 }

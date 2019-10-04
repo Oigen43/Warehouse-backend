@@ -16,7 +16,6 @@ function handleResponse(handler, statusRes, statusErr) {
             return res.status(statusRes).json(data);
         } catch (err) {
             if (err instanceof CustomError) {
-                console.log(err.message);
                 return res.status(statusErr).json(err.message);
             }
             return handleErrorResponse(err, req, res);

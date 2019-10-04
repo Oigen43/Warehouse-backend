@@ -2,22 +2,30 @@
 
 const Warehouse = require('../server/models').Warehouse;
 const messageCode = require('../const/messageCode');
+const CustomError = require('../const/customError');
 
 class WarehouseRepository {
     async get(data, transaction) {
-        const { page = 1, perPage = 10, companyId } = data;
-        const start = (page - 1) * perPage;
-        const [warehousesData, warehousesLength] = await Promise.all([
-            Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-            Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
-        ]);
-        return {
-            data: {
-                warehouses: warehousesData,
-                warehousesTotal: warehousesLength
-            },
-            done: true
-        };
+        try {
+            const { page = 1, perPage = 10, companyId } = data;
+            const start = (page - 1) * perPage;
+            const [warehousesData, warehousesLength] = await Promise.all([
+                Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
+            ]);
+            return {
+                data: {
+                    warehouses: warehousesData,
+                    warehousesTotal: warehousesLength
+                }
+            };
+        } catch (err) {
+            throw new CustomError({
+                data: {
+                    statusCode: messageCode.WAREHOUSES_LIST_GET_ERROR
+                }
+            });
+        }
     }
 
     async create(newWarehouse, transaction) {
