@@ -3,6 +3,7 @@
 const Company = require('../server/models').Company;
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
+const customErrorHandler = require('../utils/customErrorsHandler');
 
 class CompanyRepository {
     async get(data, transaction) {
@@ -13,6 +14,7 @@ class CompanyRepository {
                 Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
                 Company.count({ where: { deleted: false }, raw: true, transaction })
             ]);
+
             return {
                 data: {
                     companies: companiesData,
@@ -20,43 +22,41 @@ class CompanyRepository {
                 },
             };
         } catch (err) {
-            throw new CustomError({
-                data: {
-                    statusCode: messageCode.DB_CONNECTION_FAILED
-                }
-            });
+            customErrorHandler.check(err, messageCode.COMPANIES_LIST_GET_ERROR);
         }
     }
 
     async create(newCompany, transaction) {
-        const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });
-        if (company) {
+        try {
+            const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });
+            if (company) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_NAME_CONFLICT
+                    }
+                });
+            }
+
+            const companyTemplate = {
+                companyName: newCompany.companyName,
+                address: newCompany.address,
+                description: newCompany.description,
+                active: true,
+                date: new Date(),
+                deleted: false,
+            };
+            const addedCompany = await Company.create(companyTemplate, { transaction });
             return {
                 data: {
-                    statusCode: messageCode.COMPANY_NAME_CONFLICT
+                    data: {
+                        statusCode: messageCode.COMPANY_CREATE_SUCCESS
+                    }
                 },
-                done: false
-            };
-        }
-
-        const companyTemplate = {
-            companyName: newCompany.companyName,
-            address: newCompany.address,
-            description: newCompany.description,
-            active: true,
-            date: new Date(),
-            deleted: false,
-        };
-
-        const addedCompany = await Company.create(companyTemplate, { transaction });
-
-        return {
-            data: {
                 createdCompany: addedCompany.dataValues,
-                statusCode: messageCode.COMPANY_CREATE_SUCCESS
-            },
-            done: true
-        };
+            };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.COMPANY_CREATE_ERROR);
+        }
     }
 
     async update(company, transaction) {
@@ -92,11 +92,7 @@ class CompanyRepository {
                 }
             };
         } catch (err) {
-            throw new CustomError({
-                data: {
-                    statusCode: messageCode.DB_CONNECTION_FAILED
-                }
-            });
+            customErrorHandler.check(err, messageCode.COMPANY_UPDATE_ERROR);
         }
     }
 
@@ -123,11 +119,7 @@ class CompanyRepository {
                 }
             };
         } catch (err) {
-            throw new CustomError({
-                data: {
-                    statusCode: messageCode.DB_CONNECTION_FAILED
-                }
-            });
+            customErrorHandler.check(err, messageCode.COMPANY_DELETE_ERROR);
         }
     }
 }

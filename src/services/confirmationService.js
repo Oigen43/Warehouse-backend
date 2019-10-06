@@ -11,41 +11,32 @@ class ConfirmationService {
 
     async getForm(id) {
         const user = await this.userRepository.findById(id);
-        if (user.data.user.confirmationToken) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_CONFIRMATION_FORM_SUCCESS,
-                },
-                done: true
-            };
-        }
+        await this.userRepository.checkRegistrationToken(user);
+
         return {
             data: {
-                statusCode: messageCode.USER_GET_CONFIRMATION_FORM_FAILED,
-            },
-            done: false
+                statusCode: messageCode.USER_GET_CONFIRMATION_FORM_SUCCESS,
+            }
         };
     }
 
     async confirm(user) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
             await this.userRepository.update(user, transaction);
-            data = {
-                data: { statusCode: messageCode.USER_REGISTRATION_SUCCESS },
-                done: true
-            };
+
             await transaction.commit();
+            return {
+                data: { statusCode: messageCode.USER_REGISTRATION_SUCCESS }
+            };
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-        return data;
     }
 }
 

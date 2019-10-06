@@ -14,6 +14,7 @@ class WarehouseRepository {
                 Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
                 Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
             ]);
+
             return {
                 data: {
                     warehouses: warehousesData,

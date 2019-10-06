@@ -1,7 +1,6 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
-
 const messageCode = require('../const/messageCode');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
@@ -14,18 +13,7 @@ class UserRepository {
             const {page = 1, perPage = 10} = data;
             const start = (page - 1) * perPage;
             const [usersData, usersLength] = await Promise.all([
-                User.findAll({
-                    where: {deleted: false},
-                    include: [{
-                        model: Role,
-                        through: 'UserRoles',
-                        as: 'roles',
-                    }],
-                    limit: perPage,
-                    offset: start,
-                    order: ['id'],
-                    transaction
-                }),
+                User.findAll({ where: {deleted: false}, include: [{ model: Role, through: 'UserRoles', as: 'roles', }], limit: perPage, offset: start, order: ['id'], transaction }),
                 User.count({ where: { deleted: false }, raw: true, transaction })
             ]);
 
@@ -157,68 +145,90 @@ class UserRepository {
         }
     }
 
-    async findByEmail(email) {
-        const user = await User.findOne({ where: { email: email }, raw: true });
+    async findUser(email, password, transaction) {
+        try {
+            const user = await User.findOne({ where: { email }, raw: true, transaction });
+            if (!user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_INCORRECT_LOGIN_DATA
+                    }
+                });
+            }
 
-        if (!user) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN,
-                    user: null
-                },
-                done: false
-            };
+            if (user.deleted) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_BLOCKED
+                    }
+                });
+            }
+
+            const passwordIsValid = await bcrypt.compare(password, user.password);
+            if (!passwordIsValid) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_INCORRECT_LOGIN_DATA
+                    }
+                });
+            }
+
+            return user;
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_FIND_ERROR);
         }
-        return {
-            data: {
-                statusCode: messageCode.USER_GET_SUCCESS,
-                user: user
-            },
-            done: true
-        };
+    }
+
+    async findRoles(id, transaction) {
+        try {
+            const rolesList = await User.findOne({
+                where: { id },
+                include: [{
+                    model: Role,
+                    as: 'roles',
+                    required: false,
+                    attributes: ['title'],
+                }],
+                transaction
+            });
+
+            await User.update(
+                { loggedAt: new Date() },
+                { where: { id }, transaction }
+            );
+
+            return rolesList.roles.map(item => item.title);
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_ROLES_GET_ERROR);
+        }
     }
 
     async findById(id) {
-        const user = await User.findOne({ where: { id: id }, raw: true });
+        try {
+            const user = await User.findOne({ where: { id: id }, raw: true });
 
-        if (!user) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN,
-                    user: null
-                },
-                done: false
-            };
+            if (!user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN,
+                    },
+                });
+            }
+
+            return user;
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_GET_ERROR);
         }
-        return {
-            data: {
-                statusCode: messageCode.USER_GET_SUCCESS,
-                user: user
-            },
-            done: true
-        };
     }
 
-    async findRole(id) {
-        const data = await User
-        .findOne({
-          where: { id },
-          include: [{
-            model: Role,
-            as: 'roles',
-            required: false,
-            attributes: ['title'],
-          }]
-        });
-        return data.roles.map(item => item.title);
-    }
-
-    async loggedAt(userId, logged) {
-        await User.update(
-            {
-                loggedAt: logged
-            }, { where: { id: userId } }
-        );
+    async checkRegistrationToken(user) {
+        if (!user.confirmationToken) {
+            throw new CustomError({
+                data: {
+                    statusCode: messageCode.USER_GET_CONFIRMATION_FORM_ERROR,
+                },
+            });
+        }
     }
 }
 

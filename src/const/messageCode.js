@@ -1,4 +1,5 @@
 const messageCode = {
+    USER_GET_ERROR: 'user.get.error',
     USERS_LIST_GET_ERROR: 'users.list.get.error',
     USER_GET_UNKNOWN: 'user.get.unknown',
     USER_INCORRECT_LOGIN_DATA: 'user.incorrect.login.data',
@@ -13,10 +14,12 @@ const messageCode = {
     USER_DELETE_ERROR: 'user.delete.error',
     USER_GET_SUCCESS: 'user.get.success',
     USER_LOG_IN: 'user.log.in',
+    USER_FIND_ERROR: 'user.find.error',
     USER_AUTHORIZATION_ERROR: 'user.authorization.error',
     USER_BLOCKED: 'user.blocked',
     USER_GET_CONFIRMATION_FORM_SUCCESS: 'user.get.confirmation.form.success',
-    USER_GET_CONFIRMATION_FORM_FAILED: 'user.get.confirmation.form.failed',
+    USER_GET_CONFIRMATION_FORM_ERROR: 'user.get.confirmation.form.error',
+    USER_ROLES_GET_ERROR: 'user.roles.get.error',
     USER_REGISTRATION_SUCCESS: 'user.registration.success',
 
     WAREHOUSES_LIST_GET_ERROR: 'warehouses.list.get.error',
@@ -36,10 +39,12 @@ const messageCode = {
     COMPANY_NAME_CONFLICT: 'company.name.conflict',
     COMPANY_CREATE_SUCCESS: 'company.create.success',
     COMPANY_UPDATE_SUCCESS: 'company.update.success',
+    COMPANY_UPDATE_ERROR: 'company.update.error',
     COMPANY_DELETE_SUCCESS: 'company.delete.success',
+    COMPANY_DELETE_ERROR: 'company.delete.error',
     COMPANY_GET_SUCCESS: 'company.get.success',
 
-    TRANSACTION_FAILED: 'transaction.failed',
+    STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
 
     EMAIL_SEND_FAILED: 'email.send.failed',
 };

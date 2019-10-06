@@ -32,7 +32,6 @@ class UserService {
         try {
             transaction = await sequelize.transaction();
             const { data, createdUser } = await this.userRepository.create(user.data, transaction);
-            console.log(data, createdUser);
             await this.userRolesRepository.create(user.roles, createdUser, transaction);
             await transaction.commit();
             return data;
