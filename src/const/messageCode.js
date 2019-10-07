@@ -44,9 +44,20 @@ const messageCode = {
     COMPANY_DELETE_ERROR: 'company.delete.error',
     COMPANY_GET_SUCCESS: 'company.get.success',
 
-    STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
+    CARRIERS_LIST_GET_ERROR: 'carriers.list.get.error',
+    CARRIER_GET_UNKNOWN: 'carrier.get.unknown',
+    CARRIER_CREATE_ERROR: 'carrier.create.error',
+    CARRIER_NAME_CONFLICT: 'carrier.name.conflict',
+    CARRIER_CREATE_SUCCESS: 'carrier.create.success',
+    CARRIER_UPDATE_SUCCESS: 'carrier.update.success',
+    CARRIER_UPDATE_ERROR: 'carrier.update.error',
+    CARRIER_DELETE_SUCCESS: 'carrier.delete.success',
+    CARRIER_DELETE_ERROR: 'carrier.delete.error',
+    CARRIER_GET_SUCCESS: 'carrier.get.success',
 
-    EMAIL_SEND_FAILED: 'email.send.failed',
+    TRANSACTION_FAILED: 'transaction.failed',
+
+    EMAIL_SEND_FAILED: 'email.send.failed'
 };
 
 module.exports = messageCode;
