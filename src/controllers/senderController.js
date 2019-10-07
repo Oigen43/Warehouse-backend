@@ -1,27 +1,27 @@
 'use strict';
 
 const routeUtils = require('../utils/routeUtils');
-const storageService = require('../services/storageService');
+const senderService = require('../services/senderService');
 const statusCode = require('../const/statusCode');
 
 function get(req) {
-    const { page, perPage, warehouseId } = req.query;
-    return storageService.get(page, perPage, warehouseId);
+    const { page, perPage } = req.query;
+    return senderService.get(page, perPage);
 }
 
 function create(req) {
-    const { body: storage } = req;
-    return storageService.create(storage);
+    const sender = req.body;
+    return senderService.create(sender);
 }
 
 function update(req) {
-    const { body: storage } = req;
-    return storageService.update(storage);
+    const sender = req.body;
+    return senderService.update(sender);
 }
 
 function remove(req) {
-    const { storageId } = req.query;
-    return storageService.remove(storageId);
+    const { senderId } = req.query;
+    return senderService.remove(senderId);
 }
 
 module.exports = {

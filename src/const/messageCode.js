@@ -45,6 +45,40 @@ const messageCode = {
     COMPANY_GET_SUCCESS: 'company.get.success',
 
     STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
+    STORAGE_GET_UNKNOWN: 'storage.get.unknown',
+    STORAGE_CREATE_ERROR: 'storage.create.error',
+    STORAGE_CREATE_SUCCESS: 'storage.create.success',
+    STORAGE_UPDATE_SUCCESS: 'storage.update.success',
+    STORAGE_UPDATE_ERROR: 'storage.update.error',
+    STORAGE_DELETE_SUCCESS: 'storage.delete.success',
+    STORAGE_DELETE_ERROR: 'storage.delete.error',
+    STORAGE_GET_SUCCESS: 'storage.get.success',
+
+    STORAGE_TYPES_LIST_GET_ERROR: 'storage.types.list.get.error',
+
+    CARRIERS_LIST_GET_ERROR: 'carriers.list.get.error',
+    CARRIER_GET_UNKNOWN: 'carrier.get.unknown',
+    CARRIER_CREATE_ERROR: 'carrier.create.error',
+    CARRIER_NAME_CONFLICT: 'carrier.name.conflict',
+    CARRIER_CREATE_SUCCESS: 'carrier.create.success',
+    CARRIER_UPDATE_SUCCESS: 'carrier.update.success',
+    CARRIER_UPDATE_ERROR: 'carrier.update.error',
+    CARRIER_DELETE_SUCCESS: 'carrier.delete.success',
+    CARRIER_DELETE_ERROR: 'carrier.delete.error',
+    CARRIER_GET_SUCCESS: 'carrier.get.success',
+
+    SENDER_LIST_GET_ERROR: 'sender.list.get.error',
+    SENDER_GET_UNKNOWN: 'sender.get.unknown',
+    SENDER_CREATE_ERROR: 'sender.create.error',
+    SENDER_NAME_CONFLICT: 'sender.name.conflict',
+    SENDER_CREATE_SUCCESS: 'sender.create.success',
+    SENDER_UPDATE_SUCCESS: 'sender.update.success',
+    SENDER_UPDATE_ERROR: 'sender.update.error',
+    SENDER_DELETE_SUCCESS: 'sender.delete.success',
+    SENDER_DELETE_ERROR: 'sender.delete.error',
+    SENDER_GET_SUCCESS: 'sender.get.success',
+
+    TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',
 };

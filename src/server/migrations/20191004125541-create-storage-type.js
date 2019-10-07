@@ -1,24 +1,16 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Storages', {
+    return queryInterface.createTable('StorageTypes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      storageCapacity: {
+      type: {
+        allowNull: false,
         type: Sequelize.STRING
-      },
-      warehouseId: {
-        type: Sequelize.INTEGER
-      },
-      storageTypeId: {
-        type: Sequelize.INTEGER
-      },
-      deleted: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +23,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Storages');
+    return queryInterface.dropTable('StorageTypes');
   }
 };

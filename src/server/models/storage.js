@@ -1,14 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Storage = sequelize.define('Storage', {
-    storageType: DataTypes.STRING,
-    storageCapacity: DataTypes.STRING
+    storageCapacity: DataTypes.STRING,
+    warehouseId: DataTypes.INTEGER,
+    storageTypeId: DataTypes.INTEGER,
+    deleted: DataTypes.BOOLEAN
   }, {});
   Storage.associate = function(models) {
-    Storage.belongsToMany(models.Warehouse, {
-    through: 'WarehouseStorage',
-      as: 'warehouses',
-      foreignKey: 'storageId'
+    Storage.belongsTo(models.Warehouse, {
+      foreignKey: 'warehouseId'
+    });
+    Storage.belongsTo(models.StorageType, {
+      foreignKey: 'storageTypeId'
     });
   };
   return Storage;
