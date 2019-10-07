@@ -1,210 +1,234 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
-
 const messageCode = require('../const/messageCode');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
+const CustomError = require('../const/customError');
+const customErrorHandler = require('../utils/customErrorsHandler');
 
 class UserRepository {
     async get(data, transaction) {
-        const {page = 1, perPage = 10} = data;
-        const start = (page - 1) * perPage;
-        const [usersData, usersLength] = await Promise.all([
-            User.findAll({
-                where: {deleted: false},
-                include: [{
-                    model: Role,
-                    through: 'UserRoles',
-                    as: 'roles',
-                }],
-                limit: perPage,
-                offset: start,
-                order: ['id'],
-                transaction
-            }),
-            User.count({ where: { deleted: false }, raw: true, transaction })
-        ]);
+        try {
+            const {page = 1, perPage = 10} = data;
+            const start = (page - 1) * perPage;
+            const [usersData, usersLength] = await Promise.all([
+                User.findAll({ where: {deleted: false}, include: [{ model: Role, through: 'UserRoles', as: 'roles', }], limit: perPage, offset: start, order: ['id'], transaction }),
+                User.count({ where: { deleted: false }, raw: true, transaction })
+            ]);
 
-        return {
-            data: {
-                users: usersData,
-                usersTotal: usersLength
-            },
-            done: true
-        };
+            return {
+                data: {
+                    users: usersData,
+                    usersTotal: usersLength
+                }
+            };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USERS_LIST_GET_ERROR);
+        }
     }
 
     async create(newUser, transaction) {
-        let hashedPassword;
-        if (newUser.password) {
-            hashedPassword = await bcrypt.hash(newUser.password, 8);
-        }
+        try {
+            let hashedPassword;
+            if (newUser.password) {
+                hashedPassword = await bcrypt.hash(newUser.password, 8);
+            }
 
-        const user = await User.findOne({where: {email: newUser.email}, raw: true, transaction});
+            const user = await User.findOne({where: {email: newUser.email}, raw: true, transaction});
 
-        if (user) {
+            if (user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_NAME_CONFLICT
+                    }
+                });
+            }
+
+            const userTemplate = {
+                firstName: newUser.firstName || null,
+                surname: newUser.surname || null,
+                patronymic: newUser.patronymic || null,
+                email: newUser.email || null,
+                address: newUser.address || null,
+                birthDate: newUser.birthDate || null,
+                login: newUser.login || null,
+                password: hashedPassword || null,
+                deleted: false,
+                companyId: newUser.companyId || null,
+                confirmationToken: newUser.confirmationToken || null
+            };
+
+            const addedUser = await User.create(userTemplate, {transaction});
+
             return {
                 data: {
-                    statusCode: messageCode.USER_CONFLICT
+                    data: {
+                        statusCode: messageCode.USER_CREATE_SUCCESS
+                    }
                 },
-                done: false
+                createdUser: addedUser.dataValues
             };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_CREATE_ERROR);
         }
-
-        const userTemplate = {
-            firstName: newUser.firstName || null,
-            surname: newUser.surname || null,
-            patronymic: newUser.patronymic || null,
-            email: newUser.email || null,
-            address: newUser.address || null,
-            birthDate: newUser.birthDate || null,
-            login: newUser.login || null,
-            password: hashedPassword || null,
-            deleted: false,
-            companyId: newUser.companyId || null,
-            confirmationToken: newUser.confirmationToken || null
-        };
-
-        const addedUser = await User.create(userTemplate, {transaction});
-
-        return {
-            data: {
-                createdUser: addedUser.dataValues,
-                statusCode: messageCode.USER_CREATE_SUCCESS
-            },
-            done: true
-        };
     }
 
     async update(user, transaction) {
-        let hashedPassword;
-        let existingUser;
-        if (user.password) {
-            [hashedPassword, existingUser] = await Promise.all([
-            bcrypt.hash(user.password, 8),
-            User.findOne({ where: { id: user.id }, raw: true, transaction })
-            ]);
+        try {
+            let hashedPassword;
+            let existingUser;
+            if (user.password) {
+                [hashedPassword, existingUser] = await Promise.all([
+                bcrypt.hash(user.password, 8),
+                User.findOne({ where: { id: user.id }, raw: true, transaction })
+                ]);
 
-            if (!existingUser) {
-                return {
-                    data: {
-                        statusCode: messageCode.USER_GET_UNKNOWN
-                    },
-                    done: false
-                };
+                if (!existingUser) {
+                    throw new CustomError({
+                        data: {
+                            statusCode: messageCode.USER_GET_UNKNOWN
+                        }
+                    });
+                }
+                user.password = hashedPassword;
             }
-            user.password = hashedPassword;
-        }
-        const existedUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
-        if (existedUser && existedUser.id !== user.id) {
+            const existedUser = await User.findOne({ where: { email: user.email }, raw: true, transaction });
+            if (existedUser && existedUser.id !== user.id) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_NAME_CONFLICT
+                    }
+                });
+            }
+
+            await User.update(user, { where: { id: user.id }, transaction }
+            );
+
             return {
                 data: {
-                    statusCode: messageCode.USER_CONFLICT
+                    data: {
+                        statusCode: messageCode.USER_UPDATE_SUCCESS
+                    }
                 },
-                done: false
+                updatedUser: user
             };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_UPDATE_ERROR);
         }
-
-        await User.update(user, { where: { id: user.id }, transaction }
-        );
-
-        return {
-            data: {
-                updatedUser: user,
-                statusCode: messageCode.USER_UPDATE_SUCCESS
-            },
-            done: true
-        };
-    }
-
-    async loggedAt(userId, logged) {
-        await User.update(
-            {
-                loggedAt: logged
-            }, { where: { id: userId } }
-        );
     }
 
     async remove(userId, transaction) {
-        const existingUser = await User.findOne({ where: { id: userId }, raw: true, transaction });
+        try {
+            const existingUser = await User.findOne({ where: { id: userId }, raw: true, transaction });
 
-        if (!existingUser) {
+            if (!existingUser) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN
+                    }
+                });
+            }
+
+            await User.update(
+                { deleted: true },
+                { where: { id: userId }, transaction }
+            );
+
             return {
                 data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN
-                },
-                done: false
+                    statusCode: messageCode.USER_DELETE_SUCCESS
+                }
             };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_DELETE_ERROR);
         }
-
-        await User.update(
-            { deleted: true },
-            { where: { id: userId }, transaction }
-        );
-
-        return {
-            data: {
-                statusCode: messageCode.USER_DELETE_SUCCESS
-            },
-            done: true
-        };
     }
 
-    async findByEmail(email) {
-        const user = await User.findOne({ where: { email: email }, raw: true });
+    async findUser(email, password, transaction) {
+        try {
+            const user = await User.findOne({ where: { email }, raw: true, transaction });
+            if (!user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_INCORRECT_LOGIN_DATA
+                    }
+                });
+            }
 
-        if (!user) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN,
-                    user: null
-                },
-                done: false
-            };
+            if (user.deleted) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_BLOCKED
+                    }
+                });
+            }
+
+            const passwordIsValid = await bcrypt.compare(password, user.password);
+            if (!passwordIsValid) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_INCORRECT_LOGIN_DATA
+                    }
+                });
+            }
+
+            return user;
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_FIND_ERROR);
         }
-        return {
-            data: {
-                statusCode: messageCode.USER_GET_SUCCESS,
-                user: user
-            },
-            done: true
-        };
+    }
+
+    async findRoles(id, transaction) {
+        try {
+            const rolesList = await User.findOne({
+                where: { id },
+                include: [{
+                    model: Role,
+                    as: 'roles',
+                    required: false,
+                    attributes: ['title'],
+                }],
+                transaction
+            });
+
+            await User.update(
+                { loggedAt: new Date() },
+                { where: { id }, transaction }
+            );
+
+            return rolesList.roles.map(item => item.title);
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_ROLES_GET_ERROR);
+        }
     }
 
     async findById(id) {
-        const user = await User.findOne({ where: { id: id }, raw: true });
+        try {
+            const user = await User.findOne({ where: { id: id }, raw: true });
 
-        if (!user) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_GET_UNKNOWN,
-                    user: null
-                },
-                done: false
-            };
+            if (!user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN,
+                    },
+                });
+            }
+
+            return user;
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.USER_GET_ERROR);
         }
-        return {
-            data: {
-                statusCode: messageCode.USER_GET_SUCCESS,
-                user: user
-            },
-            done: true
-        };
     }
 
-    async findRole(id) {
-        const data = await User
-        .findOne({
-          where: { id },
-          include: [{
-            model: Role,
-            as: 'roles',
-            required: false,
-            attributes: ['title'],
-          }]
-        });
-        return data.roles.map(item => item.title);
+    async checkRegistrationToken(user) {
+        if (!user.confirmationToken) {
+            throw new CustomError({
+                data: {
+                    statusCode: messageCode.USER_GET_CONFIRMATION_FORM_ERROR,
+                },
+            });
+        }
     }
 }
 

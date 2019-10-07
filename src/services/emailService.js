@@ -1,22 +1,25 @@
 'use strict';
 
-const sendGrid = require('../utils/sendGrid');
-const mailsGenerator = require('../utils/mailsGenerator');
+const nodemailer = require('nodemailer');
 const messageCode = require('../const/messageCode');
+const customErrorHandler = require('../utils/customErrorsHandler');
 
 class EmailService {
-    async sendRegistrationEmail(firstName, email, token) {
-        const message = mailsGenerator.getRegistrationMail(firstName, email, token);
+    async sendMail(message) {
         try {
-            await sendGrid.sendMail(message);
-            return { done: true };
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: process.env.EMAIL_SENDER_LOGIN,
+                    pass: process.env.EMAIL_SENDER_PASSWORD
+                }
+            });
+
+            await transporter.sendMail(message);
         } catch (err) {
-            return {
-                data: {
-                    statusCode: messageCode.EMAIL_SEND_FAILED
-                },
-                done: false
-            };
+            customErrorHandler.check(err, messageCode.EMAIL_SEND_FAILED);
         }
     }
 }

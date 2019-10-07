@@ -10,5 +10,5 @@ function login(req) {
 }
 
 module.exports = {
-    login: routeUtils.handleResponse(login, statusCode.OK, statusCode.UNAUTHORIZED),
+    login: routeUtils.handleResponse(login, statusCode.OK, statusCode.FORBIDDEN),
 };

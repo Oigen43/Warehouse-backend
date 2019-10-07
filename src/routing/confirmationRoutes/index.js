@@ -10,7 +10,7 @@ const router = express.Router();
 function authenticateJwt(req, res, next) {
     passport.authenticate('jwt', {session: false}, function(err, user, info) {
         if (err) { return next(err); }
-        if (!user) { res.status(401).send({ data: { statusCode: messageCode.USER_GET_CONFIRMATION_FORM_FAILED } }); }
+        if (!user) { res.status(401).send({ data: { statusCode: messageCode.USER_GET_CONFIRMATION_FORM_ERROR } }); }
         req.user = user;
         next();
     }
