@@ -9,8 +9,7 @@ module.exports = function (routesPermissions) {
         res.status(statusCode.FORBIDDEN).send({
             data: {
                 messageCode: messageCode.USER_AUTHORIZATION_ERROR,
-            },
-            done: false
+            }
         });
     };
 };

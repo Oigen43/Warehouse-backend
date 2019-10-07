@@ -1,70 +1,43 @@
 'use strict';
 
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sequelize = require('../server/models').sequelize;
 const config = require('../config');
 const userRepository = require('../repositories/userRepository');
 const messageCode = require('../const/messageCode');
 
 class LoginService {
-    constructor({userRepository}) {
+    constructor({ userRepository }) {
         this.userRepository = userRepository;
     }
 
     async login(email, password) {
-        const data = await this.userRepository.findByEmail(email);
+        let transaction;
 
-        if (!data.done) {
+        try {
+            transaction = await sequelize.transaction();
+            const user = await this.userRepository.findUser(email, password, transaction);
+            const roles = await this.userRepository.findRoles(user.id, transaction);
+            const token = jwt.sign({ id: user.id, roles }, config.JWT.secret, {
+                expiresIn: config.JWT.life
+            });
+            const refreshToken = jwt.sign({ id: user.id, roles }, config.JWT.secret, {
+                expiresIn: config.JWT.refreshTokenLife
+            });
+
+            await transaction.commit();
             return {
                 data: {
-                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
-                    token: null
-                },
-                done: false
+                    statusCode: messageCode.USER_LOG_IN,
+                    roles,
+                    token,
+                    refreshToken,
+                }
             };
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
         }
-
-        if (data.data.user.deleted) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_BLOCKED,
-                    token: null
-                },
-                done: false
-            };
-        }
-
-        const passwordIsValid = await bcrypt.compare(password, data.data.user.password);
-
-        if (!passwordIsValid) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
-                    token: null
-                },
-                done: false
-            };
-        }
-        const dataRole = await this.userRepository.findRole(data.data.user.id);
-        const token = jwt.sign({ id: data.data.user.id, roles: dataRole }, config.JWT.secret, {
-            expiresIn: config.JWT.life
-        });
-        const refreshToken = jwt.sign({ id: data.data.user.id, roles: dataRole }, config.JWT.secret, {
-            expiresIn: config.JWT.refreshTokenLife
-        });
-
-        const logged = new Date();
-        await this.userRepository.loggedAt(data.data.user.id, logged);
-
-        return {
-            data: {
-                statusCode: messageCode.USER_LOG_IN,
-                roles: dataRole,
-                token,
-                refreshToken,
-            },
-            done: true
-        };
     }
 }
 

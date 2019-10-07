@@ -6,7 +6,7 @@ const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');
 const emailService = require('../services/emailService');
-const messageCode = require('../const/messageCode');
+const mailsGenerator = require('../utils/mailsGenerator');
 const config = require('../config');
 
 class CompanyService {
@@ -18,103 +18,79 @@ class CompanyService {
     }
 
     async get(page, perPage) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
+            const data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 
     async create(company, user) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
-
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const companyData = await this.companyRepository.create(company, transaction);
-            if (companyData.done) {
-                user.data.companyId = companyData.data.createdCompany.id;
-                const userData = await this.userRepository.create(user.data, transaction);
-                if (userData.done) {
-                    const token = jwt.sign({ id: userData.data.createdUser.id }, config.JWT.secret, {
-                        expiresIn: config.JWT.confirmationLife
-                    });
-                    userData.data.createdUser.confirmationToken = token;
-                    const promiseData = await Promise.all([
-                        this.userRepository.update(userData.data.createdUser, transaction),
-                        this.userRolesRepository.create(user.roles, userData.data.createdUser, transaction)
-                    ]);
-                    data = promiseData[1];
-                    const emailData = await this.emailService.sendRegistrationEmail(userData.data.createdUser.firstName, userData.data.createdUser.email, token);
-                    if (emailData.done) {
-                        await transaction.commit();
-                    } else {
-                        data = emailData;
-                        await transaction.rollback();
-                    }
-                } else {
-                    data = userData;
-                    await transaction.rollback();
-                }
-            } else {
-                data = companyData;
-                await transaction.rollback();
-            }
+            const { data, createdCompany } = await this.companyRepository.create(company, transaction);
+            user.data.companyId = createdCompany.id;
+            const { createdUser } = await this.userRepository.create(user.data, transaction);
+            const token = jwt.sign({ id: createdUser.id }, config.JWT.secret, {
+                expiresIn: config.JWT.confirmationLife
+            });
+            createdUser.confirmationToken = token;
+            await Promise.all([
+                this.userRepository.update(createdUser, transaction),
+                this.userRolesRepository.create(user.roles, createdUser, transaction)
+            ]);
+            const message = mailsGenerator.getRegistrationMail(createdUser.firstName, createdUser.email, token);
+            await this.emailService.sendMail(message);
+            await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 
     async update(company) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.update(company, transaction);
+            const data = await this.companyRepository.update(company, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 
     async remove(companyId) {
-        let data = {
-            statusCode: messageCode.TRANSACTION_FAILED,
-            done: false
-        };
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            data = await this.companyRepository.remove(companyId, transaction);
+            const data = await this.companyRepository.remove(companyId, transaction);
             await transaction.commit();
+            return data;
         } catch (err) {
-            if (transaction) { await transaction.rollback(); }
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
         }
-
-        return data;
     }
 }
 
