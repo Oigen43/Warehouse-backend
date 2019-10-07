@@ -44,6 +44,18 @@ const messageCode = {
     COMPANY_DELETE_ERROR: 'company.delete.error',
     COMPANY_GET_SUCCESS: 'company.get.success',
 
+    STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
+    STORAGE_GET_UNKNOWN: 'storage.get.unknown',
+    STORAGE_CREATE_ERROR: 'storage.create.error',
+    STORAGE_CREATE_SUCCESS: 'storage.create.success',
+    STORAGE_UPDATE_SUCCESS: 'storage.update.success',
+    STORAGE_UPDATE_ERROR: 'storage.update.error',
+    STORAGE_DELETE_SUCCESS: 'storage.delete.success',
+    STORAGE_DELETE_ERROR: 'storage.delete.error',
+    STORAGE_GET_SUCCESS: 'storage.get.success',
+
+    STORAGE_TYPES_LIST_GET_ERROR: 'storage.types.list.get.error',
+
     CARRIERS_LIST_GET_ERROR: 'carriers.list.get.error',
     CARRIER_GET_UNKNOWN: 'carrier.get.unknown',
     CARRIER_CREATE_ERROR: 'carrier.create.error',
