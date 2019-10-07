@@ -5,7 +5,8 @@ const routesPermissions = {
     warehouses: ['Admin', 'User'],
     users: ['Admin'],
     storages: ['Admin', 'Company Admin'],
-    carriers: ['Admin']
+    carriers: ['Admin'],
+    senders: ['Admin']
 };
 
 module.exports = routesPermissions;
