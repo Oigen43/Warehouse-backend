@@ -4,14 +4,18 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert('Storages', [
             {
-                storageType: 'HEATED',
-                storageCapacity: '12 x 7',
+                storageCapacity: 20,
+                warehouseId: 1,
+                storageTypeId: 1,
+                deleted: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                storageType: 'COLD',
-                storageCapacity: '10 x 20',
+                storageCapacity: 50,
+                warehouseId: 2,
+                storageTypeId: 2,
+                deleted: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }

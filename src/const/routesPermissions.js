@@ -4,7 +4,7 @@ const routesPermissions = {
     companies: ['Admin', 'User'],
     warehouses: ['Admin', 'User'],
     users: ['Admin'],
-    storages: ['Admin', 'User'],
+    storages: ['Admin', 'Company Admin'],
     carriers: ['Admin']
 };
 

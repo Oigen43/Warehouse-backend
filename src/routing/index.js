@@ -11,6 +11,7 @@ const companyRoutes = require('./companyRoutes');
 const warehouseRoutes = require('./warehouseRoutes');
 const userRoutes = require('./userRoutes');
 const storageRoutes = require('./storageRoutes');
+const storageTypesRoutes = require('./storageTypesRoutes');
 const carrierRoutes = require('./carrierRoutes');
 
 router.use('/login', loginRoutes);
@@ -20,6 +21,7 @@ router.use('/companies', companyRoutes);
 router.use('/warehouses', warehouseRoutes);
 router.use('/users', userRoutes);
 router.use('/storages', storageRoutes);
+router.use('/storage_types', storageTypesRoutes);
 router.use('/carriers', carrierRoutes);
 
 module.exports = router;

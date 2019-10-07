@@ -14,10 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
-    Warehouse.belongsToMany(models.Storage, {
-      through: 'WarehouseStorage',
-      as: 'storages',
-      foreignKey: 'warehouseId'
+    Warehouse.hasMany(models.Storage, {
+      foreignKey: 'warehouseId',
+      as: 'storages'
     });
   };
   return Warehouse;

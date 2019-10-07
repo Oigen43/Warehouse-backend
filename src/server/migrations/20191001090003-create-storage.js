@@ -8,11 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      storageType: {
-        type: Sequelize.STRING
-      },
       storageCapacity: {
         type: Sequelize.STRING
+      },
+      warehouseId: {
+        type: Sequelize.INTEGER
+      },
+      storageTypeId: {
+        type: Sequelize.INTEGER
+      },
+      deleted: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
