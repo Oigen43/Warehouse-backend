@@ -9,7 +9,7 @@ class UserRolesRepository {
     async create(userRoles, createdUser, transaction) {
         try {
             const promises = userRoles.map(item =>
-                RoleUser.create({ userId: createdUser.id, roleId: roles[item], transaction})
+                RoleUser.create({ userId: createdUser.id, roleId: roles.indexes[item], transaction})
             );
             await Promise.all(promises);
         } catch (err) {

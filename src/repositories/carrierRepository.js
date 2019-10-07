@@ -48,7 +48,7 @@ class CarrierRepository {
 
             const carrierTemplate = {
                 name: newCarrier.name,
-                unp: newCarrier.unp,
+                upn: newCarrier.upn,
                 countryCode: newCarrier.countryCode,
                 date: new Date(),
                 deleted: false
@@ -94,7 +94,7 @@ class CarrierRepository {
             await Carrier.update(
                 {
                     name: carrier.name,
-                    unp: carrier.unp,
+                    upn: carrier.upn,
                     countryCode: carrier.countryCode,
                 }, {where: {id: carrier.id}, transaction}
             );

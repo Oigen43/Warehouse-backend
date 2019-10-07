@@ -11,7 +11,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      unp: {
+      upn: {
         type: Sequelize.STRING
       },
       countryCode: {

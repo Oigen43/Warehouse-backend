@@ -17,12 +17,12 @@ class CompanyService {
         this.emailService = emailService;
     }
 
-    async get(page, perPage) {
+    async get(page, perPage, id) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
+            const data = await this.companyRepository.get({ page, perPage, id }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

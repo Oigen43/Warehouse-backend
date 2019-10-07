@@ -1,44 +1,46 @@
 'use strict';
 
+const roles = require('./roles');
+
 const routesPermissions = {
     companies: {
-        create: ['System Admin'],
-        read: ['System Admin', 'Company Admin'],
-        update: ['Company Admin'],
-        delete: ['System Admin']
+        create: [roles.SYSTEM_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
+        update: [roles.COMPANY_ADMIN_ROLE],
+        delete: [roles.SYSTEM_ADMIN_ROLE]
     },
     warehouses: {
-        create: ['Company Admin'],
-        read: ['System Admin', 'Company Admin'],
-        update: ['Company Admin'],
-        delete: ['Company Admin']
+        create: [roles.COMPANY_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
+        update: [roles.COMPANY_ADMIN_ROLE],
+        delete: [roles.COMPANY_ADMIN_ROLE]
     },
     storages: {
-        create: ['Company Admin'],
-        read: ['System Admin', 'Company Admin'],
-        update: ['Company Admin'],
-        delete: ['Company Admin']
+        create: [roles.COMPANY_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
+        update: [roles.COMPANY_ADMIN_ROLE],
+        delete: [roles.COMPANY_ADMIN_ROLE]
     },
     storageTypes: {
-        read: ['Company Admin']
+        read: [roles.COMPANY_ADMIN_ROLE]
     },
     senders: {
-        create: ['System Admin'],
-        read: ['System Admin'],
-        update: ['System Admin'],
-        delete: ['System Admin']
+        create: [roles.SYSTEM_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE],
+        update: [roles.SYSTEM_ADMIN_ROLE],
+        delete: [roles.SYSTEM_ADMIN_ROLE]
     },
     carriers: {
-        create: ['System Admin'],
-        read: ['System Admin'],
-        update: ['System Admin'],
-        delete: ['System Admin']
+        create: [roles.SYSTEM_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE],
+        update: [roles.SYSTEM_ADMIN_ROLE],
+        delete: [roles.SYSTEM_ADMIN_ROLE]
     },
     users: {
-        create: ['System Admin'],
-        read: ['System Admin'],
-        update: ['System Admin'],
-        delete: ['System Admin']
+        create: [roles.SYSTEM_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE],
+        update: [roles.SYSTEM_ADMIN_ROLE],
+        delete: [roles.SYSTEM_ADMIN_ROLE]
     }
 };
 
