@@ -11,9 +11,9 @@ const routesPermissions = require('../../const/routesPermissions');
 const router = express.Router();
 
 router.route('/')
-    .get(expressJoi(companyQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies), companyController.get)
-    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies), companyController.create)
-    .put(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies), companyController.update)
-    .delete(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies), companyController.remove);
+    .get(expressJoi(companyQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.read), companyController.get)
+    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.create), companyController.create)
+    .put(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.update), companyController.update)
+    .delete(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.delete), companyController.remove);
 
 module.exports = router;
