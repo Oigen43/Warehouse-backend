@@ -19,6 +19,21 @@ const routesPermissions = {
         update: ['Company Admin'],
         delete: ['Company Admin']
     },
+    storageTypes: {
+        read: ['Company Admin']
+    },
+    senders: {
+        create: ['System Admin'],
+        read: ['System Admin'],
+        update: ['System Admin'],
+        delete: ['System Admin']
+    },
+    carriers: {
+        create: ['System Admin'],
+        read: ['System Admin'],
+        update: ['System Admin'],
+        delete: ['System Admin']
+    },
     users: {
         create: ['System Admin'],
         read: ['System Admin'],

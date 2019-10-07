@@ -2,21 +2,21 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.bulkInsert('Senders', [
+        return queryInterface.bulkInsert('Carriers', [
             {
-                senderName: 'COLLAIRE',
-                upn: '389 423 1975',
+                name: 'UPC Inc.',
+                upn: '206 555 0100',
                 countryCode: '+1',
-                date: new Date(),
+                date: '1990-07-10',
                 deleted: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                senderName: 'ORONOKO',
-                upn: '519 316 4114',
+                name: 'FedEx Corp.',
+                upn: '206 555 5230',
                 countryCode: '+1',
-                date: new Date(),
+                date: '1995-08-11',
                 deleted: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -25,6 +25,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete('Senders', null, {});
+        return queryInterface.bulkDelete('Carriers', null, {});
     }
 };
