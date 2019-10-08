@@ -1,9 +1,9 @@
 'use strict';
 
-const Carrier = require('../server/models').Carrier;
+const { Carrier } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class CarrierRepository {
     async get(data, transaction) {
@@ -29,7 +29,7 @@ class CarrierRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIERS_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.CARRIERS_LIST_GET_ERROR);
         }
     }
 
@@ -47,7 +47,7 @@ class CarrierRepository {
 
             const carrierTemplate = {
                 name: newCarrier.name,
-                unp: newCarrier.unp,
+                upn: newCarrier.upn,
                 countryCode: newCarrier.countryCode,
                 date: new Date(),
                 deleted: false
@@ -64,7 +64,7 @@ class CarrierRepository {
                 createdCarrier: addedCarrier.dataValues
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_CREATE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_CREATE_ERROR);
         }
     }
 
@@ -93,7 +93,7 @@ class CarrierRepository {
             await Carrier.update(
                 {
                     name: carrier.name,
-                    unp: carrier.unp,
+                    upn: carrier.upn,
                     countryCode: carrier.countryCode,
                 }, {where: {id: carrier.id}, transaction}
             );
@@ -107,7 +107,7 @@ class CarrierRepository {
                 updatedCarrier: carrier,
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_UPDATE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_UPDATE_ERROR);
         }
     }
 
@@ -134,7 +134,7 @@ class CarrierRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_DELETE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_DELETE_ERROR);
         }
     }
 }

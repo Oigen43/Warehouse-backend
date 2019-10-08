@@ -2,6 +2,7 @@
 
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
+const sequelize = require('../server/models').sequelize;
 const user = require('../repositories/userRepository');
 const config = require('../config');
 
@@ -10,9 +11,12 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.JWT.secret;
 
 const strategy = new Strategy(opts, async function(jwtPayload, next) {
-    try {
-        const userData = await user.findById(jwtPayload.id);
+    let transaction;
 
+    try {
+        transaction = await sequelize.transaction();
+        const userData = await user.findById(jwtPayload.id);
+        await transaction.commit();
         if (jwtPayload.iat < Math.floor(Date.parse(userData.loggedAt) / 1000)) {
             return next(null, false);
         }
@@ -22,6 +26,7 @@ const strategy = new Strategy(opts, async function(jwtPayload, next) {
             return next(null, false);
         }
     } catch (err) {
+        await transaction.rollback();
         next(err, false);
     }
 });

@@ -1,8 +1,7 @@
 'use strict';
 
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const driverRepository = require('../repositories/driverRepository');
-const messageCode = require('../const/messageCode');
 
 class DriverService {
     constructor({ driverRepository }) {

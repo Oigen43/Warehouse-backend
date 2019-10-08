@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');
@@ -17,12 +17,13 @@ class CompanyService {
         this.emailService = emailService;
     }
 
-    async get(page, perPage) {
+    async get(page, perPage, id) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.companyRepository.get({ page: page, perPage: perPage }, transaction);
+            const data =
+                id ? await this.companyRepository.getById(id, transaction) : await this.companyRepository.get({ page, perPage }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

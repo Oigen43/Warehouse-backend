@@ -1,9 +1,9 @@
 'use strict';
 
-const Company = require('../server/models').Company;
+const { Company } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class CompanyRepository {
     async get(data, transaction) {
@@ -22,7 +22,30 @@ class CompanyRepository {
                 },
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.COMPANIES_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.COMPANIES_LIST_GET_ERROR);
+        }
+    }
+
+    async getById(id, transaction) {
+        try {
+            const company = await Company.findOne({ where: { id, deleted: false }, raw: true, transaction });
+
+            if (!company) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    companies: company,
+                    companiesTotal: 1
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.COMPANIES_LIST_GET_ERROR);
         }
     }
 
@@ -55,7 +78,7 @@ class CompanyRepository {
                 createdCompany: addedCompany.dataValues,
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.COMPANY_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.COMPANY_CREATE_ERROR);
         }
     }
 
@@ -92,7 +115,7 @@ class CompanyRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.COMPANY_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.COMPANY_UPDATE_ERROR);
         }
     }
 
@@ -119,7 +142,7 @@ class CompanyRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.COMPANY_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.COMPANY_DELETE_ERROR);
         }
     }
 }

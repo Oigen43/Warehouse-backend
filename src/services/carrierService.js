@@ -1,8 +1,7 @@
 'use strict';
 
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const carrierRepository = require('../repositories/carrierRepository');
-const messageCode = require('../const/messageCode');
 
 class CarrierService {
     constructor({ carrierRepository }) {

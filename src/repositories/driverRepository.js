@@ -1,9 +1,9 @@
 'use strict';
 
-const Driver = require('../server/models').Driver;
+const { Driver } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class DriverRepository {
     async get(data, transaction) {
@@ -29,7 +29,7 @@ class DriverRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.DRIVERS_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.DRIVERS_LIST_GET_ERROR);
         }
     }
 
@@ -63,7 +63,7 @@ class DriverRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.DRIVER_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.DRIVER_CREATE_ERROR);
         }
     }
 
@@ -104,7 +104,7 @@ class DriverRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.DRIVER_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.DRIVER_UPDATE_ERROR);
         }
     }
 
@@ -131,7 +131,7 @@ class DriverRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.DRIVER_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.DRIVER_DELETE_ERROR);
         }
     }
 }

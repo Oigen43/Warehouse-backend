@@ -1,8 +1,8 @@
 'use strict';
 
-const StorageType = require('../server/models').StorageType;
+const { StorageType } = require('../server/models');
 const messageCode = require('../const/messageCode');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class StorageTypesRepository {
     async get(transaction) {
@@ -15,7 +15,7 @@ class StorageTypesRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.STORAGE_TYPES_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.STORAGE_TYPES_LIST_GET_ERROR);
         }
     }
 }

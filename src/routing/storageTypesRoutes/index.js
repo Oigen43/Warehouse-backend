@@ -9,6 +9,6 @@ const routesPermissions = require('../../const/routesPermissions');
 const router = express.Router();
 
 router.route('/')
-    .get(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages), storageTypesController.get);
+    .get(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storageTypes.read), storageTypesController.get);
 
 module.exports = router;

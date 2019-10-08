@@ -11,9 +11,9 @@ const routesPermissions = require('../../const/routesPermissions');
 const router = express.Router();
 
 router.route('/')
-    .get(expressJoi(storageQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages), storageController.get)
-    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages), storageController.create)
-    .put(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages), storageController.update)
-    .delete(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages), storageController.remove);
+    .get(expressJoi(storageQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages.read), storageController.get)
+    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages.create), storageController.create)
+    .put(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages.update), storageController.update)
+    .delete(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.storages.delete), storageController.remove);
 
 module.exports = router;

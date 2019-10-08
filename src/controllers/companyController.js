@@ -6,7 +6,7 @@ const statusCode = require('../const/statusCode');
 
 function get(req) {
     const { page, perPage } = req.query;
-    return companyService.get(page, perPage);
+    return companyService.get(page, perPage, req.user.companyId);
 }
 
 function create(req) {

@@ -2,17 +2,13 @@
 
 const CustomError = require('../const/customError');
 
-function check(err, messageCode) {
+module.exports = function (err, messageCode) {
     if (!(err instanceof CustomError)) {
-        throw new CustomError({
+        return new CustomError({
             data: {
                 statusCode: messageCode
             }
         });
     }
-    throw err;
-}
-
-module.exports = {
-    check
+    return err;
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const userRepository = require('../repositories/userRepository');
 const messageCode = require('../const/messageCode');
 
@@ -10,14 +10,24 @@ class ConfirmationService {
     }
 
     async getForm(id) {
-        const user = await this.userRepository.findById(id);
-        await this.userRepository.checkRegistrationToken(user);
+        let transaction;
 
-        return {
-            data: {
-                statusCode: messageCode.USER_GET_CONFIRMATION_FORM_SUCCESS,
+        try {
+            transaction = await sequelize.transaction();
+            const user = await this.userRepository.findById(id, transaction);
+            await this.userRepository.checkRegistrationToken(user);
+
+            return {
+                data: {
+                    statusCode: messageCode.USER_GET_CONFIRMATION_FORM_SUCCESS,
+                }
+            };
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
             }
-        };
+        }
     }
 
     async confirm(user) {
