@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Carrier.associate = function(models) {
     // associations can be defined here
+    Carrier.hasMany(models.Driver, {
+      foreignKey: 'carrierId',
+      as: 'drivers'
+    });
   };
   return Carrier;
 };

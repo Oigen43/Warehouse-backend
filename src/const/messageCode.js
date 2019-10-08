@@ -68,6 +68,16 @@ const messageCode = {
     CARRIER_DELETE_ERROR: 'carrier.delete.error',
     CARRIER_GET_SUCCESS: 'carrier.get.success',
 
+    DRIVERS_LIST_GET_ERROR: 'drivers.list.get.error',
+    DRIVER_GET_UNKNOWN: 'driver.get.unknown',
+    DRIVER_CREATE_ERROR: 'driver.create.error',
+    DRIVER_NAME_CONFLICT: 'driver.name.conflict',
+    DRIVER_CREATE_SUCCESS: 'driver.create.success',
+    DRIVER_UPDATE_SUCCESS: 'driver.update.success',
+    DRIVER_UPDATE_ERROR: 'driver.update.error',
+    DRIVER_DELETE_SUCCESS: 'driver.delete.success',
+    DRIVER_DELETE_ERROR: 'driver.delete.error',
+
     SENDERS_LIST_GET_ERROR: 'senders.list.get.error',
     SENDER_GET_UNKNOWN: 'sender.get.unknown',
     SENDER_CREATE_ERROR: 'sender.create.error',

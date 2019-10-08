@@ -13,6 +13,7 @@ const userRoutes = require('./userRoutes');
 const storageRoutes = require('./storageRoutes');
 const storageTypesRoutes = require('./storageTypesRoutes');
 const carrierRoutes = require('./carrierRoutes');
+const driverRoutes = require('./driverRoutes');
 const senderRoutes = require('./senderRoutes');
 
 router.use('/login', loginRoutes);
@@ -24,6 +25,7 @@ router.use('/users', userRoutes);
 router.use('/storages', storageRoutes);
 router.use('/storage_types', storageTypesRoutes);
 router.use('/carriers', carrierRoutes);
+router.use('/drivers', driverRoutes);
 router.use('/senders', senderRoutes);
 
 module.exports = router;
