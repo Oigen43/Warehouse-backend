@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
-require('./config/passport.js');
+require('@config/passport.js');
 const logger = require('@utils/logger');
 
 const router = require('@routing');
