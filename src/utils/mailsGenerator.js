@@ -1,6 +1,6 @@
 'use strict';
 
-const urls = require('../const/urls');
+const urls = require('@const/urls');
 
 function getRegistrationMail(name, email, token) {
     return {

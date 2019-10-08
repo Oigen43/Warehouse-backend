@@ -1,6 +1,6 @@
 'use strict';
 
-const roles = require('./roles');
+const roles = require('@const/roles');
 
 const routesPermissions = {
     companies: {

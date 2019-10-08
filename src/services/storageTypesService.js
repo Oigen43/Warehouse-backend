@@ -1,7 +1,7 @@
 'use strict';
 
-const { sequelize } = require('../server/models');
-const storageTypesRepository = require('../repositories/storageTypesRepository');
+const { sequelize } = require('@models');
+const storageTypesRepository = require('@repositories/storageTypesRepository');
 
 class StorageTypesService {
     constructor({ storageTypesRepository }) {

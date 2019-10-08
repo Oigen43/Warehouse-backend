@@ -1,13 +1,13 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const { sequelize } = require('../server/models');
-const companyRepository = require('../repositories/companyRepository');
-const userRepository = require('../repositories/userRepository');
-const userRolesRepository = require('../repositories/userRolesRepository');
-const emailService = require('../services/emailService');
-const mailsGenerator = require('../utils/mailsGenerator');
-const config = require('../config');
+const { sequelize } = require('@models');
+const companyRepository = require('@repositories/companyRepository');
+const userRepository = require('@repositories/userRepository');
+const userRolesRepository = require('@repositories/userRolesRepository');
+const emailService = require('@services/emailService');
+const mailsGenerator = require('@utils/mailsGenerator');
+const config = require('@config');
 
 class CompanyService {
     constructor({ companyRepository, userRepository, userRolesRepository, emailService }) {

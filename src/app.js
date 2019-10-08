@@ -1,5 +1,6 @@
 'use strict';
 
+require('module-alias/register');
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,9 +8,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
 require('./config/passport.js');
-const logger = require('./utils/logger');
+const logger = require('@utils/logger');
 
-const router = require('./routing');
+const router = require('@routing');
 
 const app = express();
 

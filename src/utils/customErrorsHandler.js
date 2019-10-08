@@ -1,6 +1,6 @@
 'use strict';
 
-const CustomError = require('../const/customError');
+const CustomError = require('@const/customError');
 
 module.exports = function (err, messageCode) {
     if (!(err instanceof CustomError)) {

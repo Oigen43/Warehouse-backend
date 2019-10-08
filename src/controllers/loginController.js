@@ -1,8 +1,8 @@
 'use strict';
 
-const routeUtils = require('../utils/routeUtils');
-const loginService = require('../services/loginService');
-const statusCode = require('../const/statusCode');
+const routeUtils = require('@utils/routeUtils');
+const loginService = require('@services/loginService');
+const statusCode = require('@const/statusCode');
 
 function login(req) {
     const { email, password } = req.body;

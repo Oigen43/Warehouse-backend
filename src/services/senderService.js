@@ -1,7 +1,7 @@
 'use strict';
 
-const { sequelize } = require('../server/models');
-const senderRepository = require('../repositories/senderRepository');
+const { sequelize } = require('@models');
+const senderRepository = require('@repositories/senderRepository');
 
 class SenderService {
     constructor({ senderRepository }) {

@@ -1,8 +1,8 @@
 'use strict';
 
-const routeUtils = require('../utils/routeUtils');
-const storageService = require('../services/storageService');
-const statusCode = require('../const/statusCode');
+const routeUtils = require('@utils/routeUtils');
+const storageService = require('@services/storageService');
+const statusCode = require('@const/statusCode');
 
 function get(req) {
     const { page, perPage, warehouseId } = req.query;
