@@ -1,8 +1,8 @@
 'use strict';
 
-const logger = require('../utils/logger');
-const statusCode = require('../const/statusCode');
-const CustomError = require('../const/customError');
+const logger = require('@utils/logger');
+const statusCode = require('@const/statusCode');
+const CustomError = require('@const/customError');
 
 function handleErrorResponse(err, req, res) {
     logger.error(err);

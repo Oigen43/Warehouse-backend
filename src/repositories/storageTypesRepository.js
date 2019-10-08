@@ -1,8 +1,8 @@
 'use strict';
 
-const { StorageType } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const { StorageType } = require('@models');
+const messageCode = require('@const/messageCode');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class StorageTypesRepository {
     async get(transaction) {

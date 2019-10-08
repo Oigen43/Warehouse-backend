@@ -1,11 +1,10 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
-const messageCode = require('../const/messageCode');
-const { User } = require('../server/models');
-const { Role } = require('../server/models');
-const CustomError = require('../const/customError');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const messageCode = require('@const/messageCode');
+const CustomError = require('@const/customError');
+const { User, Role } = require('@models');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class UserRepository {
     async get(data, transaction) {

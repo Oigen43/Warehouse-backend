@@ -1,9 +1,9 @@
 'use strict';
 
-const { Sender } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const CustomError = require('../const/customError');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const { Sender } = require('@models');
+const messageCode = require('@const/messageCode');
+const CustomError = require('@const/customError');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class SenderRepository {
     async get(data, transaction) {

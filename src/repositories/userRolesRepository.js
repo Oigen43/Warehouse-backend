@@ -1,9 +1,9 @@
 'use strict';
 
-const roles = require('../const/roles');
-const { RoleUser } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const roles = require('@const/roles');
+const { RoleUser } = require('@models');
+const messageCode = require('@const/messageCode');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class UserRolesRepository {
     async create(userRoles, createdUser, transaction) {

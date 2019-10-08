@@ -2,9 +2,9 @@
 
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
-const sequelize = require('../server/models').sequelize;
-const user = require('../repositories/userRepository');
-const config = require('../config');
+const { sequelize } = require('@models');
+const user = require('@repositories/userRepository');
+const config = require('@config');
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();

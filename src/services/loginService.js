@@ -1,10 +1,10 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const { sequelize } = require('../server/models');
-const config = require('../config');
-const userRepository = require('../repositories/userRepository');
-const messageCode = require('../const/messageCode');
+const { sequelize } = require('@models');
+const config = require('@config');
+const userRepository = require('@repositories/userRepository');
+const messageCode = require('@const/messageCode');
 
 class LoginService {
     constructor({ userRepository }) {
