@@ -34,6 +34,7 @@ const messageCode = {
     WAREHOUSE_GET_SUCCESS: 'warehouse.get.success',
 
     COMPANIES_LIST_GET_ERROR: 'companies.list.get.error',
+    COMPANY_GET_ERROR: 'company.get.error',
     COMPANY_GET_UNKNOWN: 'company.get.unknown',
     COMPANY_CREATE_ERROR: 'company.create.error',
     COMPANY_NAME_CONFLICT: 'company.name.conflict',
@@ -67,7 +68,7 @@ const messageCode = {
     CARRIER_DELETE_ERROR: 'carrier.delete.error',
     CARRIER_GET_SUCCESS: 'carrier.get.success',
 
-    SENDER_LIST_GET_ERROR: 'sender.list.get.error',
+    SENDERS_LIST_GET_ERROR: 'senders.list.get.error',
     SENDER_GET_UNKNOWN: 'sender.get.unknown',
     SENDER_CREATE_ERROR: 'sender.create.error',
     SENDER_NAME_CONFLICT: 'sender.name.conflict',

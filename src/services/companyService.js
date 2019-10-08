@@ -22,7 +22,8 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.companyRepository.get({ page, perPage, id }, transaction);
+            const data =
+                id ? await this.companyRepository.getById(id, transaction) : await this.companyRepository.get({ page, perPage }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

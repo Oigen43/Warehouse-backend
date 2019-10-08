@@ -8,31 +8,42 @@ const customErrorHandler = require('../utils/customErrorsHandler');
 class CompanyRepository {
     async get(data, transaction) {
         try {
-            const { page = 1, perPage = 10, id } = data;
+            const { page = 1, perPage = 10 } = data;
+            const start = (page - 1) * perPage;
+            const [companiesData, companiesLength] = await Promise.all([
+                Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Company.count({ where: { deleted: false }, raw: true, transaction })
+            ]);
 
-            if (id) {
-                const company = await Company.findAll({ where: { id, deleted: false }, raw: true, transaction });
+            return {
+                data: {
+                    companies: companiesData,
+                    companiesTotal: companiesLength
+                },
+            };
+        } catch (err) {
+            customErrorHandler.check(err, messageCode.COMPANIES_LIST_GET_ERROR);
+        }
+    }
 
-                return {
+    async getById(id, transaction) {
+        try {
+            const company = await Company.findOne({ where: { id, deleted: false }, raw: true, transaction });
+
+            if (!company) {
+                throw new CustomError({
                     data: {
-                        companies: company,
-                        companiesTotal: 1
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
                     },
-                };
-            } else {
-                const start = (page - 1) * perPage;
-                const [companiesData, companiesLength] = await Promise.all([
-                    Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-                    Company.count({ where: { deleted: false }, raw: true, transaction })
-                ]);
-
-                return {
-                    data: {
-                        companies: companiesData,
-                        companiesTotal: companiesLength
-                    },
-                };
+                });
             }
+
+            return {
+                data: {
+                    companies: company,
+                    companiesTotal: 1
+                },
+            };
         } catch (err) {
             customErrorHandler.check(err, messageCode.COMPANIES_LIST_GET_ERROR);
         }

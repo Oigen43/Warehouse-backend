@@ -22,7 +22,7 @@ class SenderRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.SENDER_LIST_GET_ERROR);
+            customErrorHandler.check(err, messageCode.SENDERS_LIST_GET_ERROR);
         }
     }
 
