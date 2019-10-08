@@ -6,6 +6,7 @@ const routesPermissions = {
     users: ['Admin'],
     storages: ['Admin', 'Company Admin'],
     carriers: ['Admin'],
+    drivers: ['Admin'],
     senders: ['Admin']
 };
 

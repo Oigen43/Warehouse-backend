@@ -26,8 +26,7 @@ class CarrierRepository {
                 data: {
                     carriers: carriersData,
                     carriersTotal: carriersLength
-                },
-                done: true
+                }
             };
         } catch (err) {
             customErrorHandler.check(err, messageCode.CARRIERS_LIST_GET_ERROR);
