@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const companyRepository = require('../repositories/companyRepository');
 const userRepository = require('../repositories/userRepository');
 const userRolesRepository = require('../repositories/userRolesRepository');

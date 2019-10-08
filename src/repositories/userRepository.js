@@ -2,8 +2,8 @@
 
 const bcrypt = require('bcrypt');
 const messageCode = require('../const/messageCode');
-const User = require('../server/models').User;
-const Role = require('../server/models').Role;
+const { User } = require('../server/models');
+const { Role } = require('../server/models');
 const CustomError = require('../const/customError');
 const mapToCustomError = require('../utils/customErrorsHandler');
 

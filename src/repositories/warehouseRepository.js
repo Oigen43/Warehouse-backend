@@ -1,6 +1,6 @@
 'use strict';
 
-const Warehouse = require('../server/models').Warehouse;
+const { Warehouse } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
 const mapToCustomError = require('../utils/customErrorsHandler');

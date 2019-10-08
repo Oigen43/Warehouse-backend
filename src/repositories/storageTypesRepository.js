@@ -1,6 +1,6 @@
 'use strict';
 
-const StorageType = require('../server/models').StorageType;
+const { StorageType } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const mapToCustomError = require('../utils/customErrorsHandler');
 

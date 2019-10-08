@@ -1,6 +1,6 @@
 'use strict';
 
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const carrierRepository = require('../repositories/carrierRepository');
 
 class CarrierService {

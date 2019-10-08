@@ -1,7 +1,7 @@
 'use strict';
 
 const roles = require('../const/roles');
-const RoleUser = require('../server/models').RoleUser;
+const { RoleUser } = require('../server/models');
 const messageCode = require('../const/messageCode');
 const mapToCustomError = require('../utils/customErrorsHandler');
 

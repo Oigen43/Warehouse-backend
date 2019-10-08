@@ -1,6 +1,6 @@
 'use strict';
 
-const sequelize = require('../server/models').sequelize;
+const { sequelize } = require('../server/models');
 const userRepository = require('../repositories/userRepository');
 const messageCode = require('../const/messageCode');
 
