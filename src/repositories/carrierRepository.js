@@ -3,7 +3,7 @@
 const Carrier = require('../server/models').Carrier;
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class CarrierRepository {
     async get(data, transaction) {
@@ -30,7 +30,7 @@ class CarrierRepository {
                 done: true
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIERS_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.CARRIERS_LIST_GET_ERROR);
         }
     }
 
@@ -65,7 +65,7 @@ class CarrierRepository {
                 createdCarrier: addedCarrier.dataValues
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_CREATE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_CREATE_ERROR);
         }
     }
 
@@ -108,7 +108,7 @@ class CarrierRepository {
                 updatedCarrier: carrier,
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_UPDATE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_UPDATE_ERROR);
         }
     }
 
@@ -135,7 +135,7 @@ class CarrierRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.CARRIER_DELETE_ERROR);
+           throw mapToCustomError(err, messageCode.CARRIER_DELETE_ERROR);
         }
     }
 }

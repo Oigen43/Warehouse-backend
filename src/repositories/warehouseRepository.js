@@ -3,7 +3,7 @@
 const Warehouse = require('../server/models').Warehouse;
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class WarehouseRepository {
     async get(data, transaction) {
@@ -22,7 +22,7 @@ class WarehouseRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
         }
     }
 
@@ -55,7 +55,7 @@ class WarehouseRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.WAREHOUSE_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.WAREHOUSE_CREATE_ERROR);
         }
     }
 
@@ -92,7 +92,7 @@ class WarehouseRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.WAREHOUSE_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.WAREHOUSE_UPDATE_ERROR);
         }
     }
 
@@ -119,7 +119,7 @@ class WarehouseRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.WAREHOUSE_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.WAREHOUSE_DELETE_ERROR);
         }
     }
 }

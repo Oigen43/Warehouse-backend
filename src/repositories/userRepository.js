@@ -5,7 +5,7 @@ const messageCode = require('../const/messageCode');
 const User = require('../server/models').User;
 const Role = require('../server/models').Role;
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class UserRepository {
     async get(data, transaction) {
@@ -24,7 +24,7 @@ class UserRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USERS_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.USERS_LIST_GET_ERROR);
         }
     }
 
@@ -70,7 +70,7 @@ class UserRepository {
                 createdUser: addedUser.dataValues
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.USER_CREATE_ERROR);
         }
     }
 
@@ -114,7 +114,7 @@ class UserRepository {
                 updatedUser: user
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.USER_UPDATE_ERROR);
         }
     }
 
@@ -141,7 +141,7 @@ class UserRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.USER_DELETE_ERROR);
         }
     }
 
@@ -175,7 +175,7 @@ class UserRepository {
 
             return user;
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_FIND_ERROR);
+            throw mapToCustomError(err, messageCode.USER_FIND_ERROR);
         }
     }
 
@@ -199,7 +199,7 @@ class UserRepository {
 
             return rolesList.roles.map(item => item.title);
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_ROLES_GET_ERROR);
+            throw mapToCustomError(err, messageCode.USER_ROLES_GET_ERROR);
         }
     }
 
@@ -217,7 +217,7 @@ class UserRepository {
 
             return user;
         } catch (err) {
-            customErrorHandler.check(err, messageCode.USER_GET_ERROR);
+            throw mapToCustomError(err, messageCode.USER_GET_ERROR);
         }
     }
 

@@ -3,7 +3,7 @@
 const Sender = require('../server/models').Sender;
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class SenderRepository {
     async get(data, transaction) {
@@ -22,7 +22,7 @@ class SenderRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.SENDERS_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.SENDERS_LIST_GET_ERROR);
         }
     }
 
@@ -54,7 +54,7 @@ class SenderRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.SENDER_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.SENDER_CREATE_ERROR);
         }
     }
 
@@ -91,7 +91,7 @@ class SenderRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.SENDER_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.SENDER_UPDATE_ERROR);
         }
     }
 
@@ -118,7 +118,7 @@ class SenderRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.SENDER_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.SENDER_DELETE_ERROR);
         }
     }
 }

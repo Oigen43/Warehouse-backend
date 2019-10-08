@@ -4,7 +4,7 @@ const Storage = require('../server/models').Storage;
 const StorageType = require('../server/models').StorageType;
 const messageCode = require('../const/messageCode');
 const CustomError = require('../const/customError');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const mapToCustomError = require('../utils/customErrorsHandler');
 
 class StorageRepository {
     async get(data, transaction) {
@@ -23,7 +23,7 @@ class StorageRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.STORAGES_LIST_GET_ERROR);
+            throw mapToCustomError(err, messageCode.STORAGES_LIST_GET_ERROR);
         }
     }
 
@@ -44,7 +44,7 @@ class StorageRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.STORAGE_CREATE_ERROR);
+            throw mapToCustomError(err, messageCode.STORAGE_CREATE_ERROR);
         }
     }
 
@@ -68,7 +68,7 @@ class StorageRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.STORAGE_UPDATE_ERROR);
+            throw mapToCustomError(err, messageCode.STORAGE_UPDATE_ERROR);
         }
     }
 
@@ -92,7 +92,7 @@ class StorageRepository {
                 }
             };
         } catch (err) {
-            customErrorHandler.check(err, messageCode.STORAGE_DELETE_ERROR);
+            throw mapToCustomError(err, messageCode.STORAGE_DELETE_ERROR);
         }
     }
 }
