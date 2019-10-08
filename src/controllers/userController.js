@@ -1,9 +1,9 @@
 'use strict';
 
-const routeUtils = require('../utils/routeUtils');
-const userService = require('../services/userService');
-const statusCode = require('../const/statusCode');
-const filter = require('../utils/filter');
+const routeUtils = require('@utils/routeUtils');
+const filter = require('@utils/filter');
+const userService = require('@services/userService');
+const statusCode = require('@const/statusCode');
 
 function get(req) {
     const { page, perPage } = req.query;

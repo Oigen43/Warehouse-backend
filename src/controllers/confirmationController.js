@@ -1,9 +1,9 @@
 'use strict';
 
-const routeUtils = require('../utils/routeUtils');
-const confirmationService = require('../services/confirmationService');
-const statusCode = require('../const/statusCode');
-const filter = require('../utils/filter');
+const routeUtils = require('@utils/routeUtils');
+const filter = require('@utils/filter');
+const confirmationService = require('@services/confirmationService');
+const statusCode = require('@const/statusCode');
 
 function getForm(req) {
     const { id } = req.user;

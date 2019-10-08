@@ -1,9 +1,9 @@
 'use strict';
 
-const { Carrier } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const CustomError = require('../const/customError');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const { Carrier } = require('@models');
+const messageCode = require('@const/messageCode');
+const CustomError = require('@const/customError');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class CarrierRepository {
     async get(data, transaction) {
@@ -21,7 +21,6 @@ class CarrierRepository {
                 }),
                 Carrier.count({where: {deleted: false}, raw: true, transaction})
             ]);
-
             return {
                 data: {
                     carriers: carriersData,

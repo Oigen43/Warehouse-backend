@@ -1,9 +1,9 @@
 'use strict';
 
-const { Warehouse } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const CustomError = require('../const/customError');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const { Warehouse } = require('@models');
+const messageCode = require('@const/messageCode');
+const CustomError = require('@const/customError');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class WarehouseRepository {
     async get(data, transaction) {

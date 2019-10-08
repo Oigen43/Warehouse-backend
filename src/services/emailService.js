@@ -1,8 +1,8 @@
 'use strict';
 
 const nodemailer = require('nodemailer');
-const messageCode = require('../const/messageCode');
-const customErrorHandler = require('../utils/customErrorsHandler');
+const messageCode = require('@const/messageCode');
+const customErrorHandler = require('@utils/customErrorsHandler');
 
 class EmailService {
     async sendMail(message) {

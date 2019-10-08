@@ -1,9 +1,9 @@
 'use strict';
 
-const { Driver } = require('../server/models');
-const messageCode = require('../const/messageCode');
-const CustomError = require('../const/customError');
-const mapToCustomError = require('../utils/customErrorsHandler');
+const { Driver } = require('@models');
+const messageCode = require('@const/messageCode');
+const CustomError = require('@const/customError');
+const mapToCustomError = require('@utils/customErrorsHandler');
 
 class DriverRepository {
     async get(data, transaction) {

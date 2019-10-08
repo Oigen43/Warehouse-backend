@@ -1,8 +1,8 @@
 'use strict';
 
-const { sequelize } = require('../server/models');
-const userRepository = require('../repositories/userRepository');
-const userRolesRepository = require('../repositories/userRolesRepository');
+const { sequelize } = require('@models');
+const userRepository = require('@repositories/userRepository');
+const userRolesRepository = require('@repositories/userRolesRepository');
 
 class UserService {
     constructor({ userRepository, userRolesRepository }) {
