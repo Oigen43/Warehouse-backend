@@ -3,10 +3,10 @@
 const express = require('express');
 const expressJoi = require('express-joi-validator');
 const passport = require('passport');
-const carrierQuerySchema = require('./ValidatorSchema');
-const carrierController = require('../../controllers/carrierController');
-const permissionsCheck = require('../../utils/permissionsValidator');
-const routesPermissions = require('../../const/routesPermissions');
+const carrierQuerySchema = require('@routing/carrierRoutes/ValidatorSchema');
+const carrierController = require('@controllers/carrierController');
+const permissionsCheck = require('@utils/permissionsValidator');
+const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 

@@ -8,10 +8,13 @@ module.exports = (sequelize, DataTypes) => {
     deleted: DataTypes.BOOLEAN
   }, {});
   Carrier.associate = function(models) {
-    // associations can be defined here
     Carrier.hasMany(models.Driver, {
       foreignKey: 'carrierId',
       as: 'drivers'
+    });
+    Carrier.hasMany(models.Transport, {
+      foreignKey: 'carrierId',
+      as: 'transport'
     });
   };
   return Carrier;

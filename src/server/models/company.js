@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     deleted: DataTypes.BOOLEAN
   }, {});
   Company.associate = function(models) {
-    // associations can be defined here
     Company.hasMany(models.Warehouse, {
       foreignKey: 'companyId',
       as: 'warehouses'

@@ -31,7 +31,7 @@ class StorageRepository {
             const storageTemplate = {
                 storageCapacity: newStorage.storageCapacity,
                 warehouseId: newStorage.warehouseInfo.id,
-                storageTypeId: newStorage.storageType,
+                storageTypeId: newStorage.storageType.id,
                 deleted: false,
             };
 
@@ -59,7 +59,7 @@ class StorageRepository {
                 });
             }
 
-            await Storage.update({ storageCapacity: storage.storageCapacity, storageTypeId: storage.storageType }, { where: {id: storage.id}, transaction });
+            await Storage.update({ storageCapacity: storage.storageCapacity, storageTypeId: storage.storageType.id }, { where: {id: storage.id}, transaction });
 
             return {
                 data: {

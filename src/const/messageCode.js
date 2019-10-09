@@ -89,6 +89,17 @@ const messageCode = {
     SENDER_DELETE_ERROR: 'sender.delete.error',
     SENDER_GET_SUCCESS: 'sender.get.success',
 
+    TRANSPORT_LIST_GET_ERROR: 'transport.list.get.error',
+    TRANSPORT_GET_UNKNOWN: 'transport.get.unknown',
+    TRANSPORT_CREATE_ERROR: 'transport.create.error',
+    TRANSPORT_NAME_CONFLICT: 'transport.name.conflict',
+    TRANSPORT_CREATE_SUCCESS: 'transport.create.success',
+    TRANSPORT_UPDATE_SUCCESS: 'transport.update.success',
+    TRANSPORT_UPDATE_ERROR: 'transport.update.error',
+    TRANSPORT_DELETE_SUCCESS: 'transport.delete.success',
+    TRANSPORT_DELETE_ERROR: 'transport.delete.error',
+    TRANSPORT_GET_SUCCESS: 'transport.get.success',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',
