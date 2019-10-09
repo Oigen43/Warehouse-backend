@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     senderName: DataTypes.STRING,
     upn: DataTypes.STRING,
     countryCode: DataTypes.STRING,
-    date: DataTypes.STRING,
+    date: DataTypes.DATE,
     deleted: DataTypes.BOOLEAN
   }, {});
   Sender.associate = function(models) {

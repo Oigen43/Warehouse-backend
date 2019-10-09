@@ -42,7 +42,7 @@ class SenderRepository {
                 senderName: newSender.senderName,
                 upn: newSender.upn,
                 countryCode: newSender.countryCode,
-                date: newSender.date,
+                date: new Date(),
                 deleted: false,
             };
 
@@ -81,7 +81,7 @@ class SenderRepository {
             }
 
             await Sender.update(
-                { senderName: sender.senderName, upn: sender.upn, countryCode: sender.countryCode, date: sender.date },
+                { senderName: sender.senderName, upn: sender.upn, countryCode: sender.countryCode },
                 { where: { id: sender.id }, transaction }
             );
 

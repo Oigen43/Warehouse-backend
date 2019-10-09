@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       deleted: {
         type: Sequelize.BOOLEAN
