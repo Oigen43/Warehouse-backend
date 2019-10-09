@@ -42,6 +42,12 @@ const routesPermissions = {
         update: [roles.SYSTEM_ADMIN_ROLE],
         delete: [roles.SYSTEM_ADMIN_ROLE]
     },
+    transport: {
+        create: [roles.SYSTEM_ADMIN_ROLE],
+        read: [roles.SYSTEM_ADMIN_ROLE],
+        update: [roles.SYSTEM_ADMIN_ROLE],
+        delete: [roles.SYSTEM_ADMIN_ROLE]
+    },
     users: {
         create: [roles.SYSTEM_ADMIN_ROLE],
         read: [roles.SYSTEM_ADMIN_ROLE],

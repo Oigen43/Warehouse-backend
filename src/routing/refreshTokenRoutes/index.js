@@ -2,7 +2,7 @@
 
 const express = require('express');
 const passport = require('passport');
-const refreshTokenController = require('../../controllers/refreshTokenController');
+const refreshTokenController = require('@controllers/refreshTokenController');
 
 const router = express.Router();
 

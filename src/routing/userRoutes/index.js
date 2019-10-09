@@ -3,10 +3,10 @@
 const express = require('express');
 const expressJoi = require('express-joi-validator');
 const passport = require('passport');
-const userQuerySchema = require('./ValidatorSchema');
-const userController = require('../../controllers/userController');
-const permissionsCheck = require('../../utils/permissionsValidator');
-const routesPermissions = require('../../const/routesPermissions');
+const userQuerySchema = require('@routing/userRoutes/ValidatorSchema');
+const userController = require('@controllers/userController');
+const permissionsCheck = require('@utils/permissionsValidator');
+const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 
