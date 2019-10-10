@@ -4,7 +4,7 @@ const urls = require('@const/urls');
 
 function getRegistrationMail(name, email, token) {
     return {
-        from: 'WarehouseOnline000@gmail.com',
+        from: 'WarehouseOnline@gmail.com',
         to: email,
         subject: `💖Welcome to Warehouse Online! ${name}, please complete your registration💖`,
         html:
