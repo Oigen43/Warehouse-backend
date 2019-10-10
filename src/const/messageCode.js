@@ -89,6 +89,17 @@ const messageCode = {
     SENDER_DELETE_ERROR: 'sender.delete.error',
     SENDER_GET_SUCCESS: 'sender.get.success',
 
+    RECEIVERS_LIST_GET_ERROR: 'receivers.list.get.error',
+    RECEIVER_GET_UNKNOWN: 'receiver.get.unknown',
+    RECEIVER_CREATE_ERROR: 'receiver.create.error',
+    RECEIVER_NAME_CONFLICT: 'receiver.name.conflict',
+    RECEIVER_CREATE_SUCCESS: 'receiver.create.success',
+    RECEIVER_UPDATE_SUCCESS: 'receiver.update.success',
+    RECEIVER_UPDATE_ERROR: 'receiver.update.error',
+    RECEIVER_DELETE_SUCCESS: 'receiver.delete.success',
+    RECEIVERR_DELETE_ERROR: 'receiver.delete.error',
+    RECEIVER_GET_SUCCESS: 'receiver.get.success',
+
     TRANSPORT_LIST_GET_ERROR: 'transport.list.get.error',
     TRANSPORT_GET_UNKNOWN: 'transport.get.unknown',
     TRANSPORT_CREATE_ERROR: 'transport.create.error',
