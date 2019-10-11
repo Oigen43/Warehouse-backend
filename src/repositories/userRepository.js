@@ -27,6 +27,28 @@ class UserRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const user = await User.findOne({ where: { id, deleted: false }, include: [{ model: Role, through: 'UserRoles', as: 'roles', }], transaction });
+
+            if (!user) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.USER_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    user: user
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.USERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newUser, transaction) {
         try {
             let hashedPassword;

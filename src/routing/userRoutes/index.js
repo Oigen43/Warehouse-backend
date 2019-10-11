@@ -10,6 +10,8 @@ const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 
+router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.users.update), userController.getById);
+
 router.route('/')
     .get(expressJoi(userQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.users.read), userController.get)
     .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.users.create), userController.create)

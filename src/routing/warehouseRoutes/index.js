@@ -10,6 +10,8 @@ const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 
+router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.warehouses.update), warehouseController.getById);
+
 router.route('/')
     .get(expressJoi(warehouseQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.warehouses.read), warehouseController.get)
     .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.warehouses.create), warehouseController.create)

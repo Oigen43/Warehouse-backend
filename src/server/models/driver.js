@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     passportNumber: DataTypes.STRING,
     issuingDate: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN,
-    carrierId: DataTypes.INTEGER,
-    carrierName: DataTypes.STRING
+    carrierId: DataTypes.INTEGER
   }, {});
   Driver.associate = function(models) {
     Driver.belongsTo(models.Carrier, {

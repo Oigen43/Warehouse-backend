@@ -9,6 +9,11 @@ function get(req) {
     return companyService.get(page, perPage, req.user.companyId);
 }
 
+function getById(req) {
+    const { id } = req.params;
+    return companyService.getById(id);
+}
+
 function create(req) {
     const { company, user } = req.body;
     return companyService.create(company, user);
@@ -28,5 +33,6 @@ module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
 };

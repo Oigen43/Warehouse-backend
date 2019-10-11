@@ -5,7 +5,6 @@ module.exports = {
         return queryInterface.bulkInsert('Warehouses', [
             {
                 warehouseName: 'PLASMOX',
-                companyName: 'ZANILLA',
                 address: 'Lenox Road, Germanton, Puerto Rico, 48',
                 active: true,
                 companyId: 1,
@@ -15,7 +14,6 @@ module.exports = {
             },
             {
                 warehouseName: 'GRACKER',
-                companyName: 'NETPLAX',
                 address: 'Williamsburg Street, Crucible, Kentucky, 55',
                 active: true,
                 companyId: 2,

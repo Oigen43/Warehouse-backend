@@ -26,6 +26,28 @@ class ReceiverRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const receiver = await Receiver.findOne({ where: { id, deleted: false }, transaction });
+
+            if (!receiver) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.RECEIVER_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    receiver: receiver
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.RECEIVERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newReceiver, transaction) {
         try {
             const receiver = await Receiver.findOne({ where: { receiverName: newReceiver.receiverName }, raw: true, transaction });

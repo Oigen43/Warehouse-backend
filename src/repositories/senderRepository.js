@@ -26,6 +26,28 @@ class SenderRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const sender = await Sender.findOne({ where: { id, deleted: false }, transaction });
+
+            if (!sender) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.SENDER_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    sender: sender
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.SENDERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newSender, transaction) {
         try {
             const sender = await Sender.findOne({ where: { senderName: newSender.senderName }, raw: true, transaction });
