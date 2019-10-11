@@ -32,6 +32,28 @@ class CarrierRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const carrier = await Carrier.findOne({ where: { id, deleted: false }, transaction });
+
+            if (!carrier) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.CARRIER_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    carrier: carrier
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.CARRIERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newCarrier, transaction) {
         try {
             const carrier = await Carrier.findOne({where: {name: newCarrier.name}, raw: true, transaction});

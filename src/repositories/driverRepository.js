@@ -33,6 +33,28 @@ class DriverRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const driver = await Driver.findOne({ where: { id, deleted: false }, transaction });
+
+            if (!driver) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.DRIVER_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    driver: driver
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.DRIVERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newDriver, transaction) {
         try {
             const driver = await Driver.findOne({where: {firstName: newDriver.firstName}, raw: true, transaction});
@@ -50,8 +72,7 @@ class DriverRepository {
                 surname: newDriver.surname,
                 passportNumber: newDriver.passportNumber,
                 issuingDate: newDriver.issuingDate,
-                carrierName: newDriver.carrierInfo.carrierName,
-                carrierId: newDriver.carrierInfo.id,
+                carrierId: newDriver.carrierId,
                 deleted: false
             };
 

@@ -26,11 +26,33 @@ class StorageRepository {
         }
     }
 
+    async getById(id, transaction) {
+        try {
+            const storage = await Storage.findOne({ where: { id, deleted: false }, include: { model: StorageType }, transaction });
+
+            if (!storage) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.STORAGE_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    storage: storage.dataValues
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.STORAGES_LIST_GET_ERROR);
+        }
+    }
+
     async create(newStorage, transaction) {
         try {
             const storageTemplate = {
                 storageCapacity: newStorage.storageCapacity,
-                warehouseId: newStorage.warehouseInfo.id,
+                warehouseId: newStorage.warehouseId,
                 storageTypeId: newStorage.storageType.id,
                 deleted: false,
             };

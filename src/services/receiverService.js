@@ -24,6 +24,22 @@ class ReceiverService {
         }
     }
 
+    async getById(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.receiverRepository.getById(id, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
     async create(receiver) {
         let transaction;
 

@@ -10,7 +10,6 @@ module.exports = {
         issuingDate: '1998-07-10',
         deleted: false,
         carrierId: 1,
-        carrierName: 'UPC Inc.',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -21,7 +20,6 @@ module.exports = {
         issuingDate: '2000-05-11',
         deleted: false,
         carrierId: 1,
-        carrierName: 'UPC Inc.',
         createdAt: new Date(),
         updatedAt: new Date()
       }

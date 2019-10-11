@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     transportType: DataTypes.STRING,
     transportNumber: DataTypes.STRING,
     carrierId: DataTypes.INTEGER,
-    carrierName: DataTypes.STRING,
     date: DataTypes.DATE,
     deleted: DataTypes.BOOLEAN
   }, {});

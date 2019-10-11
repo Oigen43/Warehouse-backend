@@ -1,6 +1,6 @@
 'use strict';
 
-const { Transport } = require('@models');
+const { Transport, Carrier } = require('@models');
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -11,7 +11,7 @@ class TransportRepository {
             const { page = 1, perPage = 10, carrierId } = data;
             const start = (page - 1) * perPage;
             const [transportData, transportLength] = await Promise.all([
-                Transport.findAll({ where: { deleted: false, carrierId: carrierId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Transport.findAll({ where: { deleted: false, carrierId: carrierId }, include: { model: Carrier }, limit: perPage, offset: start, order: ['id'], transaction }),
                 Transport.count({ where: { deleted: false, carrierId: carrierId }, raw: true, transaction })
             ]);
 
@@ -20,6 +20,28 @@ class TransportRepository {
                     transport: transportData,
                     transportTotal: transportLength
                 }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.TRANSPORT_LIST_GET_ERROR);
+        }
+    }
+
+    async getById(id, transaction) {
+        try {
+            const transport = await Transport.findOne({ where: { id, deleted: false }, transaction });
+
+            if (!transport) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.TRANSPORT_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    transport: transport
+                },
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.TRANSPORT_LIST_GET_ERROR);
@@ -41,8 +63,7 @@ class TransportRepository {
             const transportTemplate = {
                 transportType: newTransport.transportType,
                 transportNumber: newTransport.transportNumber,
-                carrierId: newTransport.carrierInfo.id,
-                carrierName: newTransport.carrierInfo.name,
+                carrierId: newTransport.carrierId,
                 date: new Date(),
                 deleted: false,
             };

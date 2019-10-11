@@ -24,6 +24,22 @@ class WarehouseService {
         }
     }
 
+    async getById(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.warehouseRepository.getById(id, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
     async create(warehouse) {
         let transaction;
 

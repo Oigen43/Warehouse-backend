@@ -11,9 +11,6 @@ module.exports = {
       warehouseName: {
         type: Sequelize.STRING
       },
-      companyName: {
-        type: Sequelize.STRING
-      },
       address: {
         type: Sequelize.STRING
       },

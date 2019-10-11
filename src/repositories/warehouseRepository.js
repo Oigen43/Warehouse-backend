@@ -1,6 +1,6 @@
 'use strict';
 
-const { Warehouse } = require('@models');
+const { Warehouse, Company } = require('@models');
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -11,7 +11,7 @@ class WarehouseRepository {
             const { page = 1, perPage = 10, companyId } = data;
             const start = (page - 1) * perPage;
             const [warehousesData, warehousesLength] = await Promise.all([
-                Warehouse.findAll({ where: { deleted: false, companyId: companyId }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Warehouse.findAll({ where: { deleted: false, companyId: companyId }, include: { model: Company }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
                 Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
             ]);
 
@@ -20,6 +20,28 @@ class WarehouseRepository {
                     warehouses: warehousesData,
                     warehousesTotal: warehousesLength
                 }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
+        }
+    }
+
+    async getById(id, transaction) {
+        try {
+            const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, raw: true, transaction });
+
+            if (!warehouse) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.WAREHOUSE_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    warehouse: warehouse
+                },
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
@@ -40,8 +62,7 @@ class WarehouseRepository {
 
             const warehouseTemplate = {
                 warehouseName: newWarehouse.warehouseName,
-                companyId: newWarehouse.companyInfo.id,
-                companyName: newWarehouse.companyInfo.companyName,
+                companyId: newWarehouse.companyId,
                 address: newWarehouse.address,
                 active: true,
                 deleted: false,

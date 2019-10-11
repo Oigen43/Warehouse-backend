@@ -2,7 +2,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Warehouse = sequelize.define('Warehouse', {
     warehouseName: DataTypes.STRING,
-    companyName: DataTypes.STRING,
     address: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
     companyId: DataTypes.INTEGER,
