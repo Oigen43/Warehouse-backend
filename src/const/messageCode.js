@@ -111,6 +111,17 @@ const messageCode = {
     TRANSPORT_DELETE_ERROR: 'transport.delete.error',
     TRANSPORT_GET_SUCCESS: 'transport.get.success',
 
+    TTN_LIST_GET_ERROR: 'ttn.list.get.error',
+    TTN_GET_UNKNOWN: 'ttn.get.unknown',
+    TTN_CREATE_ERROR: 'ttn.create.error',
+    TTN_NAME_CONFLICT: 'ttn.name.conflict',
+    TTN_CREATE_SUCCESS: 'ttn.create.success',
+    TTN_UPDATE_SUCCESS: 'ttn.update.success',
+    TTN_UPDATE_ERROR: 'ttn.update.error',
+    TTN_DELETE_SUCCESS: 'ttn.delete.success',
+    TTN_DELETE_ERROR: 'ttn.delete.error',
+    TTN_GET_SUCCESS: 'ttn.get.success',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',
