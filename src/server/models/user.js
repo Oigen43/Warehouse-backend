@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN,
     companyId: DataTypes.INTEGER,
+    warehouseId: DataTypes.INTEGER,
     confirmationToken: DataTypes.STRING,
     loggedAt: DataTypes.DATE
   }, {});

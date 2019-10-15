@@ -14,6 +14,7 @@ module.exports = {
                 password: '$2a$08$YZDkx3blMJBcKBZ8HYlxyu/yIuCqkpLPfQiIDGxPnTLwAP4hgqhg2',
                 deleted: false,
                 companyId: null,
+                warehouseId: null,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
@@ -28,6 +29,7 @@ module.exports = {
                 password: '$2a$08$YZDkx3blMJBcKBZ8HYlxyu/yIuCqkpLPfQiIDGxPnTLwAP4hgqhg2',
                 deleted: false,
                 companyId: 1,
+                warehouseId: null,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },

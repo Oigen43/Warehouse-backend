@@ -12,6 +12,21 @@ module.exports = {
                 title: 'Company Admin',
                 createdAt: new Date(),
                 updatedAt: new Date()
+            },
+            {
+                title: 'Warehouse Dispatcher',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                title: 'Warehouse Controller',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                title: 'Warehouse Manager',
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ], {});
     },
