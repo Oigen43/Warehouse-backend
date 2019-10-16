@@ -82,7 +82,7 @@ class UserService {
             transaction = await sequelize.transaction();
             const { data, updatedUser } = await this.userRepository.update(user.data, transaction);
             await this.userRolesRepository.destroy(updatedUser, transaction);
-            await this.userRolesRepository.create(user.roles, updatedUser, transaction);
+            await this.userRolesRepository.create(user.selectedRoles, updatedUser, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
