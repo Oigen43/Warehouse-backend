@@ -8,13 +8,12 @@ class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    async get(page, perPage, companyId, status) {
+    async get(page, perPage, companyId) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = status === 'getNames' ? await this.warehouseRepository.getNames({ companyId: companyId }, transaction)
-                : await this.warehouseRepository.get({ page: page, perPage: perPage, companyId: companyId }, transaction);
+            const data = await this.warehouseRepository.get({ page: page, perPage: perPage, companyId: companyId }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

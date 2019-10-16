@@ -26,22 +26,6 @@ class WarehouseRepository {
         }
     }
 
-    async getNames(data, transaction) {
-        try {
-            const { companyId } = data;
-            const warehouses = await Warehouse.findAll({ attributes: ['id'], where: { deleted: false, companyId: companyId }, raw: true, transaction });
-            const warehousesId = warehouses.map(item => item.id);
-
-            return {
-                data: {
-                    warehouses: warehousesId,
-                }
-            };
-        } catch (err) {
-            throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
-        }
-    }
-
     async getById(id, transaction) {
         try {
             const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, raw: true, transaction });
