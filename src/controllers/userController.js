@@ -15,12 +15,6 @@ function getById(req) {
     return userService.getById(id);
 }
 
-function getByCompanyId(req) {
-    const { page, perPage } = req.query;
-    const { companyId } = req.params;
-    return userService.getByCompanyId(page, perPage, companyId);
-}
-
 function create(req) {
     const { user } = req.body;
     return userService.create(user);
@@ -42,6 +36,5 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
-    //getByCompanyId: routeUtils.handleResponse(getByCompanyId, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
 };

@@ -11,6 +11,10 @@ function get(req) {
 
 function getById(req) {
     const { id } = req.params;
+    if (id === 'ids') {
+        const { companyId } = req.query;
+        return warehouseService.getIds(companyId);
+    }
     return warehouseService.getById(id);
 }
 

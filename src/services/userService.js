@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { sequelize } = require('@models');
 const userRepository = require('@repositories/userRepository');
 const userRolesRepository = require('@repositories/userRolesRepository');
-const userRoles = require('@const/roles');
 const emailService = require('@services/emailService');
 const mailsGenerator = require('@utils/mailsGenerator');
 const config = require('@config');
