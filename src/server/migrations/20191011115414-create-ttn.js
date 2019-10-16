@@ -11,6 +11,9 @@ module.exports = {
       number: {
         type: Sequelize.INTEGER
       },
+      dischargeDate: {
+        type: Sequelize.DATE
+      },
       registrationDate: {
         type: Sequelize.DATE
       },
@@ -23,8 +26,26 @@ module.exports = {
       carrier: {
         type: Sequelize.STRING
       },
-      sender_receiver: {
+      sender: {
         type: Sequelize.STRING
+      },
+      transport: {
+        type: Sequelize.STRING
+      },
+      driver: {
+        type: Sequelize.STRING
+      },
+      dispatcher: {
+        type: Sequelize.STRING
+      },
+      warehouseId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Warehouses',
+          key: 'id',
+          as: 'warehouseId'
+        }
       },
       deleted: {
         type: Sequelize.BOOLEAN
@@ -37,6 +58,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {

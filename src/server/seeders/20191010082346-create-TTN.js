@@ -9,7 +9,7 @@ module.exports = {
         type: 'incoming',
         status: 'registered',
         carrier: 'UPC Inc.',
-        sender_receiver: 'COLLAIRE',
+        sender: 'COLLAIRE',
         deleted: false,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -20,7 +20,7 @@ module.exports = {
         type: 'incoming',
         status: 'confirmed',
         carrier: 'FedEx Corp.',
-        sender_receiver: 'ORONOKO',
+        sender: 'ORONOKO',
         deleted: false,
         createdAt: new Date(),
         updatedAt: new Date()

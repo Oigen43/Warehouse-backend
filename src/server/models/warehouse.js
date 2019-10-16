@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'warehouseId',
       as: 'storages'
     });
+    Warehouse.hasMany(models.TTN, {
+      foreignKey: 'warehouseId',
+      as: 'TTN'
+    });
   };
   return Warehouse;
 };
