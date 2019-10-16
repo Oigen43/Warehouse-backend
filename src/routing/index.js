@@ -18,6 +18,7 @@ const senderRoutes = require('@routing/senderRoutes');
 const receiverRoutes = require('@routing/receiverRoutes');
 const transportRoutes = require('@routing/transportRoutes');
 const TTNRoutes = require('@routing/TTNRoutes');
+const goodsRoutes = require('@routing/goodsRoutes');
 
 router.use('/login', loginRoutes);
 router.use('/confirmation', confirmationRoutes);
@@ -33,5 +34,6 @@ router.use('/senders', senderRoutes);
 router.use('/receivers', receiverRoutes);
 router.use('/transport', transportRoutes);
 router.use('/ttn', TTNRoutes);
+router.use('/goods', goodsRoutes);
 
 module.exports = router;

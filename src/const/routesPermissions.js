@@ -59,6 +59,9 @@ const routesPermissions = {
         read: [roles.SYSTEM_ADMIN_ROLE],
         update: [roles.SYSTEM_ADMIN_ROLE],
         delete: [roles.SYSTEM_ADMIN_ROLE]
+    },
+    goods: {
+        read: [roles.SYSTEM_ADMIN_ROLE]
     }
 };
 

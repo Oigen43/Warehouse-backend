@@ -122,6 +122,9 @@ const messageCode = {
     TTN_DELETE_ERROR: 'ttn.delete.error',
     TTN_GET_SUCCESS: 'ttn.get.success',
 
+    GOODS_LIST_GET_ERROR: 'goods.list.get.error',
+    GOODS_GET_UNKNOWN: 'goods.get.unknown',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',
