@@ -49,6 +49,25 @@ class UserRepository {
         }
     }
 
+    async getByCompanyId(data, transaction) {
+        try {
+            const {page = 1, perPage = 10, companyId} = data;
+            const start = (page - 1) * perPage;
+            const [usersData, usersLength] = await Promise.all([
+                User.findAll({ where: { companyId: companyId, deleted: false }, include: [{ model: Role, through: 'UserRoles', as: 'roles', }], limit: perPage, offset: start, order: ['id'], transaction }),
+                User.count({ where: { companyId: companyId, deleted: false }, raw: true, transaction })
+            ]);
+            return {
+                data: {
+                    users: usersData,
+                    usersTotal: usersLength
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.USERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newUser, transaction) {
         try {
             let hashedPassword;
@@ -77,6 +96,7 @@ class UserRepository {
                 password: hashedPassword || null,
                 deleted: false,
                 companyId: newUser.companyId || null,
+                warehouseId: newUser.warehouseId || null,
                 confirmationToken: newUser.confirmationToken || null
             };
 

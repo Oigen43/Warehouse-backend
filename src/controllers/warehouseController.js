@@ -5,13 +5,18 @@ const warehouseService = require('@services/warehouseService');
 const statusCode = require('@const/statusCode');
 
 function get(req) {
-    const { page, perPage, companyId } = req.query;
+    const { page, perPage, companyId} = req.query;
     return warehouseService.get(page, perPage, companyId);
 }
 
 function getById(req) {
     const { id } = req.params;
     return warehouseService.getById(id);
+}
+
+function getIds(req) {
+    const { companyId } = req.query;
+    return warehouseService.getIds(companyId);
 }
 
 function create(req) {
@@ -34,5 +39,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getIds: routeUtils.handleResponse(getIds, statusCode.OK, statusCode.NOT_FOUND)
 };
