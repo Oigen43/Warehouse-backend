@@ -71,8 +71,8 @@ class TTNRepository {
                 description: newTTN.description,
                 type: newTTN.type,
                 status: newTTN.status,
-                dispatcher: newTTN.dispatcher,
-                warehouseId: newTTN.warehouse.id,
+                dispatcherId: newTTN.dispatcher,
+                warehouseId: newTTN.warehouse,
                 deleted: false
             };
 

@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       dischargeDate: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       registrationDate: {
         type: Sequelize.DATE
@@ -38,8 +38,8 @@ module.exports = {
       driver: {
         type: Sequelize.STRING
       },
-      dispatcher: {
-        type: Sequelize.STRING
+      dispatcherId: {
+        type: Sequelize.INTEGER
       },
       warehouseId: {
         type: Sequelize.INTEGER,

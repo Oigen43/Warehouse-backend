@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const TTN = sequelize.define('TTN', {
     number: DataTypes.INTEGER,
-    dischargeDate: DataTypes.DATE,
+    dischargeDate: DataTypes.STRING,
     registrationDate: DataTypes.DATE,
     type: DataTypes.STRING,
     status: DataTypes.STRING,
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     carrier: DataTypes.STRING,
     transport: DataTypes.STRING,
     driver: DataTypes.STRING,
-    dispatcher: DataTypes.STRING,
+    dispatcherId: DataTypes.INTEGER,
     warehouseId: DataTypes.INTEGER,
     deleted: DataTypes.BOOLEAN
   }, {});
