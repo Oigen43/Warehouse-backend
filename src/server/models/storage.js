@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'storageTypeId'
     });
     Storage.belongsToMany(models.Goods, {
-      through: 'GoodsStorages',
+      through: 'GoodsStorage',
       as: 'goods',
       foreignKey: 'storageId'
     });

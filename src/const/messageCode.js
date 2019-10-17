@@ -125,6 +125,12 @@ const messageCode = {
     GOODS_LIST_GET_ERROR: 'goods.list.get.error',
     GOODS_GET_UNKNOWN: 'goods.get.unknown',
 
+    GOODS_STORAGE_CREATE_SUCCESS: 'goods.storage.create.success',
+    GOODS_STORAGE_CREATE_ERROR: 'goods.storage.create.error',
+    GOODS_STORAGE_GET_UNKNOWN: 'goods.storage.get.unknown',
+    GOODS_STORAGE_UPDATE_SUCCESS: 'goods.storage.update.success',
+    GOODS_STORAGE_UPDATE_ERROR: 'goods.storage.update.error',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',

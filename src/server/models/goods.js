@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Goods.associate = function(models) {
     Goods.belongsToMany(models.Storage, {
-      through: 'GoodsStorages',
-      as: 'storages',
+      through: 'GoodsStorage',
+      as: 'storage',
       foreignKey: 'goodsId'
     });
   };

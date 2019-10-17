@@ -8,7 +8,7 @@ const mapToCustomError = require('@utils/customErrorsHandler');
 class GoodsRepository {
     async get(transaction) {
         try {
-            const goodsData = await Goods.findAll({ include: [{ model: Storage, through: 'GoodsStorages', as: 'storages', }], order: ['id'], transaction });
+            const goodsData = await Goods.findAll({ include: [{ model: Storage, through: 'GoodsStorage', as: 'storage', }], order: ['id'], transaction });
 
             return {
                 data: {
