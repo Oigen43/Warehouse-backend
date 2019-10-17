@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     registrationDate: DataTypes.DATE,
     type: DataTypes.STRING,
     status: DataTypes.STRING,
+    description: DataTypes.STRING,
     sender: DataTypes.STRING,
     carrier: DataTypes.STRING,
     transport: DataTypes.STRING,
@@ -19,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'warehouseId',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
+    });
+    TTN.hasMany(models.Goods, {
+      foreignKey: 'TTNId',
+      as: 'Goods'
     });
   };
   return TTN;

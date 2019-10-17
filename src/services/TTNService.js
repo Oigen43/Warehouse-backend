@@ -2,11 +2,13 @@
 
 const { sequelize } = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
+const GoodsRepository = require('@repositories/GoodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
 
 class TTNService {
-    constructor({TTNRepository}) {
+    constructor({ TTNRepository, GoodsRepository }) {
         this.TTNRepository = TTNRepository;
+        this.GoodsRepository = GoodsRepository;
     }
 
     async get(page, perPage, role) {
@@ -26,12 +28,12 @@ class TTNService {
         }
     }
 
-    async update(UpdatedTTN) {
+    async getById(id) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.TTNRepository.update(UpdatedTTN, transaction);
+            const data = await this.TTNRepository.getById(id, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -42,12 +44,46 @@ class TTNService {
         }
     }
 
-    async remove(TTNId) {
+    async create(TTN, goods) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.TTNRepository.remove(TTNId, transaction);
+            const { data, TTNId } = await this.TTNRepository.create(TTN, transaction);
+            console.log(data, TTNId);
+            await this.GoodsRepository.create(goods, TTNId, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
+    async remove(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.TTNRepository.remove(id, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
+    async changeStatus(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.TTNRepository.changeStatus(id, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -59,4 +95,4 @@ class TTNService {
     }
 }
 
-module.exports = new TTNService({TTNRepository});
+module.exports = new TTNService({ TTNRepository, GoodsRepository });
