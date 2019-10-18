@@ -28,7 +28,7 @@ class WarehouseRepository {
 
     async getById(id, transaction) {
         try {
-            const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, raw: true, transaction });
+            const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, include: { model: Company, attributes: ['companyName'] }, raw: true, transaction });
 
             if (!warehouse) {
                 throw new CustomError({
@@ -40,7 +40,8 @@ class WarehouseRepository {
 
             return {
                 data: {
-                    warehouse: warehouse
+                    warehouses: warehouse,
+                    warehousesTotal: 1
                 },
             };
         } catch (err) {
@@ -48,14 +49,13 @@ class WarehouseRepository {
         }
     }
 
-    async getIds(companyId, transaction) {
+    async getNames(companyId, transaction) {
         try {
-            const warehouses = await Warehouse.findAll({ attributes: ['id'], where: { deleted: false, companyId: companyId }, raw: true, transaction });
-            const warehousesId = warehouses.map(item => item.id);
+            const warehouses = await Warehouse.findAll({ attributes: ['id', 'warehouseName'], where: { deleted: false, companyId: companyId }, raw: true, transaction });
 
             return {
                 data: {
-                    warehouses: warehousesId,
+                    warehouses: warehouses,
                 }
             };
         } catch (err) {
