@@ -121,8 +121,8 @@ class UserRepository {
             let existingUser;
             if (user.password) {
                 [hashedPassword, existingUser] = await Promise.all([
-                bcrypt.hash(user.password, 8),
-                User.findOne({ where: { id: user.id }, raw: true, transaction })
+                    bcrypt.hash(user.password, 8),
+                    User.findOne({ where: { id: user.id }, raw: true, transaction })
                 ]);
 
                 if (!existingUser) {
@@ -143,8 +143,7 @@ class UserRepository {
                 });
             }
 
-            await User.update(user, { where: { id: user.id }, transaction }
-            );
+            await User.update(user, { where: { id: user.id }, transaction });
 
             return {
                 data: {
