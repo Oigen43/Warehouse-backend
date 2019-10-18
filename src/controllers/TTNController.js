@@ -15,9 +15,9 @@ function create(req) {
     return TTNService.create(TTN, goods);
 }
 
-function update(req) {
-    console.log(req);
-}
+// function update(req) {
+//     console.log(req);
+// }
 
 function remove(req) {
     const { TTNId } = req.query;
@@ -37,7 +37,7 @@ function changeStatus(req) {
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
+    // update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
     getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
     changeStatus: routeUtils.handleResponse(changeStatus, statusCode.OK, statusCode.NOT_FOUND),

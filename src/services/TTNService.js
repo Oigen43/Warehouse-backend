@@ -50,7 +50,6 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const { data, TTNId } = await this.TTNRepository.create(TTN, transaction);
-            console.log(data, TTNId);
             await this.GoodsRepository.create(goods, TTNId, transaction);
             await transaction.commit();
             return data;

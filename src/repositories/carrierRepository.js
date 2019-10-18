@@ -73,7 +73,6 @@ class CarrierRepository {
                 date: new Date(),
                 deleted: false
             };
-            console.log(carrierTemplate);
 
             const addedCarrier = await Carrier.create(carrierTemplate, {transaction});
 

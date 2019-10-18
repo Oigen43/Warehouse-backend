@@ -126,6 +126,11 @@ const messageCode = {
     TTN_STATUS_UPDATE_ERROR: 'ttn.status.update.error',
 
     GOODS_CREATE_ERROR: 'goods.create.error',
+    GOODS_LIST_GET_ERROR: 'goods.list.get.error',
+
+    WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
+    WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',
+    WRITE_OFF_CREATE_ERROR: 'write.off.create.error',
 
     TRANSACTION_FAILED: 'transaction.failed',
 

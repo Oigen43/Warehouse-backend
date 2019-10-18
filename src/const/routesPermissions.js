@@ -60,6 +60,12 @@ const routesPermissions = {
         update: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
         delete: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
         getById: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
+    },
+    goods: {
+        read: [roles.COMPANY_ADMIN_ROLE]
+    },
+    writeOff: {
+        create: [roles.COMPANY_ADMIN_ROLE]
     }
 };
 
