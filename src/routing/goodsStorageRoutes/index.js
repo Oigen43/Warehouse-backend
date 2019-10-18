@@ -9,7 +9,6 @@ const routesPermissions = require('@const/routesPermissions');
 const router = express.Router();
 
 router.route('/')
-    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.goodsStorage.create), goodsStorageController.create)
-    .put(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.goodsStorage.update), goodsStorageController.update);
+    .post(passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.goodsStorage.create), goodsStorageController.create);
 
 module.exports = router;

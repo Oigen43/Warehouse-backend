@@ -1,8 +1,8 @@
 'use strict';
 
 const { Storage, StorageType } = require('@models');
-const sequelize = require('sequelize');
-const { gt } = sequelize.Op;
+const { Op } = require('sequelize');
+const { gt } = Op;
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');

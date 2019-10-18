@@ -8,12 +8,12 @@ class GoodsStorageService {
         this.goodsStorageRepository = goodsStorageRepository;
     }
 
-    async create(goodsStorage) {
+    async create(goodsStorageData) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.goodsStorageRepository.create(goodsStorage.data, transaction);
+            const data = await this.goodsStorageRepository.create(goodsStorageData.goodsData, goodsStorageData.storageData, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -24,12 +24,12 @@ class GoodsStorageService {
         }
     }
 
-    async update(goodsStorage) {
+    async update(goodsStorageData) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.goodsStorageRepository.update(goodsStorage.data, transaction);
+            const data = await this.goodsStorageRepository.update(goodsStorageData.goodsData, goodsStorageData.storageData, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

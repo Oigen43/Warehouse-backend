@@ -5,7 +5,7 @@ module.exports = {
         return queryInterface.bulkInsert('Storages', [
             {
                 storageCapacity: 20,
-                currentCapacity: 0,
+                currentCapacity: 20,
                 warehouseId: 1,
                 storageTypeId: 1,
                 deleted: false,
@@ -14,7 +14,7 @@ module.exports = {
             },
             {
                 storageCapacity: 50,
-                currentCapacity: 35,
+                currentCapacity: 50,
                 warehouseId: 1,
                 storageTypeId: 2,
                 deleted: false,
@@ -23,7 +23,7 @@ module.exports = {
             },
             {
                 storageCapacity: 40,
-                currentCapacity: 12,
+                currentCapacity: 40,
                 warehouseId: 1,
                 storageTypeId: 4,
                 deleted: false,
