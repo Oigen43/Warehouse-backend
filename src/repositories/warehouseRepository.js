@@ -50,7 +50,7 @@ class WarehouseRepository {
 
     async getIds(companyId, transaction) {
         try {
-            const warehouses = await Warehouse.findAll({ attributes: ['id'], where: { deleted: false, companyId: companyId }, raw: true, transaction });
+            const warehouses = await Warehouse.findAll({ attributes: ['id'], where: { deleted: false, companyId }, raw: true, transaction });
             const warehousesId = warehouses.map(item => item.id);
 
             return {

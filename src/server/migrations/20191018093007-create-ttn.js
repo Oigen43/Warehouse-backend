@@ -26,20 +26,50 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      carrier: {
-        type: Sequelize.STRING
+      carrierId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Carriers',
+          key: 'id',
+          as: 'carrierId'
+        }
       },
-      sender: {
-        type: Sequelize.STRING
+      senderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Senders',
+          key: 'id',
+          as: 'senderId'
+        }
       },
-      transport: {
-        type: Sequelize.STRING
+      transportId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Transports',
+          key: 'id',
+          as: 'transportId'
+        }
       },
-      driver: {
-        type: Sequelize.STRING
+      driverId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Drivers',
+          key: 'id',
+          as: 'driverId'
+        }
       },
-      dispatcherId: {
-        type: Sequelize.INTEGER
+      userId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'userId'
+        }
       },
       warehouseId: {
         type: Sequelize.INTEGER,

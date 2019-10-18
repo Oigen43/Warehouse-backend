@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING,
     status: DataTypes.STRING,
     description: DataTypes.STRING,
-    sender: DataTypes.STRING,
-    carrier: DataTypes.STRING,
-    transport: DataTypes.STRING,
-    driver: DataTypes.STRING,
-    dispatcherId: DataTypes.INTEGER,
+    senderId: DataTypes.INTEGER,
+    carrierId: DataTypes.INTEGER,
+    transportId: DataTypes.INTEGER,
+    driverId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     warehouseId: DataTypes.INTEGER,
     deleted: DataTypes.BOOLEAN
   }, {});
@@ -24,6 +24,31 @@ module.exports = (sequelize, DataTypes) => {
     TTN.hasMany(models.Goods, {
       foreignKey: 'TTNId',
       as: 'Goods'
+    });
+    TTN.belongsTo(models.Sender, {
+      foreignKey: 'senderId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    TTN.belongsTo(models.Carrier, {
+      foreignKey: 'carrierId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    TTN.belongsTo(models.Transport, {
+      foreignKey: 'transportId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    TTN.belongsTo(models.Driver, {
+      foreignKey: 'driverId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    TTN.belongsTo(models.User, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
   };
   return TTN;
