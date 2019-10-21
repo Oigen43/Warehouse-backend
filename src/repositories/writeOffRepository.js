@@ -1,6 +1,6 @@
 'use strict';
 
-const { WriteOff, WriteOffGoods } = require('@models');
+const {WriteOff, WriteOffGoods, Goods} = require('@models');
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -8,7 +8,11 @@ const mapToCustomError = require('@utils/customErrorsHandler');
 class WriteOffRepository {
     async create(newWriteOff, goods, transaction) {
         try {
-            const writeOff = await WriteOff.findOne({ where: { number: newWriteOff.number }, raw: true, transaction });
+            const writeOff = await WriteOff.findOne({
+                where: {number: newWriteOff.number},
+                raw: true,
+                transaction
+            });
 
             if (writeOff) {
                 throw new CustomError({
@@ -25,24 +29,42 @@ class WriteOffRepository {
                 controllerId: newWriteOff.controller.id
             };
 
-            const createdWriteOff = await WriteOff.create(writeOffTemplate, { transaction });
+            const createdWriteOff = await WriteOff.create(writeOffTemplate, {transaction});
 
-            const promises = goods.map(item => {
-                const goodsTemplate = {
-                    name: item.name,
-                    originVolume: item.volume,
-                    currentVolume: item.updatedVolume,
-                    originCount: item.count,
-                    currentCount: item.updatedCount,
-                    originWeight: item.weight,
-                    currentWeight: item.updatedWeight,
-                    originPrice: item.price,
-                    currentPrice: item.updatedPrice,
-                    status: item.status,
-                    writeOffId: createdWriteOff.id,
-                    TTNId: createdWriteOff.TTNId
-                };
-                    return WriteOffGoods.create(goodsTemplate, { transaction });
+            let promises = goods.map(item => {
+                    const writeOffGoodsTemplate = {
+                        name: item.name,
+                        originVolume: item.volume,
+                        currentVolume: item.updatedVolume,
+                        originCount: item.count,
+                        currentCount: item.updatedCount,
+                        originWeight: item.weight,
+                        currentWeight: item.updatedWeight,
+                        originPrice: item.price,
+                        currentPrice: item.updatedPrice,
+                        status: item.status,
+                        writeOffId: createdWriteOff.id,
+                        TTNId: createdWriteOff.TTNId
+                    };
+                    return WriteOffGoods.create(writeOffGoodsTemplate, {transaction});
+                }
+            );
+            await Promise.all(promises);
+
+            promises = goods.map(item => {
+                    const goodsTemplate = {
+                        volume: item.updatedVolume,
+                        count: item.updatedCount,
+                        weight: item.updatedWeight,
+                        price: item.updatedPrice
+                    };
+                    return Goods.update(goodsTemplate, {
+                        where: {
+                            TTNId: createdWriteOff.TTNId,
+                            name: item.name
+                        },
+                        transaction
+                    });
                 }
             );
             await Promise.all(promises);

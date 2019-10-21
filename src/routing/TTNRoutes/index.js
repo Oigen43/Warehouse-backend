@@ -14,7 +14,7 @@ router.get('/:id', passport.authenticate('jwt', {session: false}), TTNController
 router.route('/')
     .get(expressJoi(TTNQuerySchema), passport.authenticate('jwt', { session: false }), TTNController.get)
     .post(passport.authenticate('jwt', { session: false }), TTNController.create)
-    .put(passport.authenticate('jwt', { session: false }), TTNController.update)
+    // .put(passport.authenticate('jwt', { session: false }), TTNController.update)
     .delete(passport.authenticate('jwt', { session: false}), TTNController.remove);
 
 module.exports = router;
