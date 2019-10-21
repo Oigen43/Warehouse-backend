@@ -2,13 +2,13 @@
 
 const { sequelize } = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
-const GoodsRepository = require('@repositories/GoodsRepository');
+const goodsRepository = require('@repositories/goodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
 
 class TTNService {
-    constructor({ TTNRepository, GoodsRepository }) {
+    constructor({ TTNRepository, goodsRepository }) {
         this.TTNRepository = TTNRepository;
-        this.GoodsRepository = GoodsRepository;
+        this.goodsRepository = goodsRepository;
     }
 
     async get(page, perPage, role) {
@@ -34,7 +34,7 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const { data, TTNId } = await this.TTNRepository.getById(id, transaction);
-            data.data.TTN.dataValues.goods = await this.GoodsRepository.get(TTNId, transaction);
+            data.data.TTN.dataValues.goods = await this.goodsRepository.get(TTNId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -51,7 +51,7 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const { data, TTNId } = await this.TTNRepository.create(TTN, transaction);
-            await this.GoodsRepository.create(goods, TTNId, transaction);
+            await this.goodsRepository.create(goods, TTNId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -68,8 +68,8 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const { data, TTNId } = await this.TTNRepository.update(TTN, transaction);
-            await this.GoodsRepository.destroy(TTNId, transaction);
-            await this.GoodsRepository.create(goods, TTNId, transaction);
+            await this.goodsRepository.destroy(TTNId, transaction);
+            await this.goodsRepository.create(goods, TTNId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -113,4 +113,4 @@ class TTNService {
     }
 }
 
-module.exports = new TTNService({ TTNRepository, GoodsRepository });
+module.exports = new TTNService({ TTNRepository, goodsRepository });

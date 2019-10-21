@@ -84,10 +84,10 @@ const routesPermissions = {
         check: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
     },
     goods: {
-        read: [roles.COMPANY_ADMIN_ROLE]
+        read: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
     },
     writeOff: {
-        create: [roles.COMPANY_ADMIN_ROLE]
+        create: [roles.WAREHOUSE_CONTROLLER_ROLE]
     }
 };
 
