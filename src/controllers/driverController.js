@@ -14,6 +14,11 @@ function getById(req) {
     return driverService.getById(id);
 }
 
+function getNames(req) {
+    const { carrierId } = req.query;
+    return driverService.getNames(carrierId);
+}
+
 function create(req) {
     const { body: driver } = req;
     return driverService.create(driver);
@@ -34,5 +39,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getNames: routeUtils.handleResponse(getNames, statusCode.OK, statusCode.NOT_FOUND),
 };

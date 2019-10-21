@@ -41,8 +41,11 @@ class TTNRepository {
 
             return {
                 data: {
-                    TTN: existingTTN
+                    data: {
+                        TTN: existingTTN
+                    }
                 },
+                TTNId: existingTTN.id
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.TTN_LIST_GET_ERROR);
@@ -66,7 +69,7 @@ class TTNRepository {
                 senderId: newTTN.sender.id,
                 carrierId: newTTN.carrier.id,
                 transportId: newTTN.transport.id,
-                driverId: newTTN.driver.id ? newTTN.driver.id : null,
+                driverId: newTTN.driver ? newTTN.driver.id : null,
                 registrationDate: newTTN.registrationDate,
                 description: newTTN.description,
                 type: newTTN.type,
@@ -88,6 +91,48 @@ class TTNRepository {
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.TTN_CREATE_ERROR);
+        }
+    }
+
+    async update(newTTN, transaction) {
+        try {
+            const existingTTN = await TTN.findOne({ where: { number: newTTN.number }, raw: true, transaction });
+
+            if (existingTTN && existingTTN.id !== newTTN.id) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.TTN_NUMBER_CONFLICT
+                    }
+                });
+            }
+            const TTNTemplate = {
+                number: newTTN.number,
+                dischargeDate: newTTN.dischargeDate,
+                senderId: newTTN.sender.id,
+                carrierId: newTTN.carrier.id,
+                transportId: newTTN.transport.id,
+                driverId: newTTN.driver ? newTTN.driver.id : null,
+                registrationDate: newTTN.registrationDate,
+                description: newTTN.description,
+                type: newTTN.type,
+                status: newTTN.status,
+                userId: newTTN.dispatcher.id,
+                warehouseId: newTTN.warehouse.id,
+                deleted: false
+            };
+
+            await TTN.update(TTNTemplate, { where: { id: newTTN.id }, transaction });
+
+            return {
+                data: {
+                    data: {
+                        statusCode: messageCode.TTN_UPDATE_SUCCESS
+                    }
+                },
+                TTNId: newTTN.id
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.TTN_UPDATE_ERROR);
         }
     }
 

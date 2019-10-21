@@ -48,6 +48,20 @@ class SenderRepository {
         }
     }
 
+    async getNames(transaction) {
+        try {
+            const senders = await Sender.findAll({ attributes: ['id', 'senderName'], where: { deleted: false }, raw: true, transaction });
+
+            return {
+                data: {
+                    senders: senders,
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.SENDERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newSender, transaction) {
         try {
             const sender = await Sender.findOne({ where: { senderName: newSender.senderName }, raw: true, transaction });

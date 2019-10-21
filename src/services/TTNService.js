@@ -33,7 +33,8 @@ class TTNService {
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.TTNRepository.getById(id, transaction);
+            const { data, TTNId } = await this.TTNRepository.getById(id, transaction);
+            data.data.TTN.dataValues.goods = await this.GoodsRepository.get(TTNId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -50,6 +51,24 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const { data, TTNId } = await this.TTNRepository.create(TTN, transaction);
+            await this.GoodsRepository.create(goods, TTNId, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
+    async update(TTN, goods) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const { data, TTNId } = await this.TTNRepository.update(TTN, transaction);
+            await this.GoodsRepository.destroy(TTNId, transaction);
             await this.GoodsRepository.create(goods, TTNId, transaction);
             await transaction.commit();
             return data;
