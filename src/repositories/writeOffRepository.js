@@ -1,6 +1,6 @@
 'use strict';
 
-const {WriteOff, WriteOffGoods, Goods} = require('@models');
+const {WriteOff} = require('@models');
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -31,48 +31,13 @@ class WriteOffRepository {
 
             const createdWriteOff = await WriteOff.create(writeOffTemplate, {transaction});
 
-            let promises = goods.map(item => {
-                    const writeOffGoodsTemplate = {
-                        name: item.name,
-                        originVolume: item.volume,
-                        currentVolume: item.updatedVolume,
-                        originCount: item.count,
-                        currentCount: item.updatedCount,
-                        originWeight: item.weight,
-                        currentWeight: item.updatedWeight,
-                        originPrice: item.price,
-                        currentPrice: item.updatedPrice,
-                        status: item.status,
-                        writeOffId: createdWriteOff.id,
-                        TTNId: createdWriteOff.TTNId
-                    };
-                    return WriteOffGoods.create(writeOffGoodsTemplate, {transaction});
-                }
-            );
-            await Promise.all(promises);
-
-            promises = goods.map(item => {
-                    const goodsTemplate = {
-                        volume: item.updatedVolume,
-                        count: item.updatedCount,
-                        weight: item.updatedWeight,
-                        price: item.updatedPrice
-                    };
-                    return Goods.update(goodsTemplate, {
-                        where: {
-                            TTNId: createdWriteOff.TTNId,
-                            name: item.name
-                        },
-                        transaction
-                    });
-                }
-            );
-            await Promise.all(promises);
-
             return {
                 data: {
-                    statusCode: messageCode.WRITE_OFF_CREATE_SUCCESS
-                }
+                    data: {
+                        statusCode: messageCode.WRITE_OFF_CREATE_SUCCESS
+                    },
+                },
+                createdWriteOff
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.WRITE_OFF_CREATE_ERROR);
