@@ -10,8 +10,8 @@ const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 
-router.get('/names', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.carriers.read), carrierController.getNames);
-router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.carriers.update), carrierController.getById);
+router.get('/names', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.carriers.getNames), carrierController.getNames);
+router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.carriers.getById), carrierController.getById);
 
 router.route('/')
     .get(expressJoi(carrierQuerySchema), passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.carriers.read), carrierController.get)
