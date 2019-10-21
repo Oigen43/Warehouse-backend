@@ -14,6 +14,10 @@ function getById(req) {
     return carrierService.getById(id);
 }
 
+function getNames() {
+    return carrierService.getNames();
+}
+
 function create(req) {
     const carrier = req.body;
     return carrierService.create(carrier);
@@ -34,5 +38,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getNames: routeUtils.handleResponse(getNames, statusCode.OK, statusCode.NOT_FOUND)
 };

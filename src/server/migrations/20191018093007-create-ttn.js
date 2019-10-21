@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       dischargeDate: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       registrationDate: {
         type: Sequelize.DATE
@@ -23,20 +23,53 @@ module.exports = {
       status: {
         type: Sequelize.STRING
       },
-      carrier: {
+      description: {
         type: Sequelize.STRING
       },
-      sender: {
-        type: Sequelize.STRING
+      carrierId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Carriers',
+          key: 'id',
+          as: 'carrierId'
+        }
       },
-      transport: {
-        type: Sequelize.STRING
+      senderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Senders',
+          key: 'id',
+          as: 'senderId'
+        }
       },
-      driver: {
-        type: Sequelize.STRING
+      transportId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Transports',
+          key: 'id',
+          as: 'transportId'
+        }
       },
-      dispatcher: {
-        type: Sequelize.STRING
+      driverId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Drivers',
+          key: 'id',
+          as: 'driverId'
+        }
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'userId'
+        }
       },
       warehouseId: {
         type: Sequelize.INTEGER,
