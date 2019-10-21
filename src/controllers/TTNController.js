@@ -10,9 +10,14 @@ function get(req) {
     return TTNService.get(page, perPage, role);
 }
 
+function create(req) {
+    const { TTN, goods } = req.body;
+    return TTNService.create(TTN, goods);
+}
+
 function update(req) {
-    const UpdatedTTN = req.body;
-    return TTNService.update(UpdatedTTN);
+    const { TTN, goods } = req.body;
+    return TTNService.update(TTN, goods);
 }
 
 function remove(req) {
@@ -20,8 +25,21 @@ function remove(req) {
     return TTNService.remove(TTNId);
 }
 
+function getById(req) {
+    const { id } = req.params;
+    return TTNService.getById(id);
+}
+
+function changeStatus(req) {
+    const { id } = req.body;
+    return TTNService.changeStatus(id);
+}
+
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
+    create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    changeStatus: routeUtils.handleResponse(changeStatus, statusCode.OK, statusCode.NOT_FOUND),
 };

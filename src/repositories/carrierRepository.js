@@ -54,6 +54,20 @@ class CarrierRepository {
         }
     }
 
+    async getNames(transaction) {
+        try {
+            const carriers = await Carrier.findAll({ attributes: ['id', 'name'], where: { deleted: false }, raw: true, transaction });
+
+            return {
+                data: {
+                    carriers: carriers,
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.CARRIERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newCarrier, transaction) {
         try {
             const carrier = await Carrier.findOne({where: {name: newCarrier.name}, raw: true, transaction});

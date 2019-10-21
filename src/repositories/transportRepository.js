@@ -11,8 +11,8 @@ class TransportRepository {
             const { page = 1, perPage = 10, carrierId } = data;
             const start = (page - 1) * perPage;
             const [transportData, transportLength] = await Promise.all([
-                Transport.findAll({ where: { deleted: false, carrierId: carrierId }, include: { model: Carrier }, limit: perPage, offset: start, order: ['id'], transaction }),
-                Transport.count({ where: { deleted: false, carrierId: carrierId }, raw: true, transaction })
+                Transport.findAll({ where: { deleted: false, carrierId }, include: { model: Carrier }, limit: perPage, offset: start, order: ['id'], transaction }),
+                Transport.count({ where: { deleted: false, carrierId }, raw: true, transaction })
             ]);
 
             return {
@@ -42,6 +42,20 @@ class TransportRepository {
                 data: {
                     transport: transport
                 },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.TRANSPORT_LIST_GET_ERROR);
+        }
+    }
+
+    async getNames(carrierId, transaction) {
+        try {
+            const transport = await Transport.findAll({ attributes: ['id', 'transportType', 'transportNumber'], where: { deleted: false, carrierId }, raw: true, transaction });
+
+            return {
+                data: {
+                    transport: transport,
+                }
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.TRANSPORT_LIST_GET_ERROR);

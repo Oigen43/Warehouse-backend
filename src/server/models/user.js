@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'roles',
       foreignKey: 'userId'
     });
+    User.hasMany(models.TTN, {
+      foreignKey: 'userId',
+      as: 'TTNs'
+    });
   };
   return User;
 };

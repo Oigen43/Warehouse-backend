@@ -111,6 +111,7 @@ const messageCode = {
     TRANSPORT_DELETE_ERROR: 'transport.delete.error',
     TRANSPORT_GET_SUCCESS: 'transport.get.success',
 
+    TTN_NUMBER_CONFLICT: 'ttn.number.conflict',
     TTN_LIST_GET_ERROR: 'ttn.list.get.error',
     TTN_GET_UNKNOWN: 'ttn.get.unknown',
     TTN_CREATE_ERROR: 'ttn.create.error',
@@ -121,6 +122,12 @@ const messageCode = {
     TTN_DELETE_SUCCESS: 'ttn.delete.success',
     TTN_DELETE_ERROR: 'ttn.delete.error',
     TTN_GET_SUCCESS: 'ttn.get.success',
+    TTN_STATUS_UPDATE_SUCCESS: 'ttn.status.update.success',
+    TTN_STATUS_UPDATE_ERROR: 'ttn.status.update.error',
+
+    GOODS_CREATE_ERROR: 'goods.create.error',
+    GOODS_LIST_GET_ERROR: 'goods.list.get.error',
+    GOODS_DELETE_ERROR: 'goods.delete.error',
 
     TRANSACTION_FAILED: 'transaction.failed',
 
