@@ -61,6 +61,12 @@ const routesPermissions = {
         delete: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
         getById: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
     },
+    TTN: {
+        create: [roles.WAREHOUSE_DISPATCHER_ROLE],
+        read: [roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        update: [roles.WAREHOUSE_DISPATCHER_ROLE],
+        delete: [roles.WAREHOUSE_DISPATCHER_ROLE]
+    },
     goods: {
         read: [roles.COMPANY_ADMIN_ROLE]
     },
