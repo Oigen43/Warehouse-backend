@@ -2,7 +2,7 @@
 
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
-const { TTN, Sender, Carrier } = require('@models');
+const { TTN, Sender, Carrier, Transport, Driver, Warehouse, User } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
 const statusesTTN = require('@const/statusesTTN');
 
@@ -29,7 +29,18 @@ class TTNRepository {
 
     async getById(id, transaction) {
         try {
-            const existingTTN = await TTN.findOne({ where: { id, deleted: false }, transaction });
+            const existingTTN = await TTN.findOne({
+                where: { id, deleted: false },
+                include: [
+                    {model: Carrier, attributes: ['id', 'name']},
+                    {model: Sender, attributes: ['id', 'senderName']},
+                    {model: Transport, attributes: ['id', 'transportType', 'transportNumber']},
+                    {model: Driver, attributes: ['id', 'surname', 'passportNumber']},
+                    {model: Warehouse, attributes: ['id', 'warehouseName']},
+                    {model: User, attributes: ['id', 'surname', 'firstName']},
+                    ],
+                transaction
+            });
 
             if (!existingTTN) {
                 throw new CustomError({
