@@ -44,6 +44,15 @@ module.exports = {
           as: 'senderId'
         }
       },
+      receiverId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Receivers',
+          key: 'id',
+          as: 'receiverId'
+        }
+      },
       transportId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

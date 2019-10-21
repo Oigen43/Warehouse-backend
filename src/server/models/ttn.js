@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     description: DataTypes.STRING,
     senderId: DataTypes.INTEGER,
+    receiverId: DataTypes.INTEGER,
     carrierId: DataTypes.INTEGER,
     transportId: DataTypes.INTEGER,
     driverId: DataTypes.INTEGER,
@@ -27,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     TTN.belongsTo(models.Sender, {
       foreignKey: 'senderId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    TTN.belongsTo(models.Receiver, {
+      foreignKey: 'receiverId',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });

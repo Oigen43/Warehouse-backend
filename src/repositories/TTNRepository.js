@@ -2,7 +2,7 @@
 
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
-const { TTN, Sender, Carrier } = require('@models');
+const { TTN, Sender, Receiver, Carrier } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
 const statusesTTN = require('@const/statusesTTN');
 
@@ -12,7 +12,7 @@ class TTNRepository {
             const { page = 1, perPage = 10, statuses } = data;
             const start = (page - 1) * perPage;
             const [TTNData, TTNLength] = await Promise.all([
-                TTN.findAll({ where: { deleted: false, status: statuses }, include: [{ model: Sender }, {model: Carrier }], limit: perPage, offset: start, order: ['id'], transaction }),
+                TTN.findAll({ where: { deleted: false, status: statuses }, include: [{ model: Sender }, { model: Receiver }, { model: Carrier }], limit: perPage, offset: start, order: ['id'], transaction }),
                 TTN.count({ where: { deleted: false, status: statuses }, raw: true, transaction })
             ]);
 
@@ -66,7 +66,8 @@ class TTNRepository {
             const TTNTemplate = {
                 number: newTTN.number,
                 dischargeDate: newTTN.dischargeDate,
-                senderId: newTTN.sender.id,
+                senderId: newTTN.sender ? newTTN.sender.id : null,
+                receiverId: newTTN.receiver ? newTTN.receiver.id : null,
                 carrierId: newTTN.carrier.id,
                 transportId: newTTN.transport.id,
                 driverId: newTTN.driver ? newTTN.driver.id : null,
@@ -108,7 +109,8 @@ class TTNRepository {
             const TTNTemplate = {
                 number: newTTN.number,
                 dischargeDate: newTTN.dischargeDate,
-                senderId: newTTN.sender.id,
+                senderId: newTTN.sender ? newTTN.sender.id : null,
+                receiverId: newTTN.receiver ? newTTN.receiver.id : null,
                 carrierId: newTTN.carrier.id,
                 transportId: newTTN.transport.id,
                 driverId: newTTN.driver ? newTTN.driver.id : null,

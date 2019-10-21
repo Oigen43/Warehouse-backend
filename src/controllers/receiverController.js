@@ -14,6 +14,10 @@ function getById(req) {
     return receiverService.getById(id);
 }
 
+function getNames() {
+    return receiverService.getNames();
+}
+
 function create(req) {
     const receiver = req.body;
     return receiverService.create(receiver);
@@ -34,5 +38,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getNames: routeUtils.handleResponse(getNames, statusCode.OK, statusCode.NOT_FOUND)
 };
