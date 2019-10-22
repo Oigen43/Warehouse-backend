@@ -16,7 +16,7 @@ const routesPermissions = {
         update: [roles.COMPANY_ADMIN_ROLE],
         delete: [roles.COMPANY_ADMIN_ROLE],
         getById: [roles.COMPANY_ADMIN_ROLE],
-        getNames: [roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE]
+        getNames: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE]
     },
     storages: {
         create: [roles.COMPANY_ADMIN_ROLE],
