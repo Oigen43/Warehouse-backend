@@ -134,6 +134,10 @@ const messageCode = {
     GOODS_STORAGE_CREATE_ERROR: 'goods.storage.create.error',
     GOODS_STORAGE_GET_UNKNOWN: 'goods.storage.get.unknown',
 
+    WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
+    WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',
+    WRITE_OFF_CREATE_ERROR: 'write.off.create.error',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',

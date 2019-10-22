@@ -4,7 +4,7 @@ const { sequelize } = require('@models');
 const goodsRepository = require('@repositories/goodsRepository');
 
 class GoodsService {
-    constructor({goodsRepository}) {
+    constructor({ goodsRepository }) {
         this.goodsRepository = goodsRepository;
     }
 

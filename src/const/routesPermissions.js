@@ -89,6 +89,9 @@ const routesPermissions = {
     goodsStorage: {
         create: [roles.SYSTEM_ADMIN_ROLE],
         update: [roles.SYSTEM_ADMIN_ROLE]
+    },
+    writeOff: {
+        create: [roles.WAREHOUSE_CONTROLLER_ROLE]
     }
 };
 

@@ -19,26 +19,6 @@ class GoodsRepository {
         }
     }
 
-    async create(goods, TTNId, transaction) {
-        try {
-            const promises = goods.map(item => {
-                item.TTNId = TTNId;
-                return Goods.create(item, { transaction });
-            });
-            await Promise.all(promises);
-        } catch (err) {
-            throw mapToCustomError(err, messageCode.GOODS_CREATE_ERROR);
-        }
-    }
-
-    async destroy(TTNId, transaction) {
-        try {
-            await Goods.destroy({ where: { TTNId }, transaction });
-        } catch (err) {
-            throw mapToCustomError(err, messageCode.GOODS_DELETE_ERROR);
-        }
-    }
-
     async getById(id, transaction) {
         try {
             const goodsItemData = await Goods.findOne({ where: { id }, transaction });
@@ -58,6 +38,50 @@ class GoodsRepository {
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_LIST_GET_ERROR);
+        }
+    }
+
+    async create(goods, TTNId, transaction) {
+        try {
+            const promises = goods.map(item => {
+                item.TTNId = TTNId;
+                return Goods.create(item, { transaction });
+            });
+            await Promise.all(promises);
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_CREATE_ERROR);
+        }
+    }
+
+    async update(goods, TTNId, transaction) {
+        try {
+            const promises = goods.map(item => {
+                    const goodsTemplate = {
+                        volume: item.updatedVolume,
+                        count: item.updatedCount,
+                        weight: item.updatedWeight,
+                        price: item.updatedPrice
+                    };
+                    return Goods.update(goodsTemplate, {
+                        where: {
+                            TTNId: TTNId,
+                            name: item.name
+                        },
+                        transaction
+                    });
+                }
+            );
+            await Promise.all(promises);
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_DELETE_ERROR);
+        }
+    }
+
+    async destroy(TTNId, transaction) {
+        try {
+            await Goods.destroy({ where: { TTNId }, transaction });
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_DELETE_ERROR);
         }
     }
 }
