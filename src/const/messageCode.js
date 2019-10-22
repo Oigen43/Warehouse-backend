@@ -129,6 +129,10 @@ const messageCode = {
     GOODS_LIST_GET_ERROR: 'goods.list.get.error',
     GOODS_DELETE_ERROR: 'goods.delete.error',
 
+    WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
+    WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',
+    WRITE_OFF_CREATE_ERROR: 'write.off.create.error',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',

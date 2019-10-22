@@ -2,9 +2,8 @@
 
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
-const { TTN, Sender, Receiver, Carrier } = require('@models');
+const { TTN, Sender, Carrier, Transport, Driver, Warehouse, User, Receiver } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
-const statusesTTN = require('@const/statusesTTN');
 
 class TTNRepository {
     async get(data, transaction) {
@@ -29,7 +28,18 @@ class TTNRepository {
 
     async getById(id, transaction) {
         try {
-            const existingTTN = await TTN.findOne({ where: { id, deleted: false }, transaction });
+            const existingTTN = await TTN.findOne({
+                where: { id, deleted: false },
+                include: [
+                    {model: Carrier, attributes: ['id', 'name']},
+                    {model: Sender, attributes: ['id', 'senderName']},
+                    {model: Transport, attributes: ['id', 'transportType', 'transportNumber']},
+                    {model: Driver, attributes: ['id', 'surname', 'passportNumber']},
+                    {model: Warehouse, attributes: ['id', 'warehouseName']},
+                    {model: User, attributes: ['id', 'surname', 'firstName']},
+                    ],
+                transaction
+            });
 
             if (!existingTTN) {
                 throw new CustomError({
@@ -165,7 +175,7 @@ class TTNRepository {
         }
     }
 
-    async changeStatus(id, transaction) {
+    async changeStatus(id, status, transaction) {
         try {
             const existingTTN = await TTN.findOne({ where: { id }, raw: true, transaction });
 
@@ -178,7 +188,7 @@ class TTNRepository {
             }
 
             await TTN.update(
-                { status: statusesTTN.TAKEN_OUT_OF_STORAGE_STATUS }, { where: { id }, transaction }
+                { status: status }, { where: { id }, transaction }
             );
 
             return {

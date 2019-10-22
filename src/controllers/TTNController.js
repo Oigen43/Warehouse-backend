@@ -30,9 +30,9 @@ function getById(req) {
     return TTNService.getById(id);
 }
 
-function changeStatus(req) {
+function confirm(req) {
     const { id } = req.body;
-    return TTNService.changeStatus(id);
+    return TTNService.confirm(id);
 }
 
 module.exports = {
@@ -41,5 +41,5 @@ module.exports = {
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
     getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
-    changeStatus: routeUtils.handleResponse(changeStatus, statusCode.OK, statusCode.NOT_FOUND),
+    confirm: routeUtils.handleResponse(confirm, statusCode.OK, statusCode.NOT_FOUND),
 };
