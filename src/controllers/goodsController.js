@@ -4,8 +4,9 @@ const routeUtils = require('@utils/routeUtils');
 const goodsService = require('@services/goodsService');
 const statusCode = require('@const/statusCode');
 
-function get() {
-    return goodsService.get();
+function get(req) {
+    const { TTNId } = req.query;
+    return goodsService.get(TTNId);
 }
 
 function getById(req) {

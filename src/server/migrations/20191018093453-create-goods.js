@@ -12,13 +12,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       volume: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       count: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       weight: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       price: {
         type: Sequelize.STRING

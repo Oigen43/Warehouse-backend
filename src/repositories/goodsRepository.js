@@ -1,15 +1,19 @@
 'use strict';
 
 const messageCode = require('@const/messageCode');
-const { Goods } = require('@models');
+const { Goods, Storage } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
 const CustomError = require('@const/customError');
 
 class GoodsRepository {
     async get(TTNId, transaction) {
         try {
-            const goods = await Goods.findAll({ where: { TTNId }, transaction });
-            return goods;
+            const goods = await Goods.findAll({ where: { TTNId }, include: [{ model: Storage, through: 'GoodsStorages', as: 'storage' }], order: ['id'], transaction });
+            return {
+                data: {
+                    goods: goods
+                }
+            };
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_LIST_GET_ERROR);
         }

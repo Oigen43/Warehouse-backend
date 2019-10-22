@@ -8,12 +8,12 @@ class GoodsService {
         this.goodsRepository = goodsRepository;
     }
 
-    async get() {
+    async get(TTNId) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.goodsRepository.get(transaction);
+            const data = await this.goodsRepository.get(TTNId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
