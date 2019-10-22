@@ -80,8 +80,14 @@ const routesPermissions = {
         read: [roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
         update: [roles.WAREHOUSE_DISPATCHER_ROLE],
         delete: [roles.WAREHOUSE_DISPATCHER_ROLE],
-        getById: [roles.WAREHOUSE_DISPATCHER_ROLE],
-        check: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
+        getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE],
+        confirm: [roles.WAREHOUSE_CONTROLLER_ROLE]
+    },
+    goods: {
+        read: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
+    },
+    writeOff: {
+        create: [roles.WAREHOUSE_CONTROLLER_ROLE]
     }
 };
 

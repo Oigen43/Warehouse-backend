@@ -8,7 +8,11 @@ class GoodsRepository {
     async get(TTNId, transaction) {
         try {
             const goods = await Goods.findAll({ where: { TTNId }, transaction });
-            return goods;
+            return {
+                data: {
+                    goods: goods
+                }
+            };
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_LIST_GET_ERROR);
         }
@@ -23,6 +27,30 @@ class GoodsRepository {
             await Promise.all(promises);
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_CREATE_ERROR);
+        }
+    }
+
+    async update(goods, TTNId, transaction) {
+        try {
+            const promises = goods.map(item => {
+                    const goodsTemplate = {
+                        volume: item.updatedVolume,
+                        count: item.updatedCount,
+                        weight: item.updatedWeight,
+                        price: item.updatedPrice
+                    };
+                    return Goods.update(goodsTemplate, {
+                        where: {
+                            TTNId: TTNId,
+                            name: item.name
+                        },
+                        transaction
+                    });
+                }
+            );
+            await Promise.all(promises);
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_DELETE_ERROR);
         }
     }
 
