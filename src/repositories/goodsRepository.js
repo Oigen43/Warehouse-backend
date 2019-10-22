@@ -54,6 +54,14 @@ class GoodsRepository {
         }
     }
 
+    async updateTTNId(TTNId, newTTNId, transaction) {
+        try {
+            await Goods.update({ TTNId: newTTNId }, { where: { TTNId }, transaction });
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_UPDATE_TTN_ID_ERROR);
+        }
+    }
+
     async destroy(TTNId, transaction) {
         try {
             await Goods.destroy({ where: { TTNId }, transaction });

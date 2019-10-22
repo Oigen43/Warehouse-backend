@@ -128,6 +128,9 @@ const messageCode = {
     GOODS_CREATE_ERROR: 'goods.create.error',
     GOODS_LIST_GET_ERROR: 'goods.list.get.error',
     GOODS_DELETE_ERROR: 'goods.delete.error',
+    GOODS_UPDATE_TTN_ID_ERROR: 'goods.update.ttn.id.error',
+
+    ARCHIVED_GOODS_CREATE_ERROR: 'archived.goods.create.error',
 
     WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
     WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',

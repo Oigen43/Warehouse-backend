@@ -3,13 +3,15 @@
 const { sequelize } = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
 const goodsRepository = require('@repositories/goodsRepository');
+const archivedGoodsRepository = require('@repositories/archivedGoodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
 const statusesTTN = require('@const/statusesTTN');
 
 class TTNService {
-    constructor({ TTNRepository, goodsRepository }) {
+    constructor({ TTNRepository, goodsRepository, archivedGoodsRepository }) {
         this.TTNRepository = TTNRepository;
         this.goodsRepository = goodsRepository;
+        this.archivedGoodsRepository = archivedGoodsRepository;
     }
 
     async get(page, perPage, role) {
@@ -48,11 +50,20 @@ class TTNService {
 
     async create(TTN, goods) {
         let transaction;
-
+        let data;
+        let TTNId;
         try {
             transaction = await sequelize.transaction();
-            const { data, TTNId } = await this.TTNRepository.create(TTN, transaction);
-            await this.goodsRepository.create(goods, TTNId, transaction);
+
+            if (TTN.type === 'incoming') {
+                ({ data, TTNId } = await this.TTNRepository.create(TTN, transaction));
+                await this.goodsRepository.create(goods, TTNId, transaction);
+            } else {
+                ({ data, TTNId } = await this.TTNRepository.create(TTN, transaction));
+                await this.TTNRepository.changeStatus(TTN.id, statusesTTN.ARCHIVED_STATUS, transaction);
+                await this.goodsRepository.updateTTNId(TTN.id, TTNId, transaction);
+                await this.archivedGoodsRepository.create(goods, TTN.id, transaction);
+            }
             await transaction.commit();
             return data;
         } catch (err) {
@@ -114,4 +125,4 @@ class TTNService {
     }
 }
 
-module.exports = new TTNService({ TTNRepository, goodsRepository });
+module.exports = new TTNService({ TTNRepository, goodsRepository, archivedGoodsRepository });

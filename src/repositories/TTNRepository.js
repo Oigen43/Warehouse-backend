@@ -33,6 +33,7 @@ class TTNRepository {
                 include: [
                     {model: Carrier, attributes: ['id', 'name']},
                     {model: Sender, attributes: ['id', 'senderName']},
+                    {model: Receiver, attributes: ['id', 'receiverName']},
                     {model: Transport, attributes: ['id', 'transportType', 'transportNumber']},
                     {model: Driver, attributes: ['id', 'surname', 'passportNumber']},
                     {model: Warehouse, attributes: ['id', 'warehouseName']},
