@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'TTNId',
       as: 'Goods'
     });
+    TTN.hasMany(models.archivedGoods, {
+      foreignKey: 'TTNId',
+      as: 'archivedGoods'
+    });
     TTN.belongsTo(models.Sender, {
       foreignKey: 'senderId',
       onDelete: 'CASCADE',
