@@ -1,6 +1,8 @@
 'use strict';
 
 const { Storage, StorageType } = require('@models');
+const { Op } = require('sequelize');
+const { gt } = Op;
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -11,8 +13,8 @@ class StorageRepository {
             const {page = 1, perPage = 10, warehouseId} = data;
             const start = (page - 1) * perPage;
             const [storagesData, storagesLength] = await Promise.all([
-                Storage.findAll({ where: { warehouseId: warehouseId, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
-                Storage.count({ where: {warehouseId: warehouseId}, transaction })
+                Storage.findAll({ where: { warehouseId, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
+                Storage.count({ where: { warehouseId}, transaction })
             ]);
 
             return {
@@ -41,6 +43,28 @@ class StorageRepository {
             return {
                 data: {
                     storage: storage.dataValues
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.STORAGES_LIST_GET_ERROR);
+        }
+    }
+
+    async getAll(warehouseId, transaction) {
+        try {
+            const storages = await Storage.findAll({ where: { warehouseId, deleted: false, currentCapacity: { [gt]: 0} }, include: { model: StorageType }, transaction });
+
+            if (!storages) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.STORAGE_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    storages: storages
                 },
             };
         } catch (err) {

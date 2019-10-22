@@ -35,6 +35,11 @@ function confirm(req) {
     return TTNService.confirm(id);
 }
 
+function inStorage(req) {
+    const { id } = req.body;
+    return TTNService.inStorage(id);
+}
+
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
@@ -42,4 +47,5 @@ module.exports = {
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
     getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
     confirm: routeUtils.handleResponse(confirm, statusCode.OK, statusCode.NOT_FOUND),
+    inStorage: routeUtils.handleResponse(inStorage, statusCode.OK, statusCode.NOT_FOUND)
 };

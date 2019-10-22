@@ -112,6 +112,22 @@ class TTNService {
             }
         }
     }
+
+    async inStorage(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.TTNRepository.changeStatus(id, statusesTTN.IN_STORAGE_STATUS, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
 }
 
 module.exports = new TTNService({ TTNRepository, goodsRepository });

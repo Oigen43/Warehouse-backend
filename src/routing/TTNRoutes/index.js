@@ -11,6 +11,7 @@ const routesPermissions = require('@const/routesPermissions');
 const router = express.Router();
 
 router.put('/confirm', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.TTN.confirm), TTNController.confirm);
+router.put('/in_storage', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.TTN.inStorage), TTNController.inStorage);
 router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.TTN.getById), TTNController.getById);
 
 router.route('/')

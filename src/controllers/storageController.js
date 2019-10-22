@@ -14,6 +14,11 @@ function getById(req) {
     return storageService.getById(id);
 }
 
+function getAll(req) {
+    const { warehouseId } = req.query;
+    return storageService.getAll(warehouseId);
+}
+
 function create(req) {
     const { body: storage } = req;
     return storageService.create(storage);
@@ -34,5 +39,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getAll: routeUtils.handleResponse(getAll, statusCode.OK, statusCode.NOT_FOUND)
 };

@@ -23,7 +23,8 @@ const routesPermissions = {
         read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_MANAGER_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE],
         update: [roles.COMPANY_ADMIN_ROLE],
         delete: [roles.COMPANY_ADMIN_ROLE],
-        getById: [roles.COMPANY_ADMIN_ROLE]
+        getById: [roles.COMPANY_ADMIN_ROLE],
+        getAll: [roles.WAREHOUSE_MANAGER_ROLE]
     },
     storageTypes: {
         read: [roles.COMPANY_ADMIN_ROLE]
@@ -80,15 +81,16 @@ const routesPermissions = {
         read: [roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
         update: [roles.WAREHOUSE_DISPATCHER_ROLE],
         delete: [roles.WAREHOUSE_DISPATCHER_ROLE],
-        getById: [roles.WAREHOUSE_DISPATCHER_ROLE],
-        check: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
+        getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        confirm: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        inStorage: [roles.WAREHOUSE_MANAGER_ROLE]
     },
     goods: {
         read: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
     },
     goodsStorage: {
-        create: [roles.SYSTEM_ADMIN_ROLE],
-        update: [roles.SYSTEM_ADMIN_ROLE]
+        create: [roles.WAREHOUSE_MANAGER_ROLE],
+        update: [roles.WAREHOUSE_MANAGER_ROLE]
     },
     writeOff: {
         create: [roles.WAREHOUSE_CONTROLLER_ROLE]
