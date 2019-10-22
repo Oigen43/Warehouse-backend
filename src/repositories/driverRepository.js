@@ -12,7 +12,7 @@ class DriverRepository {
             const start = (page - 1) * perPage;
             const [driversData, driversLength] = await Promise.all([
                 Driver.findAll({
-                    where: {deleted: false, carrierId: carrierId},
+                    where: { deleted: false, carrierId },
                     limit: perPage,
                     offset: start,
                     order: ['id'],
@@ -49,6 +49,20 @@ class DriverRepository {
                 data: {
                     driver: driver
                 },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.DRIVERS_LIST_GET_ERROR);
+        }
+    }
+
+    async getNames(carrierId, transaction) {
+        try {
+            const drivers = await Driver.findAll({ attributes: ['id', 'passportNumber', 'surname'], where: { deleted: false, carrierId }, raw: true, transaction });
+
+            return {
+                data: {
+                    drivers: drivers,
+                }
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.DRIVERS_LIST_GET_ERROR);

@@ -8,12 +8,13 @@ class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    async get(page, perPage, companyId) {
+    async get(page, perPage, companyId, id) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.warehouseRepository.get({ page: page, perPage: perPage, companyId: companyId }, transaction);
+            const data = id ? await this.warehouseRepository.getById(id, transaction)
+                : await this.warehouseRepository.get({ page: page, perPage: perPage, companyId: companyId }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -30,6 +31,22 @@ class WarehouseService {
         try {
             transaction = await sequelize.transaction();
             const data = await this.warehouseRepository.getById(id, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
+    async getNames(companyId) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.warehouseRepository.getNames(companyId, transaction);
             await transaction.commit();
             return data;
         } catch (err) {

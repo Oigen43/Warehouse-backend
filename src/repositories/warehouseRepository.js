@@ -11,8 +11,8 @@ class WarehouseRepository {
             const { page = 1, perPage = 10, companyId } = data;
             const start = (page - 1) * perPage;
             const [warehousesData, warehousesLength] = await Promise.all([
-                Warehouse.findAll({ where: { deleted: false, companyId: companyId }, include: { model: Company }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
-                Warehouse.count({ where: { deleted: false, companyId: companyId }, raw: true, transaction })
+                Warehouse.findAll({ where: { deleted: false, companyId }, include: { model: Company }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Warehouse.count({ where: { deleted: false, companyId }, raw: true, transaction })
             ]);
 
             return {
@@ -28,7 +28,7 @@ class WarehouseRepository {
 
     async getById(id, transaction) {
         try {
-            const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, raw: true, transaction });
+            const warehouse = await Warehouse.findOne({ where: { id, deleted: false }, include: { model: Company, attributes: ['companyName'] }, raw: true, transaction });
 
             if (!warehouse) {
                 throw new CustomError({
@@ -40,8 +40,23 @@ class WarehouseRepository {
 
             return {
                 data: {
-                    warehouse: warehouse
+                    warehouses: warehouse,
+                    warehousesTotal: 1
                 },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);
+        }
+    }
+
+    async getNames(companyId, transaction) {
+        try {
+            const warehouses = await Warehouse.findAll({ attributes: ['id', 'warehouseName'], where: { deleted: false, companyId }, raw: true, transaction });
+
+            return {
+                data: {
+                    warehouses: warehouses,
+                }
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.WAREHOUSES_LIST_GET_ERROR);

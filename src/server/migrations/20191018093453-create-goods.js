@@ -11,11 +11,29 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      size: {
-        type: Sequelize.INTEGER
-      },
-      storageType: {
+      volume: {
         type: Sequelize.STRING
+      },
+      count: {
+        type: Sequelize.STRING
+      },
+      weight: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.STRING
+      },
+      recommendation: {
+        type: Sequelize.STRING
+      },
+      TTNId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'TTNs',
+          key: 'id',
+          as: 'TTNId'
+        }
       },
       createdAt: {
         allowNull: false,

@@ -4,7 +4,7 @@ const roles = require('@const/roles');
 const statusesTTN = require('@const/statusesTTN');
 
 const statuses = {
-    [roles.SYSTEM_ADMIN_ROLE]: [statusesTTN.REGISTERED_STATUS, statusesTTN.CONFIRMED_STATUS],
+    [roles.COMPANY_ADMIN_ROLE]: [statusesTTN.IN_STORAGE_STATUS, statusesTTN.TAKEN_OUT_OF_STORAGE_STATUS],
     [roles.WAREHOUSE_DISPATCHER_ROLE]: [statusesTTN.REGISTERED_STATUS, statusesTTN.IN_STORAGE_STATUS],
     [roles.WAREHOUSE_CONTROLLER_ROLE]: [statusesTTN.REGISTERED_STATUS, statusesTTN.RELEASE_ALLOWED_STATUS],
     [roles.WAREHOUSE_MANAGER_ROLE]: [statusesTTN.VERIFICATION_COMPLETED_STATUS, statusesTTN.CONFIRMED_STATUS]

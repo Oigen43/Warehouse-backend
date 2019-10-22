@@ -7,12 +7,17 @@ const statusCode = require('@const/statusCode');
 
 function get(req) {
     const { page, perPage } = req.query;
-    return userService.get(page, perPage);
+    return userService.get(page, perPage, req.user.companyId);
 }
 
 function getById(req) {
     const { id } = req.params;
     return userService.getById(id);
+}
+
+function getUserInfo(req) {
+    const { id, firstName, surname, companyId } = req.user;
+    return { data: { id, firstName, surname, companyId } };
 }
 
 function create(req) {
@@ -36,5 +41,6 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    getUserInfo: routeUtils.handleResponse(getUserInfo, statusCode.OK, statusCode.NOT_FOUND)
 };

@@ -1,8 +1,6 @@
 'use strict';
 
 const { Storage, StorageType } = require('@models');
-const { Op } = require('sequelize');
-const { gt } = Op;
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -13,7 +11,7 @@ class StorageRepository {
             const {page = 1, perPage = 10, warehouseId} = data;
             const start = (page - 1) * perPage;
             const [storagesData, storagesLength] = await Promise.all([
-                Storage.findAll({ where: { warehouseId: warehouseId, currentCapacity: { [gt]: 0}, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
+                Storage.findAll({ where: { warehouseId: warehouseId, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
                 Storage.count({ where: {warehouseId: warehouseId}, transaction })
             ]);
 

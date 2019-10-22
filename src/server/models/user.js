@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     deleted: DataTypes.BOOLEAN,
     companyId: DataTypes.INTEGER,
+    warehouseId: DataTypes.INTEGER,
     confirmationToken: DataTypes.STRING,
     loggedAt: DataTypes.DATE
   }, {});
@@ -19,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       through: 'RoleUsers',
       as: 'roles',
       foreignKey: 'userId'
+    });
+    User.hasMany(models.TTN, {
+      foreignKey: 'userId',
+      as: 'TTNs'
     });
   };
   return User;
