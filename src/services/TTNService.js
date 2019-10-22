@@ -4,6 +4,7 @@ const { sequelize } = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
 const goodsRepository = require('@repositories/goodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
+const statusesTTN = require('@const/statusesTTN');
 
 class TTNService {
     constructor({ TTNRepository, goodsRepository }) {
@@ -96,12 +97,12 @@ class TTNService {
         }
     }
 
-    async changeStatus(id) {
+    async confirm(id) {
         let transaction;
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.TTNRepository.changeStatus(id, transaction);
+            const data = await this.TTNRepository.changeStatus(id, statusesTTN.CONFIRMED_STATUS, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
