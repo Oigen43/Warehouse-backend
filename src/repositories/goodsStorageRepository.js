@@ -22,6 +22,18 @@ class GoodsStorageRepository {
             throw mapToCustomError(err, messageCode.GOODS_STORAGE_CREATE_ERROR);
         }
     }
+
+    async destroy(goods, transaction) {
+        try {
+            const promises = goods.map(item =>
+                GoodsStorage.destroy({ where: { goodsId: item.id }, transaction})
+            );
+            await Promise.all(promises);
+            return true;
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_STORAGE_DESTROY_ERROR);
+        }
+    }
 }
 
 module.exports = new GoodsStorageRepository();

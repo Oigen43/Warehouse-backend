@@ -40,6 +40,16 @@ function inStorage(req) {
     return TTNService.inStorage(id);
 }
 
+function release(req) {
+    const { goodsData, storageData, id } = req.body;
+    return TTNService.release(goodsData, storageData, id);
+}
+
+function verify(req) {
+    const { id } = req.body;
+    return TTNService.verify(id);
+}
+
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
@@ -47,5 +57,7 @@ module.exports = {
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
     getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
     confirm: routeUtils.handleResponse(confirm, statusCode.OK, statusCode.NOT_FOUND),
-    inStorage: routeUtils.handleResponse(inStorage, statusCode.OK, statusCode.NOT_FOUND)
+    inStorage: routeUtils.handleResponse(inStorage, statusCode.OK, statusCode.NOT_FOUND),
+    release: routeUtils.handleResponse(release, statusCode.OK, statusCode.NOT_FOUND),
+    verify: routeUtils.handleResponse(verify, statusCode.OK, statusCode.NOT_FOUND)
 };

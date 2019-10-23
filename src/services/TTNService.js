@@ -2,16 +2,20 @@
 
 const { sequelize } = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
+const goodsStorageRepository = require('@repositories/goodsStorageRepository');
+const storageRepository = require('@repositories/storageRepository');
 const goodsRepository = require('@repositories/goodsRepository');
 const archivedGoodsRepository = require('@repositories/archivedGoodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
 const statusesTTN = require('@const/statusesTTN');
 
 class TTNService {
-    constructor({ TTNRepository, goodsRepository, archivedGoodsRepository }) {
+    constructor({ TTNRepository, goodsRepository, archivedGoodsRepository, goodsStorageRepository, storageRepository }) {
         this.TTNRepository = TTNRepository;
         this.goodsRepository = goodsRepository;
         this.archivedGoodsRepository = archivedGoodsRepository;
+        this.goodsStorageRepository = goodsStorageRepository;
+        this.storageRepository = storageRepository;
     }
 
     async get(page, perPage, role) {
@@ -139,6 +143,40 @@ class TTNService {
             }
         }
     }
+
+    async release(goodsData, storageData, TTNId) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            await this.goodsStorageRepository.destroy(goodsData, transaction);
+            await this.storageRepository.updateStorages(storageData, transaction);
+            const data = await this.TTNRepository.changeStatus(TTNId, statusesTTN.TAKEN_OUT_OF_STORAGE_STATUS, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
+    async verify(id) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.TTNRepository.changeStatus(id, statusesTTN.VERIFICATION_COMPLETED_STATUS, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
 }
 
-module.exports = new TTNService({ TTNRepository, goodsRepository, archivedGoodsRepository });
+module.exports = new TTNService({ TTNRepository, goodsRepository, archivedGoodsRepository, goodsStorageRepository, storageRepository });

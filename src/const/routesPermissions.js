@@ -83,7 +83,9 @@ const routesPermissions = {
         delete: [roles.WAREHOUSE_DISPATCHER_ROLE],
         getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
         confirm: [roles.WAREHOUSE_CONTROLLER_ROLE],
-        inStorage: [roles.WAREHOUSE_MANAGER_ROLE]
+        inStorage: [roles.WAREHOUSE_MANAGER_ROLE],
+        release: [roles.WAREHOUSE_MANAGER_ROLE],
+        verify: [roles.WAREHOUSE_CONTROLLER_ROLE]
     },
     goods: {
         read: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],

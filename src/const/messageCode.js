@@ -136,6 +136,7 @@ const messageCode = {
     GOODS_STORAGE_CREATE_SUCCESS: 'goods.storage.create.success',
     GOODS_STORAGE_CREATE_ERROR: 'goods.storage.create.error',
     GOODS_STORAGE_GET_UNKNOWN: 'goods.storage.get.unknown',
+    GOODS_STORAGE_DESTROY_ERROR: 'goods.storage.destroy.error',
 
     WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
     WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',

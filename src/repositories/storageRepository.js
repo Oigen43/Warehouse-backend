@@ -1,8 +1,6 @@
 'use strict';
 
 const { Storage, StorageType } = require('@models');
-const { Op } = require('sequelize');
-const { gt } = Op;
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -52,7 +50,7 @@ class StorageRepository {
 
     async getAll(warehouseId, transaction) {
         try {
-            const storages = await Storage.findAll({ where: { warehouseId, deleted: false, currentCapacity: { [gt]: 0} }, include: { model: StorageType }, transaction });
+            const storages = await Storage.findAll({ where: { warehouseId, deleted: false}, include: { model: StorageType }, transaction });
 
             if (!storages) {
                 throw new CustomError({
@@ -106,6 +104,35 @@ class StorageRepository {
             }
 
             await Storage.update({ storageCapacity: storage.storageCapacity, storageTypeId: storage.storageType.id }, { where: {id: storage.id}, transaction });
+
+            return {
+                data: {
+                    statusCode: messageCode.STORAGE_UPDATE_SUCCESS
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.STORAGE_UPDATE_ERROR);
+        }
+    }
+
+    async updateStorages(storages, transaction) {
+        try {
+            storages.forEach(element => {
+                const storage = Storage.findOne({ where: {id: element.id}, raw: true, transaction });
+
+                if (!storage) {
+                    throw new CustomError({
+                        data: {
+                            statusCode: messageCode.STORAGE_GET_UNKNOWN
+                        }
+                    });
+                }
+            });
+
+            const promises = storages.map(item =>
+                Storage.update({ currentCapacity: item.currentCapacity }, { where: { id: item.id }, transaction})
+            );
+            await Promise.all(promises);
 
             return {
                 data: {
