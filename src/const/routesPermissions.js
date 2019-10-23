@@ -8,7 +8,7 @@ const routesPermissions = {
         read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
         update: [roles.COMPANY_ADMIN_ROLE],
         delete: [roles.SYSTEM_ADMIN_ROLE],
-        getById: [roles.SYSTEM_ADMIN_ROLE]
+        getById: [roles.COMPANY_ADMIN_ROLE]
     },
     warehouses: {
         create: [roles.COMPANY_ADMIN_ROLE],
@@ -82,7 +82,7 @@ const routesPermissions = {
         update: [roles.WAREHOUSE_DISPATCHER_ROLE],
         delete: [roles.WAREHOUSE_DISPATCHER_ROLE],
         getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
-        confirm: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        confirm: [roles.WAREHOUSE_CONTROLLER_ROLE],
         inStorage: [roles.WAREHOUSE_MANAGER_ROLE]
     },
     goods: {
