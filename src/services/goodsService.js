@@ -51,8 +51,10 @@ class GoodsService {
 
         try {
             transaction = await sequelize.transaction();
-            await this.goodsStorageRepository.destroy(goodsData, transaction);
-            await this.storageRepository.updateStorages(storageData, transaction);
+            await Promise.all([
+                this.goodsStorageRepository.destroy(goodsData, transaction),
+                this.storageRepository.updateStorages(storageData, transaction)
+            ]);
             const data = await this.TTNRepository.update(TTN, transaction);
             await transaction.commit();
             return data;

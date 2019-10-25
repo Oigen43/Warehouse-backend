@@ -1,13 +1,13 @@
 'use strict';
 
-const { sequelize } = require('@models');
+const {sequelize} = require('@models');
 const TTNRepository = require('@repositories/TTNRepository');
 const goodsRepository = require('@repositories/goodsRepository');
 const archivedGoodsRepository = require('@repositories/archivedGoodsRepository');
 const roleStatusesTTN = require('@const/roleStatusesTTN');
 
 class TTNService {
-    constructor({ TTNRepository, goodsRepository, archivedGoodsRepository }) {
+    constructor({TTNRepository, goodsRepository, archivedGoodsRepository}) {
         this.TTNRepository = TTNRepository;
         this.goodsRepository = goodsRepository;
         this.archivedGoodsRepository = archivedGoodsRepository;
@@ -19,7 +19,11 @@ class TTNService {
         try {
             transaction = await sequelize.transaction();
             const statuses = roleStatusesTTN[role];
-            const data = await this.TTNRepository.get({ page: page, perPage: perPage, statuses: statuses }, transaction);
+            const data = await this.TTNRepository.get({
+                page: page,
+                perPage: perPage,
+                statuses: statuses
+            }, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
@@ -35,7 +39,7 @@ class TTNService {
 
         try {
             transaction = await sequelize.transaction();
-            const { data, TTNId } = await this.TTNRepository.getById(id, transaction);
+            const {data, TTNId} = await this.TTNRepository.getById(id, transaction);
             data.data.TTN.dataValues.goods = await this.goodsRepository.get(TTNId, transaction);
             await transaction.commit();
             return data;
@@ -56,9 +60,11 @@ class TTNService {
 
             if (TTN) {
                 ({ data, TTNId } = await this.TTNRepository.create(newTTN, transaction));
-                await this.TTNRepository.update(TTN, transaction);
-                await this.goodsRepository.updateTTNId(TTN.id, TTNId, transaction);
-                await this.archivedGoodsRepository.create(goods, TTN.id, transaction);
+                await Promise.all([
+                    this.TTNRepository.update(TTN, transaction),
+                    this.goodsRepository.updateTTNId(TTN.id, TTNId, transaction),
+                    this.archivedGoodsRepository.create(goods, TTN.id, transaction)
+                ]);
             } else {
                 ({ data, TTNId } = await this.TTNRepository.create(newTTN, transaction));
                 await this.goodsRepository.create(goods, TTNId, transaction);
@@ -78,10 +84,12 @@ class TTNService {
 
         try {
             transaction = await sequelize.transaction();
-            const { data, TTNId } = await this.TTNRepository.update(TTN, transaction);
+            const {data, TTNId} = await this.TTNRepository.update(TTN, transaction);
             if (goods) {
-                await this.goodsRepository.destroy(TTNId, transaction);
-                await this.goodsRepository.create(goods, TTNId, transaction);
+                await Promise.all([
+                    this.goodsRepository.destroy(TTNId, transaction),
+                    this.goodsRepository.create(goods, TTNId, transaction)
+                ]);
             }
             await transaction.commit();
             return data;
@@ -110,4 +118,8 @@ class TTNService {
     }
 }
 
-module.exports = new TTNService({ TTNRepository, goodsRepository, archivedGoodsRepository });
+module.exports = new TTNService({
+    TTNRepository,
+    goodsRepository,
+    archivedGoodsRepository
+});
