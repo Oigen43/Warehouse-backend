@@ -1,33 +1,30 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Companies', {
+    return queryInterface.createTable('HistoryPrices', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      companyName: {
-        type: Sequelize.STRING
-      },
-      address: {
-        type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.STRING
+      companyId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Companies',
+          key: 'id',
+          as: 'companyId'
+        }
       },
       price: {
         type: Sequelize.INTEGER
       },
-      active: {
-        type: Sequelize.BOOLEAN
+      startDate: {
+        type: Sequelize.DATEONLY
       },
-      date: {
-        type: Sequelize.DATE
-      },
-      deleted: {
-        type: Sequelize.BOOLEAN
+      endDate: {
+        type: Sequelize.DATEONLY
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +37,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Companies');
+    return queryInterface.dropTable('HistoryPrices');
   }
 };

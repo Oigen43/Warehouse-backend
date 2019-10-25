@@ -129,6 +129,10 @@ const messageCode = {
     GOODS_LIST_GET_ERROR: 'goods.list.get.error',
     GOODS_DELETE_ERROR: 'goods.delete.error',
 
+    HISTORY_PRICE_CREATE_SUCCESS: 'history.price.create.success',
+    HISTORY_PRICE_CREATE_ERROR: 'history.price.create.error',
+    HISTORY_PRICE_UPDATE_ERROR: 'history.price.update.error',
+
     TRANSACTION_FAILED: 'transaction.failed',
 
     EMAIL_SEND_FAILED: 'email.send.failed',

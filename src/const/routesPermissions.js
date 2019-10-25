@@ -8,7 +8,7 @@ const routesPermissions = {
         read: [roles.SYSTEM_ADMIN_ROLE, roles.COMPANY_ADMIN_ROLE],
         update: [roles.COMPANY_ADMIN_ROLE],
         delete: [roles.SYSTEM_ADMIN_ROLE],
-        getById: [roles.SYSTEM_ADMIN_ROLE]
+        getById: [roles.COMPANY_ADMIN_ROLE, roles.SYSTEM_ADMIN_ROLE]
     },
     warehouses: {
         create: [roles.COMPANY_ADMIN_ROLE],

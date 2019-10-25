@@ -14,9 +14,19 @@ function getById(req) {
     return companyService.getById(id);
 }
 
+function updateActive(req) {
+    const company = req.body;
+    return companyService.updateActive(company);
+}
+
+function getPrices(req) {
+    const date = req.query;
+    return companyService.getPrices(date);
+}
+
 function create(req) {
-    const { company, user } = req.body;
-    return companyService.create(company, user);
+    const { company, priceForm, user } = req.body;
+    return companyService.create(company, priceForm, user);
 }
 
 function update(req) {
@@ -34,5 +44,7 @@ module.exports = {
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    updateActive: routeUtils.handleResponse(updateActive, statusCode.OK, statusCode.CONFLICT),
+    getPrices: routeUtils.handleResponse(getPrices, statusCode.OK, statusCode.NOT_FOUND)
 };
