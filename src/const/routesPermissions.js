@@ -79,16 +79,14 @@ const routesPermissions = {
     TTN: {
         create: [roles.WAREHOUSE_DISPATCHER_ROLE],
         read: [roles.COMPANY_ADMIN_ROLE, roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
-        update: [roles.WAREHOUSE_DISPATCHER_ROLE],
+        update: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
         delete: [roles.WAREHOUSE_DISPATCHER_ROLE],
-        getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
-        confirm: [roles.WAREHOUSE_CONTROLLER_ROLE],
-        inStorage: [roles.WAREHOUSE_MANAGER_ROLE],
-        release: [roles.WAREHOUSE_MANAGER_ROLE],
-        verify: [roles.WAREHOUSE_CONTROLLER_ROLE]
+        getById: [roles.WAREHOUSE_DISPATCHER_ROLE, roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE]
     },
     goods: {
         read: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        getById: [roles.WAREHOUSE_CONTROLLER_ROLE, roles.WAREHOUSE_MANAGER_ROLE],
+        release: [roles.WAREHOUSE_MANAGER_ROLE],
     },
     goodsStorage: {
         create: [roles.WAREHOUSE_MANAGER_ROLE],

@@ -11,8 +11,8 @@ function get(req) {
 }
 
 function create(req) {
-    const { TTN, goods } = req.body;
-    return TTNService.create(TTN, goods);
+    const { newTTN, TTN, goods } = req.body;
+    return TTNService.create(newTTN, TTN, goods);
 }
 
 function update(req) {
@@ -30,34 +30,10 @@ function getById(req) {
     return TTNService.getById(id);
 }
 
-function confirm(req) {
-    const { id } = req.body;
-    return TTNService.confirm(id);
-}
-
-function inStorage(req) {
-    const { id } = req.body;
-    return TTNService.inStorage(id);
-}
-
-function release(req) {
-    const { goodsData, storageData, id } = req.body;
-    return TTNService.release(goodsData, storageData, id);
-}
-
-function verify(req) {
-    const { id } = req.body;
-    return TTNService.verify(id);
-}
-
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
-    confirm: routeUtils.handleResponse(confirm, statusCode.OK, statusCode.NOT_FOUND),
-    inStorage: routeUtils.handleResponse(inStorage, statusCode.OK, statusCode.NOT_FOUND),
-    release: routeUtils.handleResponse(release, statusCode.OK, statusCode.NOT_FOUND),
-    verify: routeUtils.handleResponse(verify, statusCode.OK, statusCode.NOT_FOUND)
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
 };

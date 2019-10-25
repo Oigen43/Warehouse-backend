@@ -116,8 +116,10 @@ class ReceiverRepository {
                 });
             }
 
+            const receiverTemplate = {...existingReceiver, ...receiver};
+
             await Receiver.update(
-                { receiverName: receiver.receiverName, upn: receiver.upn, countryCode: receiver.countryCode },
+                receiverTemplate,
                 { where: { id: receiver.id }, transaction }
             );
 
