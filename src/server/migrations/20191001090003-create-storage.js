@@ -9,7 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       storageCapacity: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
+      },
+      currentCapacity: {
+        type: Sequelize.INTEGER
       },
       warehouseId: {
         type: Sequelize.INTEGER

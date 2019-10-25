@@ -11,8 +11,8 @@ class StorageRepository {
             const {page = 1, perPage = 10, warehouseId} = data;
             const start = (page - 1) * perPage;
             const [storagesData, storagesLength] = await Promise.all([
-                Storage.findAll({ where: { warehouseId: warehouseId, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
-                Storage.count({ where: {warehouseId: warehouseId}, transaction })
+                Storage.findAll({ where: { warehouseId, deleted: false }, include: { model: StorageType }, limit: perPage, offset: start, order: ['id'], transaction }),
+                Storage.count({ where: { warehouseId}, transaction })
             ]);
 
             return {
@@ -41,6 +41,28 @@ class StorageRepository {
             return {
                 data: {
                     storage: storage.dataValues
+                },
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.STORAGES_LIST_GET_ERROR);
+        }
+    }
+
+    async getAll(warehouseId, transaction) {
+        try {
+            const storages = await Storage.findAll({ where: { warehouseId, deleted: false}, include: { model: StorageType }, transaction });
+
+            if (!storages) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.STORAGE_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    storages: storages
                 },
             };
         } catch (err) {
@@ -82,6 +104,35 @@ class StorageRepository {
             }
 
             await Storage.update({ storageCapacity: storage.storageCapacity, storageTypeId: storage.storageType.id }, { where: {id: storage.id}, transaction });
+
+            return {
+                data: {
+                    statusCode: messageCode.STORAGE_UPDATE_SUCCESS
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.STORAGE_UPDATE_ERROR);
+        }
+    }
+
+    async updateStorages(storages, transaction) {
+        try {
+            storages.forEach(element => {
+                const storage = Storage.findOne({ where: {id: element.id}, raw: true, transaction });
+
+                if (!storage) {
+                    throw new CustomError({
+                        data: {
+                            statusCode: messageCode.STORAGE_GET_UNKNOWN
+                        }
+                    });
+                }
+            });
+
+            const promises = storages.map(item =>
+                Storage.update({ currentCapacity: item.currentCapacity }, { where: { id: item.id }, transaction})
+            );
+            await Promise.all(promises);
 
             return {
                 data: {

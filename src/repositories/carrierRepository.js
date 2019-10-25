@@ -125,12 +125,11 @@ class CarrierRepository {
                 });
             }
 
+            const carrierTemplate = {...existingCarrier, ...carrier};
+
             await Carrier.update(
-                {
-                    name: carrier.name,
-                    upn: carrier.upn,
-                    countryCode: carrier.countryCode,
-                }, {where: {id: carrier.id}, transaction}
+                carrierTemplate,
+                {where: {id: carrier.id}, transaction}
             );
 
             return {

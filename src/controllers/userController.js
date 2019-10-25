@@ -16,8 +16,8 @@ function getById(req) {
 }
 
 function getUserInfo(req) {
-    const { id, firstName, surname, companyId } = req.user;
-    return { data: { id, firstName, surname, companyId } };
+    const { id, firstName, surname, companyId, warehouseId } = req.user;
+    return { data: { id, firstName, surname, companyId, warehouseId } };
 }
 
 function create(req) {

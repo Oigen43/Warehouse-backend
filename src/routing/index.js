@@ -19,6 +19,7 @@ const receiverRoutes = require('@routing/receiverRoutes');
 const transportRoutes = require('@routing/transportRoutes');
 const TTNRoutes = require('@routing/TTNRoutes');
 const goodsRoutes = require('@routing/goodsRoutes');
+const goodsStorageRoutes = require('@routing/goodsStorageRoutes');
 const writeOffRoutes = require('@routing/writeOffRoutes');
 
 router.use('/login', loginRoutes);
@@ -36,6 +37,7 @@ router.use('/receivers', receiverRoutes);
 router.use('/transport', transportRoutes);
 router.use('/ttn', TTNRoutes);
 router.use('/goods', goodsRoutes);
+router.use('/goods_storage', goodsStorageRoutes);
 router.use('/write_off', writeOffRoutes);
 
 module.exports = router;

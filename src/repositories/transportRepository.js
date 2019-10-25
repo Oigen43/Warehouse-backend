@@ -116,8 +116,10 @@ class TransportRepository {
                 });
             }
 
+            const transportTemplate = {...existingTransport, ...transport};
+
             await Transport.update(
-                { transportType: transport.transportType, transportNumber: transport.transportNumber },
+                transportTemplate,
                 { where: { id: transport.id }, transaction }
             );
 

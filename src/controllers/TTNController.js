@@ -11,8 +11,8 @@ function get(req) {
 }
 
 function create(req) {
-    const { TTN, goods } = req.body;
-    return TTNService.create(TTN, goods);
+    const { newTTN, TTN, goods } = req.body;
+    return TTNService.create(newTTN, TTN, goods);
 }
 
 function update(req) {
@@ -30,16 +30,10 @@ function getById(req) {
     return TTNService.getById(id);
 }
 
-function confirm(req) {
-    const { id } = req.body;
-    return TTNService.confirm(id);
-}
-
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.OK, statusCode.CONFLICT),
     update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
-    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
-    confirm: routeUtils.handleResponse(confirm, statusCode.OK, statusCode.NOT_FOUND),
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND)
 };

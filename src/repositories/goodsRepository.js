@@ -1,17 +1,40 @@
 'use strict';
 
 const messageCode = require('@const/messageCode');
-const { Goods } = require('@models');
+const { Goods, Storage } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
+const CustomError = require('@const/customError');
 
 class GoodsRepository {
     async get(TTNId, transaction) {
         try {
-            const goods = await Goods.findAll({ where: { TTNId }, transaction });
+            const goods = await Goods.findAll({ where: { TTNId }, include: [{ model: Storage, through: 'GoodsStorages', as: 'storage' }], order: ['id'], transaction });
             return {
                 data: {
                     goods: goods
                 }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_LIST_GET_ERROR);
+        }
+    }
+
+    async getById(id, transaction) {
+        try {
+            const goodsItemData = await Goods.findOne({ where: { id }, transaction });
+
+            if (!goodsItemData) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.GOODS_GET_UNKNOWN
+                    },
+                });
+            }
+
+            return {
+                data: {
+                    goodsItem: goodsItemData
+                },
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_LIST_GET_ERROR);
@@ -51,6 +74,14 @@ class GoodsRepository {
             await Promise.all(promises);
         } catch (err) {
             throw mapToCustomError(err, messageCode.GOODS_DELETE_ERROR);
+        }
+    }
+
+    async updateTTNId(TTNId, newTTNId, transaction) {
+        try {
+            await Goods.update({ TTNId: newTTNId }, { where: { TTNId }, transaction });
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.GOODS_UPDATE_TTN_ID_ERROR);
         }
     }
 
