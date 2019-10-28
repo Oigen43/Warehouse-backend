@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.get('/getPrices', passport.authenticate('jwt', { session: false }), permissionsCheck(routesPermissions.companies.delete), companyController.getPrices);
 router.put('/changeActive', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.delete), companyController.updateActive);
+router.put('/changePrice', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.delete), companyController.changePrice);
 router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.companies.getById), companyController.getById);
 
 router.route('/')

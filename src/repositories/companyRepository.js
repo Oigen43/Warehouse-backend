@@ -77,20 +77,6 @@ class CompanyRepository {
         }
     }
 
-    // async getPrices(date, transaction) {
-    //     const startDate = new Date(date.startDate);
-    //     const endDate = new Date(date.finalDate);
-    //
-    //     const dateArray = [];
-    //     const currentDate = startDate;
-    //     while (currentDate <= endDate) {
-    //         dateArray.push(new Date(currentDate));
-    //         currentDate.setDate(currentDate.getDate() + 1);
-    //     }
-    //
-    //     console.log(dateArray);
-    // }
-
     async create(newCompany, transaction) {
         try {
             const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });

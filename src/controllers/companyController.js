@@ -19,6 +19,11 @@ function updateActive(req) {
     return companyService.updateActive(company);
 }
 
+function changePrice(req) {
+    const company = req.body;
+    return companyService.changePrice(company);
+}
+
 function getPrices(req) {
     const date = req.query;
     return companyService.getPrices(date);
@@ -46,5 +51,6 @@ module.exports = {
     remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
     getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
     updateActive: routeUtils.handleResponse(updateActive, statusCode.OK, statusCode.CONFLICT),
+    changePrice: routeUtils.handleResponse(changePrice, statusCode.OK, statusCode.CONFLICT),
     getPrices: routeUtils.handleResponse(getPrices, statusCode.OK, statusCode.NOT_FOUND)
 };

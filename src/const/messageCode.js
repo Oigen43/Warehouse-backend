@@ -44,6 +44,7 @@ const messageCode = {
     COMPANY_DELETE_SUCCESS: 'company.delete.success',
     COMPANY_DELETE_ERROR: 'company.delete.error',
     COMPANY_GET_SUCCESS: 'company.get.success',
+    COMPANIES_GET_PRICES_ERROR: 'company.get.prices.error',
 
     STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
     STORAGE_GET_UNKNOWN: 'storage.get.unknown',
@@ -131,6 +132,7 @@ const messageCode = {
 
     HISTORY_PRICE_CREATE_SUCCESS: 'history.price.create.success',
     HISTORY_PRICE_CREATE_ERROR: 'history.price.create.error',
+    HISTORY_PRICE_UPDATE_SUCCESS: 'history.price.update.success',
     HISTORY_PRICE_UPDATE_ERROR: 'history.price.update.error',
 
     TRANSACTION_FAILED: 'transaction.failed',
