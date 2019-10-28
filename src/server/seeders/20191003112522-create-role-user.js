@@ -17,7 +17,19 @@ module.exports = {
             },
             {
                 userId: 3,
-                roleId: 2,
+                roleId: 3,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                userId: 4,
+                roleId: 4,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                userId: 5,
+                roleId: 5,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }

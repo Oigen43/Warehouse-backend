@@ -48,6 +48,20 @@ class ReceiverRepository {
         }
     }
 
+    async getNames(transaction) {
+        try {
+            const receivers = await Receiver.findAll({ attributes: ['id', 'receiverName'], where: { deleted: false }, raw: true, transaction });
+
+            return {
+                data: {
+                    receivers: receivers,
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.RECEIVERS_LIST_GET_ERROR);
+        }
+    }
+
     async create(newReceiver, transaction) {
         try {
             const receiver = await Receiver.findOne({ where: { receiverName: newReceiver.receiverName }, raw: true, transaction });
@@ -102,8 +116,10 @@ class ReceiverRepository {
                 });
             }
 
+            const receiverTemplate = {...existingReceiver, ...receiver};
+
             await Receiver.update(
-                { receiverName: receiver.receiverName, upn: receiver.upn, countryCode: receiver.countryCode },
+                receiverTemplate,
                 { where: { id: receiver.id }, transaction }
             );
 

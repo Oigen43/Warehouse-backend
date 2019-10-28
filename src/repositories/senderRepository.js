@@ -116,8 +116,10 @@ class SenderRepository {
                 });
             }
 
+            const senderTemplate = {...existingSender, ...sender};
+
             await Sender.update(
-                { senderName: sender.senderName, upn: sender.upn, countryCode: sender.countryCode },
+                senderTemplate,
                 { where: { id: sender.id }, transaction }
             );
 

@@ -129,6 +129,19 @@ const messageCode = {
     GOODS_CREATE_ERROR: 'goods.create.error',
     GOODS_LIST_GET_ERROR: 'goods.list.get.error',
     GOODS_DELETE_ERROR: 'goods.delete.error',
+    GOODS_UPDATE_TTN_ID_ERROR: 'goods.update.ttn.id.error',
+    GOODS_GET_UNKNOWN: 'goods.get.unknown',
+
+    ARCHIVED_GOODS_CREATE_ERROR: 'archived.goods.create.error',
+
+    GOODS_STORAGE_CREATE_SUCCESS: 'goods.storage.create.success',
+    GOODS_STORAGE_CREATE_ERROR: 'goods.storage.create.error',
+    GOODS_STORAGE_GET_UNKNOWN: 'goods.storage.get.unknown',
+    GOODS_STORAGE_DESTROY_ERROR: 'goods.storage.destroy.error',
+
+    WRITE_OFF_NAME_CONFLICT: 'write.off.name.conflict',
+    WRITE_OFF_CREATE_SUCCESS: 'write.off.create.success',
+    WRITE_OFF_CREATE_ERROR: 'write.off.create.error',
 
     HISTORY_PRICE_CREATE_SUCCESS: 'history.price.create.success',
     HISTORY_PRICE_CREATE_ERROR: 'history.price.create.error',

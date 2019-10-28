@@ -117,8 +117,10 @@ class WarehouseRepository {
                 });
             }
 
+            const warehouseTemplate = {...existingWarehouse, ...warehouse};
+
             await Warehouse.update(
-                { warehouseName: warehouse.warehouseName, address: warehouse.address },
+                warehouseTemplate,
                 { where: { id: warehouse.id }, transaction }
             );
 

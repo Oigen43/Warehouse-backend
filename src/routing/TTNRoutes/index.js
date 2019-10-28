@@ -10,7 +10,6 @@ const routesPermissions = require('@const/routesPermissions');
 
 const router = express.Router();
 
-router.put('/changeStatus', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.TTN.check), TTNController.changeStatus);
 router.get('/:id', passport.authenticate('jwt', {session: false}), permissionsCheck(routesPermissions.TTN.getById), TTNController.getById);
 
 router.route('/')

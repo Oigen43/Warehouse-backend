@@ -40,6 +40,22 @@ class StorageService {
         }
     }
 
+    async getAll(warehouseId) {
+        let transaction;
+
+        try {
+            transaction = await sequelize.transaction();
+            const data = await this.storageRepository.getAll(warehouseId, transaction);
+            await transaction.commit();
+            return data;
+        } catch (err) {
+            if (transaction) {
+                await transaction.rollback();
+                throw err;
+            }
+        }
+    }
+
     async create(storage) {
         let transaction;
 

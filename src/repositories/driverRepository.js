@@ -124,13 +124,11 @@ class DriverRepository {
                 });
             }
 
+            const driverTemplate = {...existingDriver, ...driver};
+
             await Driver.update(
-                {
-                    firstName: driver.firstName,
-                    surname: driver.surname,
-                    passportNumber: driver.passportNumber,
-                    issuingDate: driver.issuingDate,
-                }, {where: {id: driver.id}, transaction}
+                driverTemplate,
+                { where: { id: driver.id }, transaction }
             );
 
             return {

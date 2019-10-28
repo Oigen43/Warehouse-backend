@@ -133,8 +133,10 @@ class CompanyRepository {
                 });
             }
 
+            const companyTemplate = {...existingCompany, ...company};
+
             await Company.update(
-                { companyName: company.companyName, address: company.address, description: company.description, price: company.price },
+                companyTemplate,
                 { where: { id: company.id }, transaction }
             );
 
