@@ -11,6 +11,7 @@ require('@config/passport.js');
 const logger = require('@utils/logger');
 
 const router = require('@routing');
+const emailService = require('@services/emailService');
 
 const app = express();
 
@@ -32,3 +33,5 @@ app.listen(port, () => {
 process.on('unhandledRejection', (err, promise) => {
   logger.error('Unhandled rejection (promise: ', promise, ', reason: ', err, ').');
 });
+
+emailService.watchHappyBirthdayMails();

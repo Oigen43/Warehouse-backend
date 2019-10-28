@@ -68,6 +68,33 @@ class UserRepository {
         }
     }
 
+    async getBirthdayBoys(currentDate, transaction) {
+        const users = await User.findAll({
+            attributes: ['firstName', 'surname', 'email'],
+            where: {
+                deleted: false,
+                confirmationToken: null,
+                birthDate: currentDate
+            },
+            raw: true,
+            transaction
+        });
+        return users;
+    }
+
+    async getSystemAdminEmail(transaction) {
+        const admin = await User.findOne({
+            attributes: ['email'],
+            where: {
+                companyId: null,
+                warehouseId: null
+            },
+            raw: true,
+            transaction
+        });
+        return admin.email;
+    }
+
     async create(newUser, transaction) {
         try {
             let hashedPassword;
