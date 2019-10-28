@@ -110,4 +110,4 @@ class UserService {
     }
 }
 
-module.exports = new UserService({userRepository, userRolesRepository, emailService});
+module.exports = new UserService({ userRepository, userRolesRepository, emailService });
