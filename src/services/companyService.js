@@ -57,8 +57,11 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            company.active ? await this.historyPriceRepository.resume(company, transaction)
-                : await this.historyPriceRepository.suspend(company, transaction);
+            if (company.active) {
+                await this.historyPriceRepository.resume(company, transaction);
+            } else {
+                await this.historyPriceRepository.suspend(company, transaction);
+            }
             const data = await this.companyRepository.updateActive(company, transaction);
             await transaction.commit();
             return data;
@@ -107,7 +110,6 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            company.price = priceForm.dailyPrice;
             const { data, createdCompany } = await this.companyRepository.create(company, transaction);
             this.historyPriceRepository.create(createdCompany, priceForm, transaction);
             user.data.companyId = createdCompany.id;

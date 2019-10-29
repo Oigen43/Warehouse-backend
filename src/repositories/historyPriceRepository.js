@@ -79,15 +79,20 @@ class HistoryPriceRepository {
 
     async getPrices(date, transaction) {
         try {
-            const data = await sequelize.query('SELECT day::date, SUM(price) FROM generate_series(:startDate, :endDate, INTERVAL \'1 day\') day INNER JOIN public."HistoryPrices" on "startDate" <= day and ("endDate" >= day or "endDate" is null) GROUP BY day ORDER BY day', {
+            const data = await sequelize.query(`SELECT day::date, SUM(price) 
+                FROM generate_series(:startDate, :endDate, INTERVAL '1 day') day 
+                INNER JOIN public."HistoryPrices" on "startDate" <= day and ("endDate" >= day or "endDate" is null) 
+                GROUP BY day 
+                ORDER BY day`, {
                 replacements: { startDate: date.startDate, endDate: date.finalDate }
             }, { transaction });
-            const arrayDate = data[0].map(item => {
-                return item.day;
+            const arrayDate = [];
+            const arrayData = [];
+            data[0].forEach(item => {
+                arrayDate.push(item.day);
+                arrayData.push(Number(item.sum));
             });
-            const arrayData = data[0].map(item => {
-                return Number(item.sum);
-            });
+
             return {
                 data: {
                     arrayDate,
