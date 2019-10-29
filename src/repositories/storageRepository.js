@@ -74,6 +74,7 @@ class StorageRepository {
         try {
             const storageTemplate = {
                 storageCapacity: newStorage.storageCapacity,
+                currentCapacity: newStorage.currentCapacity,
                 warehouseId: newStorage.warehouseId,
                 storageTypeId: newStorage.storageType.id,
                 deleted: false,

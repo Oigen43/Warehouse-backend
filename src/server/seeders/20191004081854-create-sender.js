@@ -5,7 +5,7 @@ module.exports = {
         return queryInterface.bulkInsert('Senders', [
             {
                 senderName: 'COLLAIRE',
-                upn: '389 423 1975',
+                upn: 3894,
                 countryCode: '+1',
                 date: new Date(),
                 deleted: false,
@@ -14,7 +14,7 @@ module.exports = {
             },
             {
                 senderName: 'ORONOKO',
-                upn: '519 316 4114',
+                upn: 5193,
                 countryCode: '+1',
                 date: new Date(),
                 deleted: false,

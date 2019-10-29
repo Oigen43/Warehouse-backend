@@ -2,7 +2,7 @@
 
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
-const { TTN, Sender, Carrier, Transport, Driver, Warehouse, User, Receiver } = require('@models');
+const { TTN, Sender, Carrier, Transport, Driver, Warehouse, User, Receiver, Goods } = require('@models');
 const mapToCustomError = require('@utils/customErrorsHandler');
 
 class TTNRepository {
@@ -31,13 +31,14 @@ class TTNRepository {
             const existingTTN = await TTN.findOne({
                 where: { id, deleted: false },
                 include: [
-                    {model: Carrier, attributes: ['id', 'name']},
-                    {model: Sender, attributes: ['id', 'senderName']},
-                    {model: Receiver, attributes: ['id', 'receiverName']},
-                    {model: Transport, attributes: ['id', 'transportType', 'transportNumber']},
-                    {model: Driver, attributes: ['id', 'surname', 'passportNumber']},
-                    {model: Warehouse, attributes: ['id', 'warehouseName']},
-                    {model: User, attributes: ['id', 'surname', 'firstName']},
+                    { model: Carrier, attributes: ['id', 'name', 'upn', 'countryCode'] },
+                    { model: Sender, attributes: ['id', 'senderName', 'upn', 'countryCode'] },
+                    { model: Receiver, attributes: ['id', 'receiverName', 'upn', 'countryCode'] },
+                    { model: Transport, attributes: ['id', 'transportType', 'transportNumber'] },
+                    { model: Driver, attributes: ['id', 'firstName', 'surname', 'passportNumber', 'issuingDate'] },
+                    { model: Warehouse, attributes: ['id', 'warehouseName'] },
+                    { model: User, attributes: ['id', 'surname', 'firstName'] },
+                    { model: Goods, foreignKey: 'TTNId', as: 'Goods' },
                     ],
                 transaction
             });
@@ -52,11 +53,8 @@ class TTNRepository {
 
             return {
                 data: {
-                    data: {
                         TTN: existingTTN
-                    }
-                },
-                TTNId: existingTTN.id
+                }
             };
         } catch (err) {
             throw mapToCustomError(err, messageCode.TTN_LIST_GET_ERROR);

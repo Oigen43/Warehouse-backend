@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Carrier = sequelize.define('Carrier', {
     name: DataTypes.STRING,
-    upn: DataTypes.STRING,
+    upn: DataTypes.INTEGER,
     countryCode: DataTypes.STRING,
     date: DataTypes.DATE,
     deleted: DataTypes.BOOLEAN

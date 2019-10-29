@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       upn: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       countryCode: {
         type: Sequelize.STRING

@@ -5,7 +5,7 @@ module.exports = {
         return queryInterface.bulkInsert('Carriers', [
             {
                 name: 'UPC Inc.',
-                upn: '206 555 0100',
+                upn: 206555,
                 countryCode: '+1',
                 date: '1990-07-10',
                 deleted: false,
@@ -14,7 +14,7 @@ module.exports = {
             },
             {
                 name: 'FedEx Corp.',
-                upn: '206 555 5230',
+                upn: 20655,
                 countryCode: '+1',
                 date: '1995-08-11',
                 deleted: false,
