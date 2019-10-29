@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       count: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       weight: {
         type: Sequelize.INTEGER

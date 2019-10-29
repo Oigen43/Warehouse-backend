@@ -39,8 +39,11 @@ class TTNService {
 
         try {
             transaction = await sequelize.transaction();
-            const {data, TTNId} = await this.TTNRepository.getById(id, transaction);
-            data.data.TTN.dataValues.goods = await this.goodsRepository.get(TTNId, transaction);
+            const data = await this.TTNRepository.getById(id, transaction);
+            if (!data.data.TTN.Goods.length) {
+                const TTNId = data.data.TTN.id;
+                data.data.TTN.dataValues.Goods = await this.archivedGoodsRepository.get(TTNId, transaction);
+            }
             await transaction.commit();
             return data;
         } catch (err) {

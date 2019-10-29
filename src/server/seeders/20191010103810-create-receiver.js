@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('Receivers', [
         {
             receiverName: 'TRANSMITLY',
-            upn: '8294071628',
+            upn: 8294,
             countryCode: '+1',
             date: new Date(),
             deleted: false,
@@ -14,7 +14,7 @@ module.exports = {
         },
         {
             receiverName: 'RECEIVEE',
-            upn: '02914716345',
+            upn: 20914,
             countryCode: '+1',
             date: new Date(),
             deleted: false,
