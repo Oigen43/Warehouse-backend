@@ -77,6 +77,51 @@ class CompanyRepository {
         }
     }
 
+    async checkActive(id, transaction) {
+        try {
+            const companyActive = await Company.findOne({ where: { id, active: true, deleted: false }, raw: true, transaction });
+
+            if (!companyActive) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_NOT_ACTIVE
+                    },
+                });
+            }
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.COMPANY_GET_UNKNOWN);
+        }
+    }
+
+    async changePrice(company, transaction) {
+        try {
+            const existingCompany = await Company.findOne({ where: { id: company.companyId }, raw: true, transaction });
+
+            if (!existingCompany) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
+                    },
+                });
+            }
+
+            await Company.update(
+                {
+                    active: true,
+                    price: company.price
+                }, { where: { id: company.companyId }, transaction }
+            );
+
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_UPDATE_SUCCESS
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.COMPANY_UPDATE_ERROR);
+        }
+    }
+
     async create(newCompany, transaction) {
         try {
             const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });

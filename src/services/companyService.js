@@ -78,7 +78,8 @@ class CompanyService {
 
         try {
             transaction = await sequelize.transaction();
-            const data = await this.historyPriceRepository.changePrice(company);
+            await this.historyPriceRepository.changePrice(company, transaction);
+            const data = await this.companyRepository.changePrice(company, transaction);
             await transaction.commit();
             return data;
         } catch (err) {
