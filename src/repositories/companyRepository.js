@@ -1,6 +1,6 @@
 'use strict';
 
-const { Company } = require('@models');
+const { Company, HistoryPrice } = require('@models');
 const messageCode = require('@const/messageCode');
 const CustomError = require('@const/customError');
 const mapToCustomError = require('@utils/customErrorsHandler');
@@ -11,7 +11,7 @@ class CompanyRepository {
             const { page = 1, perPage = 10 } = data;
             const start = (page - 1) * perPage;
             const [companiesData, companiesLength] = await Promise.all([
-                Company.findAll({ where: { deleted: false }, limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
+                Company.findAll({ where: { deleted: false }, include: [{ model: HistoryPrice, as: 'historyPrices', where: { endDate: null }, required: false }], limit: perPage, offset: start, order: ['id'], raw: true, transaction }),
                 Company.count({ where: { deleted: false }, raw: true, transaction })
             ]);
 
@@ -49,6 +49,34 @@ class CompanyRepository {
         }
     }
 
+    async updateActive(company, transaction) {
+        try {
+            const existingCompany = await Company.findOne({ where: { id: company.id }, raw: true, transaction });
+
+            if (!existingCompany) {
+                throw new CustomError({
+                    data: {
+                        statusCode: messageCode.COMPANY_GET_UNKNOWN
+                    },
+                });
+            }
+
+            await Company.update(
+                {
+                  active: company.active,
+                }, { where: { id: company.id }, transaction }
+            );
+
+            return {
+                data: {
+                    statusCode: messageCode.COMPANY_UPDATE_SUCCESS
+                }
+            };
+        } catch (err) {
+            throw mapToCustomError(err, messageCode.COMPANY_UPDATE_ERROR);
+        }
+    }
+
     async create(newCompany, transaction) {
         try {
             const company = await Company.findOne({ where: { companyName: newCompany.companyName }, raw: true, transaction });
@@ -64,6 +92,7 @@ class CompanyRepository {
                 companyName: newCompany.companyName,
                 address: newCompany.address,
                 description: newCompany.description,
+                price: newCompany.price,
                 active: true,
                 date: new Date(),
                 deleted: false,
