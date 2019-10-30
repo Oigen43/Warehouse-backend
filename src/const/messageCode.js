@@ -45,6 +45,7 @@ const messageCode = {
     COMPANY_DELETE_ERROR: 'company.delete.error',
     COMPANY_GET_SUCCESS: 'company.get.success',
     COMPANIES_GET_PRICES_ERROR: 'company.get.prices.error',
+    COMPANY_NOT_ACTIVE: 'company.not.active',
 
     STORAGES_LIST_GET_ERROR: 'storages.list.get.error',
     STORAGE_GET_UNKNOWN: 'storage.get.unknown',

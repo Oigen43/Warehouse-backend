@@ -272,7 +272,7 @@ class UserRepository {
 
     async findById(id, transaction) {
         try {
-            const user = await User.findOne({ where: { id: id }, raw: true }, transaction);
+            const user = await User.findOne({ where: { id: id }, raw: true, transaction });
 
             if (!user) {
                 throw new CustomError({

@@ -4,11 +4,13 @@ const jwt = require('jsonwebtoken');
 const { sequelize } = require('@models');
 const config = require('@config');
 const userRepository = require('@repositories/userRepository');
+const companyRepository = require('@repositories/companyRepository');
 const messageCode = require('@const/messageCode');
 
 class LoginService {
-    constructor({ userRepository }) {
+    constructor({ userRepository, companyRepository }) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
     }
 
     async login(email, password) {
@@ -17,6 +19,9 @@ class LoginService {
         try {
             transaction = await sequelize.transaction();
             const user = await this.userRepository.findUser(email, password, transaction);
+            if (user.companyId) {
+                await this.companyRepository.checkActive(user.companyId, transaction);
+            }
             const roles = await this.userRepository.findRoles(user.id, transaction);
             const token = jwt.sign({ id: user.id, roles }, config.JWT.secret, {
                 expiresIn: config.JWT.life
@@ -41,4 +46,4 @@ class LoginService {
     }
 }
 
-module.exports = new LoginService({userRepository});
+module.exports = new LoginService({userRepository, companyRepository});
