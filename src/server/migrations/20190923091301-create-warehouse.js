@@ -11,17 +11,20 @@ module.exports = {
       warehouseName: {
         type: Sequelize.STRING
       },
-      companyName: {
-        type: Sequelize.STRING
-      },
       address: {
         type: Sequelize.STRING
       },
       active: {
         type: Sequelize.BOOLEAN
       },
-      type: {
-        type: Sequelize.STRING
+      companyId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Companies',
+          key: 'id',
+          as: 'companyId'
+        }
       },
       deleted: {
         type: Sequelize.BOOLEAN

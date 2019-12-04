@@ -1,17 +1,37 @@
 'use strict';
 
-const routeUtils = require('../utils/routeUtils');
-const companyService = require('../services/companyService');
-const statusCode = require('../const/statusCode');
+const routeUtils = require('@utils/routeUtils');
+const companyService = require('@services/companyService');
+const statusCode = require('@const/statusCode');
 
 function get(req) {
     const { page, perPage } = req.query;
-    return companyService.get(page, perPage);
+    return companyService.get(page, perPage, req.user.companyId);
+}
+
+function getById(req) {
+    const { id } = req.params;
+    return companyService.getById(id);
+}
+
+function updateActive(req) {
+    const company = req.body;
+    return companyService.updateActive(company);
+}
+
+function changePrice(req) {
+    const company = req.body;
+    return companyService.changePrice(company);
+}
+
+function getPrices(req) {
+    const date = req.query;
+    return companyService.getPrices(date);
 }
 
 function create(req) {
-    const newCompany = req.body;
-    return companyService.create(newCompany);
+    const { company, priceForm, user } = req.body;
+    return companyService.create(company, priceForm, user);
 }
 
 function update(req) {
@@ -20,13 +40,17 @@ function update(req) {
 }
 
 function remove(req) {
-    const company = req.body;
-    return companyService.remove(company);
+    const { companyId } = req.query;
+    return companyService.remove(companyId);
 }
 
 module.exports = {
     get: routeUtils.handleResponse(get, statusCode.OK, statusCode.NOT_FOUND),
     create: routeUtils.handleResponse(create, statusCode.CREATED, statusCode.CONFLICT),
-    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.NOT_FOUND),
-    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND)
+    update: routeUtils.handleResponse(update, statusCode.OK, statusCode.CONFLICT),
+    remove: routeUtils.handleResponse(remove, statusCode.OK, statusCode.NOT_FOUND),
+    getById: routeUtils.handleResponse(getById, statusCode.OK, statusCode.NOT_FOUND),
+    updateActive: routeUtils.handleResponse(updateActive, statusCode.OK, statusCode.CONFLICT),
+    changePrice: routeUtils.handleResponse(changePrice, statusCode.OK, statusCode.CONFLICT),
+    getPrices: routeUtils.handleResponse(getPrices, statusCode.OK, statusCode.NOT_FOUND)
 };

@@ -17,6 +17,9 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      price: {
+        type: Sequelize.INTEGER
+      },
       active: {
         type: Sequelize.BOOLEAN
       },

@@ -1,39 +1,48 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('WriteOffGoods', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      name: {
         type: Sequelize.STRING
       },
-      surname: {
+      originVolume: {
         type: Sequelize.STRING
       },
-      patronymic: {
+      currentVolume: {
         type: Sequelize.STRING
       },
-      email: {
+      originCount: {
         type: Sequelize.STRING
       },
-      address: {
+      currentCount: {
         type: Sequelize.STRING
       },
-      birthDate: {
+      originWeight: {
         type: Sequelize.STRING
       },
-      login: {
+      currentWeight: {
         type: Sequelize.STRING
       },
-      password: {
+      originPrice: {
         type: Sequelize.STRING
       },
-      deleted: {
-        type: Sequelize.BOOLEAN
+      currentPrice: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING
+      },
+      writeOffId: {
+        type: Sequelize.INTEGER
+      },
+      TTNId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -46,6 +55,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('WriteOffGoods');
   }
 };

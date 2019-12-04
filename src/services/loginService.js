@@ -1,53 +1,49 @@
 'use strict';
 
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
-const userRepository = require('../repositories/userRepository');
-const messageCode = require('../const/messageCode');
+const { sequelize } = require('@models');
+const config = require('@config');
+const userRepository = require('@repositories/userRepository');
+const companyRepository = require('@repositories/companyRepository');
+const messageCode = require('@const/messageCode');
 
 class LoginService {
-    constructor({userRepository}) {
+    constructor({ userRepository, companyRepository }) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
     }
 
     async login(email, password) {
-        const data = await this.userRepository.findByEmail(email);
+        let transaction;
 
-        if (!data.done) {
+        try {
+            transaction = await sequelize.transaction();
+            const user = await this.userRepository.findUser(email, password, transaction);
+            if (user.companyId) {
+                await this.companyRepository.checkActive(user.companyId, transaction);
+            }
+            const roles = await this.userRepository.findRoles(user.id, transaction);
+            const token = jwt.sign({ id: user.id, roles }, config.JWT.secret, {
+                expiresIn: config.JWT.life
+            });
+            const refreshToken = jwt.sign({ id: user.id, roles }, config.JWT.secret, {
+                expiresIn: config.JWT.refreshTokenLife
+            });
+
+            await transaction.commit();
             return {
                 data: {
-                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
-                    token: null
-                },
-                done: false
+                    statusCode: messageCode.USER_LOG_IN,
+                    roles,
+                    token,
+                    refreshToken,
+                }
             };
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
         }
-
-        const passwordIsValid = await bcrypt.compare(password, data.data.user.password);
-
-        if (!passwordIsValid) {
-            return {
-                data: {
-                    statusCode: messageCode.USER_INCORRECT_LOGIN_DATA,
-                    token: null
-                },
-                done: false
-            };
-        }
-
-        const token = jwt.sign({ email: data.data.user.email }, config.JWT.secret, {
-            expiresIn: config.JWT.life
-        });
-
-        return {
-            data: {
-                statusCode: messageCode.USER_LOG_IN,
-                token
-            },
-            done: true
-        };
     }
 }
 
-module.exports = new LoginService({userRepository});
+module.exports = new LoginService({userRepository, companyRepository});
